@@ -1,0 +1,69 @@
+.joyride-step {
+    &__holder {
+        position: absolute;
+        z-index: 10;
+    }
+    &__arrow {
+        position: absolute;
+        left: 40px;
+        z-index: 11;
+    }
+    &__container {
+        box-sizing: border-box;
+        position: relative;
+        color: #000000;
+        background-color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        box-shadow: 0px 0px 30px 1px #000000;
+        max-width: 400px;
+    }
+    &__header {
+        display: flex;
+        align-items: center;
+        padding: 4px 15px;
+    }
+    &__title {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    &__close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 14px;
+        cursor: pointer;
+    }
+    &__body {
+        text-align: left;
+        padding: 10px 15px;
+    }
+    &__footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__counter {
+        font-weight: bold;
+        font-size: 14px;
+    }
+    &__button {
+        text-transform: uppercase;
+        border: 2px solid transparent;
+        outline: none;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+        background-color: #3b5560;
+        cursor: pointer;
+        &:hover {
+            color: #3b5560;
+            border: 2px solid #3b5560;
+            background-color: white;
+        }
+    }
+}

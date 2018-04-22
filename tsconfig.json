@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "angular2-joyride": [
+        "src/lib/public_api.ts"
+      ]
+    }
+  },
+  "files": [
+    "./src/demo/main.ts"
+  ],
+  "include": [
+    "src/demo/app/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

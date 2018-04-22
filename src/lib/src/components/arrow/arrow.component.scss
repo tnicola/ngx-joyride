@@ -1,0 +1,12 @@
+.joyride-arrow {
+    &__top {
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        border-bottom: 11px solid #ffffff;
+    }
+    &__bottom {
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        border-top: 11px solid #ffffff;
+    }
+}

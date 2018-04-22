@@ -1,0 +1,16 @@
+// Only for IDE to find angular2-joyride library
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "angular2-joyride": [
+        "../lib/public_api.ts"
+      ]
+    }
+  },
+  "include": [
+    "./app/**/*.ts",
+    "../lib/**/*.ts"
+  ]
+}
