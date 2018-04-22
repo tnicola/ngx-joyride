@@ -3,6 +3,10 @@
 # Angular 2 Joyride
 An Angular Joyride library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 
+<p align="center">
+	<img src ="https://github.com/tnicola/angular2-joyride/blob/master/docs/joyrideStepExample.PNG" />
+</p>
+
 ## Demo
 See the [demo](https://tnicola.github.io/angular2-joyride/). Let's take a tour! :earth_americas: 
 
