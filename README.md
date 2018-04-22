@@ -1,7 +1,7 @@
 
 
 # Angular 2 Joyride
-A pure Angular library to build 
+An Angular Joyride library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 
 ## Demo
 See the [demo](https://tnicola.github.io/angular2-joyride/). Let's take a tour! :earth_americas: 
