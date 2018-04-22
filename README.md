@@ -1,6 +1,10 @@
 
+
 # Angular 2 Joyride
 A pure Angular library to build 
+
+## Demo
+See the [demo](https://tnicola.github.io/angular2-joyride/). Let's take a tour! :earth_americas: 
 
 ## Install
 
