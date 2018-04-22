@@ -15,7 +15,7 @@ See the [demo](https://tnicola.github.io/angular2-joyride/). Let's take a tour! 
  #### 1. Mark your HTML elements with the `joyrideStep` directive
 
 ```typescript
-  <h1 joyrideStep title="Page Title" text="Main title!"stepNumber="2">Text</h1>
+  <h1 joyrideStep title="Page Title" text="Main title!" stepNumber="2">Text</h1>
 ```
 
 
