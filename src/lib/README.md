@@ -1,1 +1,0 @@
-#Anguar 2 Tour - Joyride Library
