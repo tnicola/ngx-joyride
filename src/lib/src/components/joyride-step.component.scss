@@ -1,12 +1,12 @@
 .joyride-step {
     &__holder {
         position: absolute;
-        z-index: 10;
+        z-index: 1001;
     }
     &__arrow {
         position: absolute;
         left: 40px;
-        z-index: 11;
+        z-index: 1002;
     }
     &__container {
         box-sizing: border-box;

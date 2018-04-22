@@ -48,6 +48,7 @@ export class JoyrideBackdropService {
         this.renderer.setStyle(this.backdropContainer, "left", "0px");
         this.renderer.setStyle(this.backdropContainer, "width", "100%");
         this.renderer.setStyle(this.backdropContainer, "height", "100%");
+        this.renderer.setStyle(this.backdropContainer, "z-index", "1000");
         this.renderer.appendChild(document.body, this.backdropContainer);
 
         this.backdropContent = this.renderer.createElement('div');
