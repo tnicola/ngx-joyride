@@ -11,11 +11,10 @@ export class JoyrideService {
         private readonly optionsService: JoyrideOptionsService
     ) { }
 
-    setOptions(options: JoyrideOptions){
-        this.optionsService.setOptions(options);
-    }
-
-    startTour() {
+    startTour(options?: JoyrideOptions) {
+        if (options) {
+            this.optionsService.setOptions(options);
+        }
         this.stepService.startTour();
     }
 

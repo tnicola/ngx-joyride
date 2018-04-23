@@ -13,6 +13,7 @@ import { DocumentService } from "./services/document.service";
 import { JoyrideOptionsService } from './services/joyride-options.service';
 import { StepDrawerService } from './services/step-drawer.service';
 import { DomRefService } from './services/dom.service';
+import { Logger } from './services/logger.service';
 
 @NgModule({
     imports: [CommonModule],
@@ -34,7 +35,8 @@ import { DomRefService } from './services/dom.service';
         DocumentService,
         JoyrideOptionsService,
         StepDrawerService,
-        DomRefService
-    ],
+        DomRefService,
+        Logger
+    ]
 })
 export class JoyrideModule { }

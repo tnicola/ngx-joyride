@@ -18,7 +18,6 @@ export class DocumentService {
 
     getElementAbsoluteRight(elementRef: ElementRef) {
         var scrollOffsets =  this.getScrollOffsets();
-        console.log("RIGHT:", elementRef.nativeElement.getBoundingClientRect().right)
         return elementRef.nativeElement.getBoundingClientRect().right; 
     }
 

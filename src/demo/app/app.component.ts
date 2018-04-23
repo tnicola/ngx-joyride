@@ -13,7 +13,6 @@ export class AppComponent {
   }
 
   startTour() {
-    this.joyrideService.setOptions({});
     this.joyrideService.startTour();
   }
 
