@@ -1,5 +1,6 @@
 
 
+
 # Angular 2 Joyride
 An Angular Joyride library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 
@@ -54,3 +55,22 @@ export class AppComponent {
 ```
   #### 4. En-joy :wink:
   
+## Directive Inputs
+You can use the `joyrideStep` directive with these inputs:
+| @Input	| Required |Purpose  | Values
+| --|--|--|--|
+| stepNumber | Yes | The order in which the step should appear during the tour. | 1, ..., n |
+| stepPosition |No | The position in which the step will be drawn. |'top', 'bottom'|
+| title | No | The step title. | string|
+| text|  No | The step text content.| string |
+
+## Next features
+
+ - Adding 'right', 'left', 'fullPage' stepPosition values.
+ - More options for the tour (like changing the theme color, the step template and the step behaviour, ... )
+ - Allow you to use your custom Angular component inside the step.
+ - Feel free to ask or share your ideas!
+
+## Licence
+MIT
+
