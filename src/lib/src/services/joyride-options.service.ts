@@ -2,31 +2,42 @@ import { Injectable } from "@angular/core";
 import { JoyrideOptions } from "../models/joyride-options.class";
 
 const DEFAULT_THEME_COLOR = "#3b5560";
-const BACKDROP_DEFAULT_COLOR = DEFAULT_THEME_COLOR;
-const BUTTONS_DEFAULT_COLOR = DEFAULT_THEME_COLOR;
+const THEME_COLOR = DEFAULT_THEME_COLOR;
 const STEP_DEFAULT_POSITION = "bottom";
 
 @Injectable()
 export class JoyrideOptionsService {
 
-    private backdropColor: string = BACKDROP_DEFAULT_COLOR;
-    private buttonsColor: string = BUTTONS_DEFAULT_COLOR;
+    private themeColor: string = THEME_COLOR;
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
+    private logsEnabled: boolean = true;
+    private showCounter: boolean = true;
 
     setOptions(options: JoyrideOptions) {
             this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
+            this.logsEnabled = typeof options.logsEnabled !== 'undefined' ? options.logsEnabled : this.logsEnabled;
+            this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
+            this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
     }
 
     getBackdropColor() {
-        return this.hexToRgb(this.backdropColor);
+        return this.hexToRgb(this.themeColor);
     }
 
-    getButtonsColor() {
-        return this.buttonsColor;
+    getThemeColor() {
+        return this.themeColor;
     }
 
     getStepDefaultPosition() {
         return this.stepDefaultPosition;
+    }
+
+    areLogsEnabled() {
+        return this.logsEnabled;
+    }
+
+    isCounterVisible(){
+        return this.showCounter;
     }
 
     private hexToRgb(hex: any): string {

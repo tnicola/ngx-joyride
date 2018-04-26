@@ -6,6 +6,7 @@ import { EventListenerService } from "../services/event-listener.service";
 import { Subscription } from "rxjs/Subscription";
 import { DocumentService } from "../services/document.service";
 import { JoyrideOptionsService } from "../services/joyride-options.service";
+import { Logger } from "../services/logger.service";
 
 const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
@@ -37,6 +38,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     title: string;
     text: string;
     counter: string;
+    isCounterVisible: boolean;
 
     private arrowSize: number = ARROW_SIZE;
     private stepAbsoluteLeft: number;
@@ -60,8 +62,11 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly eventListenerService: EventListenerService,
         private readonly documentService: DocumentService,
         private readonly viewContainerRef: ViewContainerRef,
-        private readonly renderer: Renderer2
+        private readonly renderer: Renderer2,
+        private readonly logger: Logger,
+        private readonly optionsService: JoyrideOptionsService
     ) {
+        // Need to Inject here otherwise you will obtain a circular dependency
         this.joyrideStepService = injector.get(JoyrideStepService)
     }
 
@@ -70,6 +75,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.title = this.step.title;
         this.text = this.step.text;
         this.counter = this.getCounter();
+        this.isCounterVisible = this.optionsService.isCounterVisible();
     }
 
     ngAfterViewInit() {
@@ -180,6 +186,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private adjustBottomPosition() {
         if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > document.body.clientHeight) {
+            this.logger.info("JoyrideStepPosition: This step is set with 'bottom' position and in this way it would go over the margin. Step position has been set to 'top' automatically. Please consider to set the step position to 'top' to avoid this warning.");
             this.setStyleTop();
             this.stepsContainerService.setPosition(this.step, 'top');
         }
@@ -187,6 +194,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private adjustTopPosition() {
         if (this.targetAbsoluteTop - this.stepHeight - this.arrowSize < 0) {
+            this.logger.info("JoyrideStepPosition: This step is set with 'top' position and in this way it would go over the margin. Step position has been set to 'bottom' automatically. Please consider to set the step position to 'bottom' to avoid this warning.");
             this.setStyleBottom();
             this.stepsContainerService.setPosition(this.step, 'bottom');
         }

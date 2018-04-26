@@ -59,7 +59,6 @@ export class JoyrideStepService {
 
     startTour() {
         this.stepsContainerService.orderStepsByIndex();
-        console.debug("Starting tour...")
         this.backDropService.start();
         this.currentStepIndex = 0;
         this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
@@ -75,7 +74,6 @@ export class JoyrideStepService {
     }
 
     prev() {
-        console.debug("clicked prev")
         this.removeCurrentStep();
         this.currentStepIndex -= 1;
         this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
@@ -83,7 +81,6 @@ export class JoyrideStepService {
     }
 
     next() {
-        console.debug("clicked next")
         this.removeCurrentStep();
         this.currentStepIndex += 1;
         this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
@@ -107,7 +104,6 @@ export class JoyrideStepService {
     }
 
     private showCurrentStep() {
-        //this.backDropService.show(this.currentStep.idSelector);
         this.backDropService.show(this.currentStep.targetViewContainer, this.currentStep.idSelector);
         this.drawStep(this.currentStep);
         this.scrollIfTargetNotVisible();
