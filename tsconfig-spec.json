@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es5",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "baseUrl": ".",
+        "paths": {
+            "angular2-joyride": [
+                "src/lib/public_api.ts"
+            ]
+        },
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "types": [
+            "node",
+            "jasmine"
+        ]
+    },
+    "awesomeTypeScriptLoaderOptions": {
+        "useWebpackText": true
+    }
+}

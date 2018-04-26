@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-var TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 var helpers = require('./helpers');
 const path = require('path')
 const AotPlugin = require('@ngtools/webpack').AotPlugin;
