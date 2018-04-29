@@ -1,12 +1,12 @@
 import { Component, Input, AfterViewInit, forwardRef, Inject, ViewEncapsulation, OnInit, OnDestroy, ViewContainerRef, ElementRef, ViewChild, Renderer2, Injector } from "@angular/core";
-import { JoyrideStep } from "../models/joyride-step.class";
-import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET } from "../services/joyride-step.service";
-import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
-import { EventListenerService } from "../services/event-listener.service";
+import { JoyrideStep } from "../../models/joyride-step.class";
+import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET } from "../../services/joyride-step.service";
+import { JoyrideStepsContainerService } from "../../services/joyride-steps-container.service";
+import { EventListenerService } from "../../services/event-listener.service";
 import { Subscription } from "rxjs/Subscription";
-import { DocumentService } from "../services/document.service";
-import { JoyrideOptionsService } from "../services/joyride-options.service";
-import { Logger } from "../services/logger.service";
+import { DocumentService } from "../../services/document.service";
+import { JoyrideOptionsService } from "../../services/joyride-options.service";
+import { Logger } from "../../services/logger.service";
 
 const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
@@ -14,7 +14,7 @@ const STEP_HEIGHT = 200;
 const ASPECT_RATIO = 1.212;
 const DEFAULT_DISTANCE_FROM_MARGIN_LEFT = 2;
 const DEFAULT_DISTANCE_FROM_MARGIN_RIGHT = 5;
-const closeSvg = require('../assets/images/close.svg');
+const closeSvg = require('../../assets/images/close.svg');
 
 @Component({
     selector: 'joyride-step',
@@ -39,6 +39,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     text: string;
     counter: string;
     isCounterVisible: boolean;
+    themeColor: string;
 
     private arrowSize: number = ARROW_SIZE;
     private stepAbsoluteLeft: number;
@@ -76,6 +77,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.text = this.step.text;
         this.counter = this.getCounter();
         this.isCounterVisible = this.optionsService.isCounterVisible();
+        this.themeColor = this.optionsService.getThemeColor();
     }
 
     ngAfterViewInit() {

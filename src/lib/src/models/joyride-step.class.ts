@@ -1,5 +1,5 @@
 import { ViewContainerRef } from "@angular/core";
-import { JoyrideStepComponent } from "../components/joyride-step.component";
+import { JoyrideStepComponent } from "../components/step/joyride-step.component";
 
 export class JoyrideStep {
     idSelector: string;

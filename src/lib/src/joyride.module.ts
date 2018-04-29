@@ -3,7 +3,8 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { JoyrideDirective } from './directives/joyride.directive';
 import { JoyrideService } from './services/joyride.service';
-import { JoyrideStepComponent } from "./components/joyride-step.component";
+import { JoyrideStepComponent } from "./components/step/joyride-step.component";
+import { JoyrideButtonComponent } from "./components/button/button.component";
 import { JoyrideStepService } from "./services/joyride-step.service";
 import { JoyrideBackdropService } from "./services/joyride-backdrop.service";
 import { JoyrideArrowComponent } from "./components/arrow/arrow.component";
@@ -20,7 +21,8 @@ import { Logger } from './services/logger.service';
     declarations: [
         JoyrideDirective,
         JoyrideStepComponent,
-        JoyrideArrowComponent
+        JoyrideArrowComponent,
+        JoyrideButtonComponent
     ],
     entryComponents: [JoyrideStepComponent],
     exports: [

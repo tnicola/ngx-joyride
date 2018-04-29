@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactory, ComponentRef, ComponentFactoryResolver } from '@angular/core';
-import { JoyrideStepComponent } from "../components/joyride-step.component";
+import { JoyrideStepComponent } from "../components/step/joyride-step.component";
 import { JoyrideStep } from '../models/joyride-step.class';
 
 @Injectable()
