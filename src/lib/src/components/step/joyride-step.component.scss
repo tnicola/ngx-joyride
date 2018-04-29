@@ -46,6 +46,9 @@
         justify-content: space-between;
         align-items: center;
     }
+    &__buttons-container {
+        margin-left: auto;
+    }
     &__counter {
         font-weight: bold;
         font-size: 14px;
