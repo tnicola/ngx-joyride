@@ -4,9 +4,9 @@ import { StepPosition } from "../models/joyride-step-position.enum";
 import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
 import { JoyrideError } from "../models/joyride-error.class";
 import { JoyrideStepService } from "../services/joyride-step.service";
-import { JoyrideOptionsService } from '../services/joyride-options.service';
 
 export const TARGET_ATTRIBUTE = "data-joyride-step-number";
+export const NO_POSITION = "NO_POSITION";
 
 @Directive({
     selector: '[joyrideStep]'
@@ -23,12 +23,11 @@ export class JoyrideDirective implements AfterViewInit {
     text?: string;
 
     @Input()
-    stepPosition?: string = this.optionsService.getStepDefaultPosition();
+    stepPosition?: string = NO_POSITION;
 
     constructor(
         private el: ElementRef,
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
-        private readonly optionsService: JoyrideOptionsService,
         private readonly viewContainerRef: ViewContainerRef,
         private readonly renderer: Renderer2
     ) { }

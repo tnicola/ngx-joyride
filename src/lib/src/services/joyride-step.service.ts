@@ -6,6 +6,8 @@ import { JoyrideStepsContainerService } from "../services/joyride-steps-containe
 import { DocumentService } from "../services/document.service";
 import { StepDrawerService } from "./step-drawer.service";
 import { DomRefService } from "./dom.service";
+import { NO_POSITION } from "../directives/joyride.directive";
+import { JoyrideOptionsService } from "./joyride-options.service";
 
 const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;
@@ -26,7 +28,8 @@ export class JoyrideStepService {
         private readonly stepsContainerService: JoyrideStepsContainerService,
         private readonly documentService: DocumentService,
         private readonly DOMService: DomRefService,
-        private readonly stepDrawerService: StepDrawerService
+        private readonly stepDrawerService: StepDrawerService,
+        private readonly optionsService: JoyrideOptionsService
     ) {
         this.initViewportPositions();
         this.subscribeToScrollEvents();
@@ -54,6 +57,7 @@ export class JoyrideStepService {
     }
 
     private drawStep(step: JoyrideStep) {
+        step.position = step.position === NO_POSITION ? this.optionsService.getStepDefaultPosition() : step.position;
         this.stepDrawerService.draw(step);
     }
 

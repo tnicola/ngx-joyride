@@ -9,7 +9,8 @@
 
     <div id="ciccia" [style.width.px]="20">aaaaa</div>
 
-    <img joyrideStep stepPosition="top" stepNumber="5" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem" src="../assets/images/angular.png">
+    <img joyrideStep stepPosition="top" stepNumber="5" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
+        src="../assets/images/angular.png">
 
     <button (click)="startTour()">Start Tour</button>
     <button joyrideStep [stepNumber]="2">Remove step2</button>
@@ -20,11 +21,7 @@
     </span>
     <span joyrideStep [stepNumber]="4">www</span>
 
-    <div joyrideStep 
-        class="lorem"
-        [stepNumber]="1"
-        title="Lorem"
-        text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
+    <div joyrideStep class="lorem"[stepNumber]="1" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
@@ -43,8 +40,8 @@
         This is a big sd in order to have the page scroll
         <div joyrideStep title="My step" text="This element is Highlighted." [stepNumber]="7" class="big-panel__footer">I'm the target!</div>
         <div class="small-panel">
-            <img joyrideStep class="big-panel__image" stepPosition="top" stepNumber="11" title="Img step" text="uuuuu  uuryf sdfdsf" src="../assets/images/angular.png"
-                [style.width.px]="12" [style.height.px]="12">
+            <img joyrideStep class="big-panel__image" stepPosition="top" stepNumber="11" title="Img step" text="uuuuu  uuryf sdfdsf"
+                src="../assets/images/angular.png" [style.width.px]="12" [style.height.px]="12">
         </div>
     </div>
 

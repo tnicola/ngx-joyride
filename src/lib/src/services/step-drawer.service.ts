@@ -6,8 +6,7 @@ import { JoyrideStep } from '../models/joyride-step.class';
 export class StepDrawerService {
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
-    ){}
+        private readonly componentFactoryResolver: ComponentFactoryResolver) { }
 
     draw(step: JoyrideStep) {
         const factory: ComponentFactory<JoyrideStepComponent> = this.componentFactoryResolver.resolveComponentFactory(JoyrideStepComponent);
@@ -17,5 +16,5 @@ export class StepDrawerService {
         ref.changeDetectorRef.detectChanges();
         step.stepInstance = instance;
     }
-    
+
 }

@@ -13,7 +13,12 @@ export class AppComponent {
   }
 
   startTour() {
-    this.joyrideService.startTour();
+    let options = {
+      stepDefaultPosition: 'top',
+      themeColor: '#345632',
+      showCounter: true
+    };
+    this.joyrideService.startTour(options);
   }
 
 }
