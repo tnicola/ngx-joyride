@@ -1,5 +1,4 @@
 import { NgModule } from "@angular/core";
-
 import { CommonModule } from "@angular/common";
 import { JoyrideDirective } from './directives/joyride.directive';
 import { JoyrideService } from './services/joyride.service';
