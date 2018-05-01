@@ -1,0 +1,2 @@
+<button (mouseleave)="hover=false" (mouseover)="hover=true" [ngStyle]="{'background-color': hover ? '#fff' : color}"
+    class="joyride-button" (click)="onClick()"><ng-content></ng-content></button>

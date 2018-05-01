@@ -1,2 +1,2 @@
-export * from './joyride-step.component';
+export * from './step/joyride-step.component';
 export * from './arrow/arrow.component';
