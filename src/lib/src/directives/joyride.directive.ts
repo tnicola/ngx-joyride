@@ -9,7 +9,7 @@ export const TARGET_ATTRIBUTE = "data-joyride-step-number";
 export const NO_POSITION = "NO_POSITION";
 
 @Directive({
-    selector: '[joyrideStep]'
+    selector: 'joyrideStep, [joyrideStep]'
 })
 export class JoyrideDirective implements AfterViewInit {
 

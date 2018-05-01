@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core';
 import { JoyrideOptionsService } from './joyride-options.service';
 
+const JOYRIDE = 'angular2-joyride:::';
+
 @Injectable()
 export class Logger {
 
     constructor(private readonly optionService: JoyrideOptionsService) { }
 
-    debug(message? : string, data? : any) {
+    debug(message?: string, data?: any) {
         if (this.optionService.areLogsEnabled) {
-            console.debug(message, data);
+            console.debug(JOYRIDE + message, data);
         }
     }
 
-    info(message? : string, data? : any) {
+    info(message?: string, data?: any) {
         if (this.optionService.areLogsEnabled) {
-            console.info(message, data);
+            console.info(JOYRIDE + message, data);
         }
     }
 
-    warn(message? : string, data? : any) {
+    warn(message?: string, data?: any) {
         if (this.optionService.areLogsEnabled) {
-            console.warn(message, data);
+            console.warn(JOYRIDE + message, data);
         }
     }
 
-    error(message? : string, data? : any) {
+    error(message?: string, data?: any) {
         if (this.optionService.areLogsEnabled) {
-            console.error(message, data);
+            console.error(JOYRIDE + message, data);
         }
     }
 

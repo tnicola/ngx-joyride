@@ -9,4 +9,14 @@
         border-right: 11px solid transparent;
         border-top: 11px solid #ffffff;
     }
+    &__right {
+        border-left: 11px solid #ffffff;
+        border-bottom: 11px solid transparent;
+        border-top: 11px solid transparent;
+    }
+    &__left {
+        border-right: 11px solid #ffffff;
+        border-top: 11px solid transparent;
+        border-bottom: 11px solid transparent;
+    }
 }

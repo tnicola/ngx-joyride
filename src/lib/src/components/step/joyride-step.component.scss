@@ -1,6 +1,8 @@
 .joyride-step {
     &__holder {
         position: absolute;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
         z-index: 1001;
     }
     &__arrow {

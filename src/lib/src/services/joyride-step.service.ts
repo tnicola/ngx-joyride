@@ -36,7 +36,7 @@ export class JoyrideStepService {
         this.subscribeToResizeEvents();
     }
 
-    private initViewportPositions(){
+    private initViewportPositions() {
         this.winTopPosition = 0;
         this.winBottomPosition = this.DOMService.nativeWindow.innerHeight - SCROLLBAR_SIZE;
     }
@@ -147,6 +147,9 @@ export class JoyrideStepService {
             return targetAbsoluteTop + this.currentStep.stepInstance.targetHeight;
         } else if (this.currentStep.position === 'bottom') {
             return targetAbsoluteTop + this.currentStep.stepInstance.targetHeight + this.currentStep.stepInstance.stepHeight + ARROW_SIZE + DISTANCE_FROM_TARGET;
+        } else if (this.currentStep.position === 'right' || this.currentStep.position === 'left') {
+            return Math.max(targetAbsoluteTop + this.currentStep.stepInstance.targetHeight, 
+                targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 + this.currentStep.stepInstance.stepHeight / 2);
         }
     }
 
@@ -156,6 +159,8 @@ export class JoyrideStepService {
             return targetAbsoluteTop - (this.currentStep.stepInstance.stepHeight + ARROW_SIZE + DISTANCE_FROM_TARGET);
         } else if (this.currentStep.position === 'bottom') {
             return targetAbsoluteTop;
+        } else if (this.currentStep.position === 'right' || this.currentStep.position === 'left') {
+            return Math.min(targetAbsoluteTop, targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 - this.currentStep.stepInstance.stepHeight / 2);
         }
     }
 

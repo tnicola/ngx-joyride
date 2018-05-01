@@ -12,7 +12,9 @@ const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
 const STEP_HEIGHT = 200;
 const ASPECT_RATIO = 1.212;
+const DEFAULT_DISTANCE_FROM_MARGIN_TOP = 2;
 const DEFAULT_DISTANCE_FROM_MARGIN_LEFT = 2;
+const DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM = 5;
 const DEFAULT_DISTANCE_FROM_MARGIN_RIGHT = 5;
 const closeSvg = require('../../assets/images/close.svg');
 
@@ -29,6 +31,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     stepHeight: number = STEP_HEIGHT;
     leftPosition: number;
     topPosition: number;
+    showArrow: boolean = true;
     arrowPosition: string;
     arrowLeftPosition: number;
     arrowTopPosition: number;
@@ -43,6 +46,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private arrowSize: number = ARROW_SIZE;
     private stepAbsoluteLeft: number;
+    private stepAbsoluteTop: number;
     private targetWidth: number;
     targetHeight: number;
     private targetOffsetTop: number;
@@ -53,8 +57,10 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private joyrideStepService: JoyrideStepService;
 
-    @Input() step?: JoyrideStep;
+    private positionAlreadyFixed: boolean;
 
+    @Input() step?: JoyrideStep;
+    @ViewChild('stepHolder') stepHolder: ElementRef;
     @ViewChild('stepContainer') stepContainer: ElementRef;
 
     constructor(
@@ -102,8 +108,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getCounter(): string {
         let stepPosition = this.stepsContainerService.getStepPosition(this.step);
-        let numberOfStep = this.stepsContainerService.getNumberOfSteps();
-        return stepPosition + '/' + numberOfStep;
+        let numberOfSteps = this.stepsContainerService.getNumberOfSteps();
+        return stepPosition + '/' + numberOfSteps;
     }
 
     prev() {
@@ -136,27 +142,27 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.setStyleBottom();
                 break;
             }
+            case 'right': {
+                this.setStyleRight();
+                break;
+            }
+            case 'left': {
+                this.setStyleLeft();
+                break;
+            }
+            case 'center': {
+                this.setStyleCenter();
+                break;
+            }
             default: {
                 this.setStyleBottom();
             }
         }
     }
 
-    private setStyleBottom() {
-        this.topPosition = this.targetOffsetTop + this.targetHeight + DISTANCE_FROM_TARGET;
-        this.arrowTopPosition = -this.arrowSize;
-
-        this.arrowLeftPosition = this.stepWidth / 2 - this.arrowSize;
-        this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetOffsetLeft;
-        this.stepAbsoluteLeft = this.targetWidth / 2 - this.stepWidth / 2 + this.targetAbsoluteLeft;
-        this.adjustLeftPosition();
-        this.adjustRightPosition();
-        this.arrowPosition = 'top';
-        this.adjustBottomPosition()
-    }
-
     private setStyleTop() {
         this.topPosition = this.targetOffsetTop - DISTANCE_FROM_TARGET - this.stepHeight;
+        this.stepAbsoluteTop = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.arrowTopPosition = this.stepHeight;
 
         this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetOffsetLeft;
@@ -165,7 +171,57 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.adjustLeftPosition();
         this.adjustRightPosition();
         this.arrowPosition = 'bottom';
+        this.autofixTopPosition();
+    }
+
+    private setStyleRight() {
+        this.topPosition = this.targetOffsetTop + this.targetHeight / 2 - this.stepHeight / 2;
+        this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
+        this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
+
+        this.leftPosition = this.targetOffsetLeft + this.targetWidth + DISTANCE_FROM_TARGET;
+        this.stepAbsoluteLeft = this.targetAbsoluteLeft + this.targetWidth + DISTANCE_FROM_TARGET;
+        this.arrowLeftPosition = - this.arrowSize;
         this.adjustTopPosition();
+        this.adjustBottomPosition();
+        this.arrowPosition = 'left';
+        this.autofixRightPosition();
+    }
+
+    private setStyleBottom() {
+        this.topPosition = this.targetOffsetTop + this.targetHeight + DISTANCE_FROM_TARGET;
+        this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
+        this.arrowTopPosition = -this.arrowSize;
+
+        this.arrowLeftPosition = this.stepWidth / 2 - this.arrowSize;
+        this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetOffsetLeft;
+        this.stepAbsoluteLeft = this.targetWidth / 2 - this.stepWidth / 2 + this.targetAbsoluteLeft;
+        this.adjustLeftPosition();
+        this.adjustRightPosition();
+        this.arrowPosition = 'top';
+        this.autofixBottomPosition()
+    }
+
+    private setStyleLeft() {
+        this.topPosition = this.targetOffsetTop + this.targetHeight / 2 - this.stepHeight / 2;
+        this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
+        this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
+
+        this.leftPosition = this.targetOffsetLeft - this.stepWidth - DISTANCE_FROM_TARGET;
+        this.stepAbsoluteLeft = this.targetAbsoluteLeft - this.stepWidth - DISTANCE_FROM_TARGET;
+        this.arrowLeftPosition = this.stepWidth;
+        this.adjustTopPosition();
+        this.adjustBottomPosition();
+        this.arrowPosition = 'right';
+        this.autofixLeftPosition();
+    }
+
+    private setStyleCenter() {
+        this.renderer.setStyle(this.stepHolder.nativeElement, "position", "fixed");
+        this.renderer.setStyle(this.stepHolder.nativeElement, "top", "50%");
+        this.renderer.setStyle(this.stepHolder.nativeElement, "left", "50%");
+        this.renderer.setStyle(this.stepHolder.nativeElement, "transform", `translate(-${this.stepWidth / 2}px, -${this.stepHeight / 2}px)`);
+        this.showArrow = false;
     }
 
     private adjustLeftPosition() {
@@ -186,19 +242,52 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private adjustBottomPosition() {
-        if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > document.body.clientHeight) {
-            this.logger.info("JoyrideStepPosition: This step is set with 'bottom' position and in this way it would go over the margin. Step position has been set to 'top' automatically. Please consider to set the step position to 'top' to avoid this warning.");
-            this.setStyleTop();
-            this.stepsContainerService.setPosition(this.step, 'top');
+    private adjustTopPosition() {
+        if (this.topPosition < 0) {
+            this.arrowTopPosition = this.arrowTopPosition + this.topPosition - DEFAULT_DISTANCE_FROM_MARGIN_TOP;
+            this.topPosition = DEFAULT_DISTANCE_FROM_MARGIN_TOP;
         }
     }
 
-    private adjustTopPosition() {
-        if (this.targetAbsoluteTop - this.stepHeight - this.arrowSize < 0) {
-            this.logger.info("JoyrideStepPosition: This step is set with 'top' position and in this way it would go over the margin. Step position has been set to 'bottom' automatically. Please consider to set the step position to 'bottom' to avoid this warning.");
+    private adjustBottomPosition() {
+        let currentWindowHeight = document.documentElement.offsetHeight;
+        if (this.stepAbsoluteTop + this.stepHeight > currentWindowHeight) {
+            let newTopPos = this.topPosition - (this.stepAbsoluteTop + this.stepHeight + DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM - currentWindowHeight);
+            let deltaTopPosition = newTopPos - this.topPosition;
+
+            this.topPosition = newTopPos;
+            this.arrowTopPosition = this.arrowTopPosition - deltaTopPosition;
+        }
+    }
+
+    private autofixTopPosition() {
+        if (this.positionAlreadyFixed) {
+            this.logger.warn("No step positions found for this step. The step will be centered.");
+        } else if (this.targetAbsoluteTop - this.stepHeight - this.arrowSize < 0) {
+            this.setStyleRight();
+            this.positionAlreadyFixed = true;
+            this.stepsContainerService.setPosition(this.step, 'right');
+        }
+    }
+
+    private autofixRightPosition() {
+        if (this.targetAbsoluteLeft + this.targetWidth + this.stepWidth + this.arrowSize > document.body.clientWidth) {
             this.setStyleBottom();
             this.stepsContainerService.setPosition(this.step, 'bottom');
+        }
+    }
+
+    private autofixBottomPosition() {
+        if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > document.body.clientHeight) {
+            this.setStyleLeft();
+            this.stepsContainerService.setPosition(this.step, 'left');
+        }
+    }
+
+    private autofixLeftPosition() {
+        if (this.targetAbsoluteLeft - this.stepWidth - this.arrowSize < 0) {
+            this.setStyleTop();
+            this.stepsContainerService.setPosition(this.step, 'top');
         }
     }
 

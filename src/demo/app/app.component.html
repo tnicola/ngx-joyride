@@ -1,6 +1,7 @@
 <div class="main">
+    <joyrideStep stepPosition="center" [stepNumber]="1"></joyrideStep>
     <h1 joyrideStep [stepNumber]="34" stepPosition="top">Angular2 Joyride library</h1>
-    <pre joyrideStep [stepNumber]="21" [title]="'Step1 Title'" [text]="'This is the text'" style="position: absolute; top: 15px; right: 15px">This is 
+    <pre joyrideStep stepPosition="left" [stepNumber]="21" [title]="'Step1 Title'" [text]="'This is the text'" style="position: absolute; top: 15px; right: 15px">This is 
         js code</pre>
 
     <div>
@@ -13,15 +14,15 @@
         src="../assets/images/angular.png">
 
     <button class="app__start-button" (click)="startTour()">Start Tour</button>
-    <button joyrideStep [stepNumber]="2">Remove step2</button>
-    <div joyrideStep [stepNumber]="10">Step2</div>
-    <div joyrideStep [stepNumber]="12" stepPosition="bottom">Step5</div>
+    <button joyrideStep stepPosition="left" [stepNumber]="2">Remove step2</button>
+    <div joyrideStep stepPosition="left" [stepNumber]="10">Step2</div>
+    <div joyrideStep [stepNumber]="2" stepPosition="bottom">Step5</div>
     <span joyrideStep [stepNumber]="23">
         asa
     </span>
     <span joyrideStep [stepNumber]="4">www</span>
-
-    <div joyrideStep class="lorem"[stepNumber]="1" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
+    <joyrideStep stepPosition="center" [stepNumber]="4"></joyrideStep>
+    <div joyrideStep class="lorem" [stepNumber]="1" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
@@ -46,4 +47,5 @@
     </div>
 
     <div class="right-bottom">Right-bottom</div>
+    <div joyrideStep stepPosition="right" stepNumber="2" class="bottom">try</div>
 </div>
