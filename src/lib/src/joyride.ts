@@ -8,5 +8,6 @@ export * from "./services/joyride-steps-container.service";
 export * from "./services/document.service";
 export * from './services/joyride-options.service';
 export * from './services/step-drawer.service';
-export * from './services/dom.service'
-export { JoyrideStepComponent, JoyrideArrowComponent } from './components/index';
+export * from './services/dom.service';
+export * from './services/logger.service';
+export * from './components/index';

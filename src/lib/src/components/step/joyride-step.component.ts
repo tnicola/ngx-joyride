@@ -7,6 +7,7 @@ import { Subscription } from "rxjs/Subscription";
 import { DocumentService } from "../../services/document.service";
 import { JoyrideOptionsService } from "../../services/joyride-options.service";
 import { Logger } from "../../services/logger.service";
+import { CLOSE_SVG } from "../assets";
 
 const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
@@ -16,7 +17,6 @@ const DEFAULT_DISTANCE_FROM_MARGIN_TOP = 2;
 const DEFAULT_DISTANCE_FROM_MARGIN_LEFT = 2;
 const DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM = 5;
 const DEFAULT_DISTANCE_FROM_MARGIN_RIGHT = 5;
-const closeSvg = require('../../assets/images/close.svg');
 
 @Component({
     selector: 'joyride-step',
@@ -36,7 +36,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     arrowLeftPosition: number;
     arrowTopPosition: number;
 
-    closeSvg = closeSvg;
+    closeSvg = CLOSE_SVG;
 
     title: string;
     text: string;
@@ -250,7 +250,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private adjustBottomPosition() {
-        let currentWindowHeight = document.documentElement.offsetHeight;
+        let currentWindowHeight = Math.max(document.body.offsetHeight, document.documentElement.offsetHeight);
         if (this.stepAbsoluteTop + this.stepHeight > currentWindowHeight) {
             let newTopPos = this.topPosition - (this.stepAbsoluteTop + this.stepHeight + DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM - currentWindowHeight);
             let deltaTopPosition = newTopPos - this.topPosition;
@@ -264,8 +264,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.positionAlreadyFixed) {
             this.logger.warn("No step positions found for this step. The step will be centered.");
         } else if (this.targetAbsoluteTop - this.stepHeight - this.arrowSize < 0) {
-            this.setStyleRight();
             this.positionAlreadyFixed = true;
+            this.setStyleRight();
             this.stepsContainerService.setPosition(this.step, 'right');
         }
     }

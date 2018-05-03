@@ -6,6 +6,8 @@ import { Component, Input, EventEmitter, Output } from "@angular/core";
     styleUrls: ['./button.component.scss']
 })
 export class JoyrideButtonComponent {
+    hover: boolean;
+    
     @Input() 
     color: string;
     
