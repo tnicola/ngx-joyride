@@ -1,8 +1,11 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import angular from 'rollup-plugin-angular';
+import uglify from 'rollup-plugin-uglify';
+
 var sass = require('node-sass');
 const { nameLibrary, PATH_SRC } = require('./config-library.js');
+
 
 export default {
     input: PATH_SRC + 'joyride.ts',
@@ -43,8 +46,9 @@ export default {
         }),
         /*Used for 3rd part library like rxjs built as commonjs module*/
         commonjs({
-            include: 'node_modules/**',
-        })
+            include: 'node_modules/**'
+        }),
+        uglify()
     ],
     onwarn: warning => {
         const skip_codes = [
