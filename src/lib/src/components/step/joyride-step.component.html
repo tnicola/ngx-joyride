@@ -1,11 +1,15 @@
 <div #stepHolder class="joyride-step__holder" [style.top.px]="topPosition" [style.left.px]="leftPosition">
-    <joyride-arrow *ngIf="showArrow" class="joyride-step__arrow" [position]="arrowPosition" [style.top.px]="arrowTopPosition" [style.left.px]="arrowLeftPosition"></joyride-arrow>
+    <joyride-arrow *ngIf="showArrow" class="joyride-step__arrow" [position]="arrowPosition" [style.top.px]="arrowTopPosition"
+        [style.left.px]="arrowLeftPosition"></joyride-arrow>
     <div #stepContainer class="joyride-step__container">
         <img [src]="closeSvg" class="joyride-step__close" (click)="close()">
         <div class="joyride-step__header">
             <div class="joyride-step__title">{{ title }}</div>
         </div>
-        <div class="joyride-step__body">{{ text }}</div>
+        <ng-container *ngTemplateOutlet="customContent ? customContent : defaultContent"></ng-container>
+        <ng-template #defaultContent>
+            <div class="joyride-step__body">{{ text }}</div>
+        </ng-template>
         <div class="joyride-step__footer">
             <div *ngIf="isCounterVisible" class="joyride-step__counter">{{ counter }}</div>
             <div class="joyride-step__buttons-container">

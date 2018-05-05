@@ -1,4 +1,4 @@
-import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2, TemplateRef } from '@angular/core';
 import { JoyrideStep } from "../models/joyride-step.class";
 import { StepPosition } from "../models/joyride-step-position.enum";
 import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
@@ -25,6 +25,9 @@ export class JoyrideDirective implements AfterViewInit {
     @Input()
     stepPosition?: string = NO_POSITION;
 
+    @Input()
+    stepContent?: TemplateRef<any>;
+
     constructor(
         private el: ElementRef,
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
@@ -42,6 +45,7 @@ export class JoyrideDirective implements AfterViewInit {
         step.targetViewContainer = this.viewContainerRef;
         step.text = this.text;
         step.title = this.title;
+        step.stepContent = this.stepContent;
 
         this.joyrideStepsContainer.addStep(step);
     }

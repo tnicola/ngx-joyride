@@ -1,4 +1,4 @@
-import { ViewContainerRef } from "@angular/core";
+import { ViewContainerRef, TemplateRef } from "@angular/core";
 import { JoyrideStepComponent } from "../components/step/joyride-step.component";
 
 export class JoyrideStep {
@@ -7,6 +7,7 @@ export class JoyrideStep {
     position: string;
     title: string;
     text: string;
+    stepContent: TemplateRef<any>;
     targetViewContainer: ViewContainerRef;
     stepInstance: JoyrideStepComponent;
 }

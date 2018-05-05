@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { JoyrideModule } from 'angular2-joyride';
+import { CustomComponent } from './components/custom.component';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import { JoyrideModule } from 'angular2-joyride';
     BrowserModule
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    CustomComponent
 
   ],
   bootstrap: [AppComponent]
