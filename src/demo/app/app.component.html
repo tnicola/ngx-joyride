@@ -1,26 +1,39 @@
 <div class="main">
-    <joyrideStep stepPosition="center" [stepNumber]="1"></joyrideStep>
+    <joyrideStep stepPosition="center" [stepNumber]="1" [stepContent]="myCustomContent">
+        <ng-template #myCustomContent>
+            <div style="width:500px"> Della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo,
+                quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard
+                sin dal sedicesimo secolo, quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il
+                testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo prese una cassetta di caratteri
+                e li assemblò per preparare un testo campione. Lorem Ipsum è considerato il testo segnaposto standard sin
+                dal sedicesimo secolo, quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo
+                segnaposto standard sin dal sedicesimo secolo, quando un anonimo </div>
+            <img src="../assets/images/angular.png" width="100" height="100">
+        </ng-template>
+    </joyrideStep>
     <h1 joyrideStep [stepNumber]="34" stepPosition="top">Angular2 Joyride library</h1>
     <pre joyrideStep stepPosition="left" [stepNumber]="21" [title]="'Step1 Title'" [text]="'This is the text'" style="position: absolute; top: 15px; right: 15px">This is 
         js code</pre>
-
-    <div>
-        <div>Step1</div>
-    </div>
-
-    <div id="tester" [style.width.px]="20">aaaaa</div>
+    <div id="tester" [style.width.px]="20">Tester</div>
 
     <img joyrideStep stepPosition="top" stepNumber="5" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
         src="../assets/images/angular.png">
 
     <button class="app__start-button" (click)="startTour()">Start Tour</button>
-    <button joyrideStep stepPosition="left" [stepNumber]="2">Remove step2</button>
     <div joyrideStep stepPosition="left" [stepNumber]="10">Step2</div>
-    <div joyrideStep [stepNumber]="2" stepPosition="bottom">Step5</div>
     <span joyrideStep [stepNumber]="23">
-        asa
+        Span
     </span>
-    <span joyrideStep [stepNumber]="4">www</span>
+    <span joyrideStep [stepNumber]="4" [stepContent]="step3Content" title="Title">Custom step content</span>
+    <ng-template #step3Content>
+        <div>
+            <h1>Title</h1>
+            <div>Simple description</div>
+            <img src="../assets/images/angular.png">
+            <h3>Subtitle 1</h3>
+            <h3>Subtitle 2</h3>
+        </div>
+    </ng-template>
     <joyrideStep stepPosition="center" [stepNumber]="4"></joyrideStep>
     <div joyrideStep class="lorem" [stepNumber]="1" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
@@ -35,10 +48,10 @@
         della tipografia e della stampa. Lorem Ipsum è considerato il 
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
         tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione.">Lorem</div>
-    <div class="stepOnRight" joyrideStep [stepNumber]="9">asbjdas</div>
+    <div class="stepOnRight" joyrideStep [stepNumber]="9">Step on the right side</div>
 
     <div class="big-panel">
-        This is a big sd in order to have the page scroll
+        This is a big div in order to have the page scroll
         <div joyrideStep title="My step" text="This element is Highlighted." [stepNumber]="7" class="big-panel__footer">I'm the target!</div>
         <div class="small-panel">
             <img joyrideStep class="big-panel__image" stepPosition="top" stepNumber="11" title="Img step" text="uuuuu  uuryf sdfdsf"
@@ -47,5 +60,5 @@
     </div>
 
     <div class="right-bottom">Right-bottom</div>
-    <div joyrideStep stepPosition="right" stepNumber="2" class="bottom">try</div>
+    <div joyrideStep stepPosition="right" stepNumber="2" class="bottom">Step on the right</div>
 </div>

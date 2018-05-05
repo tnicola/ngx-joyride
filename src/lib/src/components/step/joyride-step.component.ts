@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, forwardRef, Inject, ViewEncapsulation, OnInit, OnDestroy, ViewContainerRef, ElementRef, ViewChild, Renderer2, Injector } from "@angular/core";
+import { Component, Input, AfterViewInit, forwardRef, Inject, ViewEncapsulation, OnInit, OnDestroy, ViewContainerRef, ElementRef, ViewChild, Renderer2, Injector, TemplateRef } from "@angular/core";
 import { JoyrideStep } from "../../models/joyride-step.class";
 import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET } from "../../services/joyride-step.service";
 import { JoyrideStepsContainerService } from "../../services/joyride-steps-container.service";
@@ -43,6 +43,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     counter: string;
     isCounterVisible: boolean;
     themeColor: string;
+    customContent: TemplateRef<any>;
 
     private arrowSize: number = ARROW_SIZE;
     private stepAbsoluteLeft: number;
@@ -81,18 +82,26 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscriptions.push(this.subscribeToResizeEvents());
         this.title = this.step.title;
         this.text = this.step.text;
+        this.customContent = this.step.stepContent;
         this.counter = this.getCounter();
         this.isCounterVisible = this.optionsService.isCounterVisible();
         this.themeColor = this.optionsService.getThemeColor();
     }
 
     ngAfterViewInit() {
-        let dimensions = this.getDimensionsByAspectRatio(this.stepContainer.nativeElement.clientWidth, this.stepContainer.nativeElement.clientHeight, ASPECT_RATIO);
-        dimensions = this.adjustDimensions(dimensions.width, dimensions.height);
-        this.stepWidth = dimensions.width;
-        this.stepHeight = dimensions.height;
-        this.renderer.setStyle(this.stepContainer.nativeElement, "width", this.stepWidth + 'px');
-        this.renderer.setStyle(this.stepContainer.nativeElement, "height", this.stepHeight + 'px');
+        if (this.step.stepContent) {
+            this.stepWidth = this.stepContainer.nativeElement.clientWidth;
+            this.stepHeight = this.stepContainer.nativeElement.clientHeight;
+        }
+        else {
+            this.renderer.setStyle(this.stepContainer.nativeElement, "max-width", STEP_MAX_WIDTH + 'px');
+            let dimensions = this.getDimensionsByAspectRatio(this.stepContainer.nativeElement.clientWidth, this.stepContainer.nativeElement.clientHeight, ASPECT_RATIO);
+            dimensions = this.adjustDimensions(dimensions.width, dimensions.height);
+            this.stepWidth = dimensions.width;
+            this.stepHeight = dimensions.height;
+            this.renderer.setStyle(this.stepContainer.nativeElement, "width", this.stepWidth + 'px');
+            this.renderer.setStyle(this.stepContainer.nativeElement, "height", this.stepHeight + 'px');
+        }
         this.drawStep();
     }
 
@@ -161,6 +170,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleTop() {
+        this.stepsContainerService.setPosition(this.step, 'top');
         this.topPosition = this.targetOffsetTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.stepAbsoluteTop = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.arrowTopPosition = this.stepHeight;
@@ -175,6 +185,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleRight() {
+        this.stepsContainerService.setPosition(this.step, 'right');
         this.topPosition = this.targetOffsetTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
@@ -189,6 +200,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleBottom() {
+        this.stepsContainerService.setPosition(this.step, 'bottom');
         this.topPosition = this.targetOffsetTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.arrowTopPosition = -this.arrowSize;
@@ -203,6 +215,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleLeft() {
+        this.stepsContainerService.setPosition(this.step, 'left');
         this.topPosition = this.targetOffsetTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
@@ -266,28 +279,24 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (this.targetAbsoluteTop - this.stepHeight - this.arrowSize < 0) {
             this.setStyleRight();
             this.positionAlreadyFixed = true;
-            this.stepsContainerService.setPosition(this.step, 'right');
         }
     }
 
     private autofixRightPosition() {
         if (this.targetAbsoluteLeft + this.targetWidth + this.stepWidth + this.arrowSize > document.body.clientWidth) {
             this.setStyleBottom();
-            this.stepsContainerService.setPosition(this.step, 'bottom');
         }
     }
 
     private autofixBottomPosition() {
         if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > document.body.clientHeight) {
             this.setStyleLeft();
-            this.stepsContainerService.setPosition(this.step, 'left');
         }
     }
 
     private autofixLeftPosition() {
         if (this.targetAbsoluteLeft - this.stepWidth - this.arrowSize < 0) {
             this.setStyleTop();
-            this.stepsContainerService.setPosition(this.step, 'top');
         }
     }
 
