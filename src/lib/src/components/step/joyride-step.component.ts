@@ -42,6 +42,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     text: string;
     counter: string;
     isCounterVisible: boolean;
+    isPrevButtonVisible: boolean;
     themeColor: string;
     customContent: TemplateRef<any>;
 
@@ -85,6 +86,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.customContent = this.step.stepContent;
         this.counter = this.getCounter();
         this.isCounterVisible = this.optionsService.isCounterVisible();
+        this.isPrevButtonVisible = this.optionsService.isPrevButtonVisible();
         this.themeColor = this.optionsService.getThemeColor();
     }
 

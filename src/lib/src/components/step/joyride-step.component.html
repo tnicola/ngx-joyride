@@ -13,7 +13,7 @@
         <div class="joyride-step__footer">
             <div *ngIf="isCounterVisible" class="joyride-step__counter">{{ counter }}</div>
             <div class="joyride-step__buttons-container">
-                <joyride-button class="joyride-step__prev-button" *ngIf="!isFirstStep()" [color]="themeColor" (click)="prev()">Prev</joyride-button>
+                <joyride-button class="joyride-step__prev-button" *ngIf="isPrevButtonVisible && !isFirstStep()" [color]="themeColor" (click)="prev()">Prev</joyride-button>
                 <joyride-button class="joyride-step__next-button" *ngIf="!isLastStep(); else doneButton" [color]="themeColor" (click)="next()">Next</joyride-button>
                 <ng-template #doneButton>
                     <joyride-button class="joyride-step__done-button" [color]="themeColor" (click)="close()">Done</joyride-button>

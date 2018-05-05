@@ -16,7 +16,8 @@ export class AppComponent {
     let options = {
       stepDefaultPosition: 'top',
       themeColor: '#345632',
-      showCounter: false
+      showCounter: false,
+      showPrevButton: false
     };
     this.joyrideService.startTour(options);
   }

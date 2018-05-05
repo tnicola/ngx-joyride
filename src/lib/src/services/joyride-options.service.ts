@@ -12,12 +12,14 @@ export class JoyrideOptionsService {
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
     private logsEnabled: boolean = true;
     private showCounter: boolean = true;
+    private showPrevButton: boolean = true;
 
     setOptions(options: JoyrideOptions) {
-            this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
-            this.logsEnabled = typeof options.logsEnabled !== 'undefined' ? options.logsEnabled : this.logsEnabled;
-            this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
-            this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
+        this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
+        this.logsEnabled = typeof options.logsEnabled !== 'undefined' ? options.logsEnabled : this.logsEnabled;
+        this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
+        this.showPrevButton = typeof options.showPrevButton !== 'undefined' ? options.showPrevButton : this.showPrevButton;
+        this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
     }
 
     getBackdropColor() {
@@ -36,8 +38,12 @@ export class JoyrideOptionsService {
         return this.logsEnabled;
     }
 
-    isCounterVisible(){
+    isCounterVisible() {
         return this.showCounter;
+    }
+
+    isPrevButtonVisible() {
+        return this.showPrevButton;
     }
 
     private hexToRgb(hex: any): string {
