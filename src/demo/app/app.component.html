@@ -11,7 +11,7 @@
             <img src="../assets/images/angular.png" width="100" height="100">
         </ng-template>
     </joyrideStep>
-    <h1 joyrideStep [stepNumber]="34" stepPosition="top">Angular2 Joyride library</h1>
+    <h1 joyrideStep [stepNumber]="34" stepPosition="top" [stepContent]="step3Content">Angular2 Joyride library</h1>
     <pre joyrideStep stepPosition="left" [stepNumber]="21" [title]="'Step1 Title'" [text]="'This is the text'" style="position: absolute; top: 15px; right: 15px">This is 
         js code</pre>
     <div id="tester" [style.width.px]="20">Tester</div>
@@ -24,15 +24,9 @@
     <span joyrideStep [stepNumber]="23">
         Span
     </span>
-    <span joyrideStep [stepNumber]="4" [stepContent]="step3Content" title="Title">Custom step content</span>
+    <span joyrideStep [stepNumber]="4" [stepContent]="step3Content">Step with custom content</span>
     <ng-template #step3Content>
-        <div>
-            <h1>Title</h1>
-            <div>Simple description</div>
-            <img src="../assets/images/angular.png">
-            <h3>Subtitle 1</h3>
-            <h3>Subtitle 2</h3>
-        </div>
+        <aj-custom-component></aj-custom-component>
     </ng-template>
     <joyrideStep stepPosition="center" [stepNumber]="4"></joyrideStep>
     <div joyrideStep class="lorem" [stepNumber]="1" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
