@@ -8,6 +8,7 @@ export class JoyrideStep {
     title: string;
     text: string;
     stepContent: TemplateRef<any>;
+    transformCssStyle: string;
     targetViewContainer: ViewContainerRef;
     stepInstance: JoyrideStepComponent;
 }

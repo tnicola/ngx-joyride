@@ -108,6 +108,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private drawStep() {
+        this.renderer.setStyle(this.stepHolder.nativeElement, "transform", this.step.transformCssStyle);
         this.targetWidth = this.step.targetViewContainer.element.nativeElement.getBoundingClientRect().width;
         this.targetHeight = this.step.targetViewContainer.element.nativeElement.getBoundingClientRect().height;
         this.targetOffsetTop = this.step.targetViewContainer.element.nativeElement.offsetTop;

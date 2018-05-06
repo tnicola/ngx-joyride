@@ -39,14 +39,15 @@ export class JoyrideDirective implements AfterViewInit {
         this.validateInputs();
         let step = new JoyrideStep();
         step.idSelector = this.getStepNumber();
-        this.renderer.setAttribute(this.el.nativeElement, TARGET_ATTRIBUTE, this.getStepNumber());
+        this.renderer.setAttribute(this.viewContainerRef.element.nativeElement, TARGET_ATTRIBUTE, this.getStepNumber());
         step.stepNumber = this.stepNumber;
         step.position = this.stepPosition;
         step.targetViewContainer = this.viewContainerRef;
         step.text = this.text;
         step.title = this.title;
         step.stepContent = this.stepContent;
-
+        step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
+        
         this.joyrideStepsContainer.addStep(step);
     }
 
