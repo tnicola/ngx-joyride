@@ -4,21 +4,30 @@ import { DomRefService } from "./dom.service";
 @Injectable()
 export class DocumentService {
 
-    constructor(private readonly DOMService: DomRefService){}
+    constructor(private readonly DOMService: DomRefService) { }
 
     getElementAbsoluteTop(elementRef: ElementRef) {
-        var scrollOffsets =  this.getScrollOffsets();
+        var scrollOffsets = this.getScrollOffsets();
         return elementRef.nativeElement.getBoundingClientRect().top + scrollOffsets.y;
     }
 
     getElementAbsoluteLeft(elementRef: ElementRef) {
-        var scrollOffsets =  this.getScrollOffsets();
-        return elementRef.nativeElement.getBoundingClientRect().left + scrollOffsets.x; 
+        var scrollOffsets = this.getScrollOffsets();
+        return elementRef.nativeElement.getBoundingClientRect().left + scrollOffsets.x;
     }
 
     getElementAbsoluteRight(elementRef: ElementRef) {
-        var scrollOffsets =  this.getScrollOffsets();
-        return elementRef.nativeElement.getBoundingClientRect().right; 
+        var scrollOffsets = this.getScrollOffsets();
+        return elementRef.nativeElement.getBoundingClientRect().right;
+    }
+
+    getDocumentHeight() {
+        var doc = this.DOMService.nativeDocument;
+        return Math.max(
+            doc.body.scrollHeight, doc.documentElement.scrollHeight,
+            doc.body.offsetHeight, doc.documentElement.offsetHeight,
+            doc.body.clientHeight, doc.documentElement.clientHeight
+        );
     }
 
     private getScrollOffsets() {

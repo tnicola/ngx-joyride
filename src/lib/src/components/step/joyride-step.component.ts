@@ -60,6 +60,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     private joyrideStepService: JoyrideStepService;
 
     private positionAlreadyFixed: boolean;
+    private documentHeight: number;
 
     @Input() step?: JoyrideStep;
     @ViewChild('stepHolder') stepHolder: ElementRef;
@@ -80,6 +81,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.documentHeight = this.documentService.getDocumentHeight();
         this.subscriptions.push(this.subscribeToResizeEvents());
         this.title = this.step.title;
         this.text = this.step.text;
@@ -259,16 +261,15 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private adjustTopPosition() {
-        if (this.topPosition < 0) {
+        if (this.stepAbsoluteTop < 0) {
             this.arrowTopPosition = this.arrowTopPosition + this.topPosition - DEFAULT_DISTANCE_FROM_MARGIN_TOP;
             this.topPosition = DEFAULT_DISTANCE_FROM_MARGIN_TOP;
         }
     }
 
     private adjustBottomPosition() {
-        let currentWindowHeight = Math.max(document.body.offsetHeight, document.documentElement.offsetHeight);
-        if (this.stepAbsoluteTop + this.stepHeight > currentWindowHeight) {
-            let newTopPos = this.topPosition - (this.stepAbsoluteTop + this.stepHeight + DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM - currentWindowHeight);
+        if (this.stepAbsoluteTop + this.stepHeight > this.documentHeight) {
+            let newTopPos = this.topPosition - (this.stepAbsoluteTop + this.stepHeight + DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM - this.documentHeight);
             let deltaTopPosition = newTopPos - this.topPosition;
 
             this.topPosition = newTopPos;
@@ -292,7 +293,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private autofixBottomPosition() {
-        if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > document.body.clientHeight) {
+        if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > this.documentHeight) {
             this.setStyleLeft();
         }
     }
