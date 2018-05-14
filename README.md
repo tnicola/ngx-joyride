@@ -1,5 +1,8 @@
 
 
+[![npm](https://img.shields.io/npm/dy/localeval.svg)](https://www.npmjs.com/package/angular2-joyride)
+
+[![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/react.svg)](https://www.npmjs.com/package/angular2-joyride)
 
 
 # Angular 2 Joyride
