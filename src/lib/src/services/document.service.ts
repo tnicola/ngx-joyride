@@ -3,8 +3,11 @@ import { DomRefService } from "./dom.service";
 
 @Injectable()
 export class DocumentService {
+    private documentHeight: number;
 
-    constructor(private readonly DOMService: DomRefService) { }
+    constructor(private readonly DOMService: DomRefService) { 
+        this.setDocumentHeight();
+    }
 
     getElementAbsoluteTop(elementRef: ElementRef) {
         var scrollOffsets = this.getScrollOffsets();
@@ -21,7 +24,15 @@ export class DocumentService {
         return elementRef.nativeElement.getBoundingClientRect().right;
     }
 
-    getDocumentHeight() {
+    setDocumentHeight(){
+        this.documentHeight = this.calculateDocumentHeight();
+    }
+
+    getDocumentHeight(){
+        return this.documentHeight;
+    }
+
+    private calculateDocumentHeight() {
         var doc = this.DOMService.nativeDocument;
         return Math.max(
             doc.body.scrollHeight, doc.documentElement.scrollHeight,
