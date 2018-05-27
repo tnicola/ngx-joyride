@@ -1,7 +1,4 @@
-
-
-
-
+[![npm version](https://badge.fury.io/js/angular2-joyride.svg)](https://badge.fury.io/js/angular2-joyride)
 # Angular 2 Joyride
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
