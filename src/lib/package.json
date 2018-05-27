@@ -1,6 +1,6 @@
 {
   "name": "angular2-joyride",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Angular 2 Joyride Library",
   "main": "./bundles/angular2-joyride.umd.js",
   "jsnext:main": "./esm5/angular2-joyride.esm.js",
