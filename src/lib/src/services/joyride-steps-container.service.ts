@@ -5,9 +5,11 @@ import { Subject } from "rxjs/Subject";
 @Injectable()
 export class JoyrideStepsContainerService {
     private steps: JoyrideStep[];
+    private stepsOriginal: JoyrideStep[];
     stepHasBeenModified: Subject<JoyrideStep> = new Subject<JoyrideStep>();
 
     constructor() {
+        this.stepsOriginal = [];
         this.steps = [];
     }
 
@@ -15,16 +17,16 @@ export class JoyrideStepsContainerService {
         return this.steps[index];
     }
 
-    getStepPosition(step: JoyrideStep): number{
+    getStepPosition(step: JoyrideStep): number {
         return this.getStepIndex(step) + 1;
     }
 
     addStep(step: JoyrideStep) {
-        this.steps.push(step);
+        this.stepsOriginal.push(step);
     }
 
     getNumberOfSteps() {
-        return this.steps.length;
+        return this.stepsOriginal.length;
     }
 
     setPosition(step: JoyrideStep, position: string) {
@@ -33,13 +35,19 @@ export class JoyrideStepsContainerService {
         this.stepHasBeenModified.next(this.steps[index]);
     }
 
-    orderStepsByIndex() {
+    initSteps() {
+        this.steps = [];
+        this.stepsOriginal.forEach((step) => this.steps.push({ ...step }));
+        this.orderStepsByIndex();
+    }
+
+    private orderStepsByIndex() {
         this.steps = this.steps.sort((a, b) => {
             return a.stepNumber - b.stepNumber;
         })
     }
 
-    private getStepIndex(step: JoyrideStep){
+    private getStepIndex(step: JoyrideStep) {
         return this.steps.indexOf(step);
     }
 }

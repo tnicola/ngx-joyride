@@ -63,7 +63,7 @@ export class JoyrideStepService {
 
     startTour() {
         this.documentService.setDocumentHeight();
-        this.stepsContainerService.orderStepsByIndex();
+        this.stepsContainerService.initSteps();
         this.backDropService.start();
         this.currentStepIndex = 0;
         this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
