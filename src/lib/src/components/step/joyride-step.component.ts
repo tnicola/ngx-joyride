@@ -293,7 +293,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private autofixBottomPosition() {
-        if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize - this.targetHeight > this.documentHeight) {
+        if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize + this.targetHeight > this.documentHeight) {
             this.setStyleLeft();
         }
     }
