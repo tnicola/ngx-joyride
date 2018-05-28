@@ -7,7 +7,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.ts', '.html'],
         alias: {
-            'angular2-joyride': path.resolve(__dirname, '../src/lib')
+            'ngx-joyride': path.resolve(__dirname, '../src/lib')
         }
     },
     module: {

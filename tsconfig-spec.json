@@ -9,7 +9,7 @@
         "emitDecoratorMetadata": true,
         "baseUrl": ".",
         "paths": {
-            "angular2-joyride": [
+            "ngx-joyride": [
                 "src/lib/public_api.ts"
             ]
         },

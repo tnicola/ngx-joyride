@@ -1,17 +1,17 @@
-[![npm version](https://badge.fury.io/js/angular2-joyride.svg)](https://badge.fury.io/js/ngx-joyride)
+[![npm version](https://badge.fury.io/js/ngx-joyride.svg)](https://badge.fury.io/js/ngx-joyride)
 # ngx-joyride
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
 
 ## Info
-### In order to be compliant with the Angular 3rd Party Projects naming convention angular2-joyride has been renamed and moved to ngx-joyride
+### In order to be compliant with the Angular 3rd Party Projects naming convention ngx-joyride has been renamed and moved to ngx-joyride
 
 <p align="center">
-	<img src ="https://github.com/tnicola/angular2-joyride/blob/master/docs/joyrideStepExample.PNG" />
+	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyrideStepExample.PNG" />
 </p>
 
 ## Demo
-See the [demo](https://tnicola.github.io/angular2-joyride/). Let's take a tour! :earth_americas: 
+See the [demo](https://tnicola.github.io/ngx-joyride/). Let's take a tour! :earth_americas: 
 
 ## Install
 

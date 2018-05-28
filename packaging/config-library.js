@@ -1,5 +1,5 @@
 module.exports = {
-    nameLibrary : "angular2-joyride",
+    nameLibrary : "ngx-joyride",
     PATH_LIB : "src/lib/",
     PATH_SRC : "src/lib/src/",
     PATH_DIST : "src/lib/dist/",

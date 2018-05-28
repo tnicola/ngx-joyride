@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JoyrideOptionsService } from './joyride-options.service';
 
-const JOYRIDE = 'angular2-joyride:::';
+const JOYRIDE = 'ngx-joyride:::';
 
 @Injectable()
 export class Logger {

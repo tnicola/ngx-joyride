@@ -75,7 +75,7 @@ MIT
 MIT
 MIT
 
-angular2-joyride@0.0.4
+ngx-joyride@0.0.4
 MIT
 MIT
 

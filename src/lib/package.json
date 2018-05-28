@@ -2,15 +2,15 @@
   "name": "ngx-joyride",
   "version": "0.0.5",
   "description": "Angular 2 Joyride Library",
-  "main": "./bundles/angular2-joyride.umd.js",
-  "jsnext:main": "./esm5/angular2-joyride.esm.js",
-  "module": "./esm5/angular2-joyride.esm.js",
-  "es2015": "./esm2015/angular2-joyride.esm2015.js",
+  "main": "./bundles/ngx-joyride.umd.js",
+  "jsnext:main": "./esm5/ngx-joyride.esm.js",
+  "module": "./esm5/ngx-joyride.esm.js",
+  "es2015": "./esm2015/ngx-joyride.esm2015.js",
   "typings": "./joyride.d.ts",
   "author": "Nicola Tommasi",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tnicola/angular2-joyride"
+    "url": "https://github.com/tnicola/ngx-joyride"
   },
   "license": "MIT",
   "keywords": [

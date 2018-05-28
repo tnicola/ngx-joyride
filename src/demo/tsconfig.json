@@ -1,10 +1,10 @@
-// Only for IDE to find angular2-joyride library
+// Only for IDE to find ngx-joyride library
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "angular2-joyride": [
+      "ngx-joyride": [
         "../lib/public_api.ts"
       ]
     }

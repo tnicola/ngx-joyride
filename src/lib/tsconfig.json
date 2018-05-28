@@ -20,7 +20,7 @@
         "strictMetadataEmit": true,
         "skipTemplateCodegen": true,
         "flatModuleOutFile": "joyride.js",
-        "flatModuleId": "angular2-joyride",
+        "flatModuleId": "ngx-joyride",
         "annotateForClosureCompiler": true,
         "debug": true
     }

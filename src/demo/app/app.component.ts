@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
-import { JoyrideService } from 'angular2-joyride';
+import { JoyrideService } from 'ngx-joyride';
 
 @Component({
   selector: 'demo-app',
