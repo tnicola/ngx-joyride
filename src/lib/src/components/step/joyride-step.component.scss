@@ -24,7 +24,7 @@
     &__header {
         display: flex;
         align-items: center;
-        padding: 8px 15px;
+        padding: 8px;
     }
     &__title {
         font-weight: bold;
@@ -39,14 +39,14 @@
     }
     &__body {
         text-align: left;
-        padding: 10px 15px;
+        padding: 10px 8px;
     }
     &__footer {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-left: 15px;
+        padding-left: 8px;
     }
     &__buttons-container {
         margin-left: auto;
