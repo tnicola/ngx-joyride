@@ -19,7 +19,7 @@
     <img joyrideStep stepPosition="top" stepNumber="5" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
         src="../assets/images/angular.png">
 
-    <button joyrideStep stepPosition="top" stepNumber="1" class="app__start-button" (click)="startTour()">Start Tour</button>
+    <button joyrideStep stepNumber="1" class="app__start-button" (click)="startTour()">Start Tour</button>
     <div joyrideStep stepPosition="left" [stepNumber]="10">Step2</div>
     <span joyrideStep [stepNumber]="23">
         Span
@@ -46,7 +46,8 @@
 
     <div class="big-panel">
         This is a big div in order to have the page scroll
-        <div joyrideStep title="My step" text="This element is Highlighted." [stepNumber]="7" class="big-panel__footer">I'm the target!</div>
+        <div joyrideStep title="My step" text="This element is Highlighted. Bla bla bla bla bla bal. This element is Highlighted. Bla bla bla bla bla bal"
+            [stepNumber]="1" stepPosition="bottom" class="big-panel__footer">I'm the target!</div>
         <div class="small-panel">
             <img joyrideStep class="big-panel__image" stepPosition="top" stepNumber="11" title="Img step" text="uuuuu  uuryf sdfdsf"
                 src="../assets/images/angular.png" [style.width.px]="12" [style.height.px]="12">
@@ -54,6 +55,6 @@
     </div>
 
     <div joyrideStep stepPosition="right" stepNumber="2" class="right-bottom">Right-bottom</div>
-    <div joyrideStep stepPosition="right" stepNumber="1" class="bottom">Step on the right</div>
+    <div joyrideStep stepPosition="right" stepNumber="7" class="bottom">Step on the right</div>
     <footer></footer>
 </div>

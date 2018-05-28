@@ -21,5 +21,4 @@ export class AppComponent {
     };
     this.joyrideService.startTour(options);
   }
-
 }
