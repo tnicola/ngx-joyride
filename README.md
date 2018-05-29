@@ -83,7 +83,7 @@ showCounter | No | Show the counter on the bottom-left. | boolean | true
 showPrevButton | No | Show the "Prev" button. | boolean | true
 logsEnabled | No | Enable logs to see info about the library status. Usuful to get a meaningful error message. | boolean | false
 
-You can change each element step style overriding the
+You can change each element step css overriding the default style.
 
 ### How to set the options
 ```typescript
