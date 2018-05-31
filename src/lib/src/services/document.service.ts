@@ -33,7 +33,7 @@ export class DocumentService {
     }
 
     private calculateDocumentHeight() {
-        var doc = this.DOMService.nativeDocument;
+        var doc = this.DOMService.getNativeDocument();
         return Math.max(
             doc.body.scrollHeight, doc.documentElement.scrollHeight,
             doc.body.offsetHeight, doc.documentElement.offsetHeight,
@@ -42,7 +42,7 @@ export class DocumentService {
     }
 
     private getScrollOffsets() {
-        var w = this.DOMService.nativeWindow;
+        var w = this.DOMService.getNativeWindow();
 
         // This works for all browsers except IE versions 8 and before
         if (w.pageXOffset != null) return { x: w.pageXOffset, y: w.pageYOffset };

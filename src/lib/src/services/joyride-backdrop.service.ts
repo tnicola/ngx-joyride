@@ -32,9 +32,6 @@ export class JoyrideBackdropService {
         this.renderer = rendererFactory.createRenderer(null, null);
     }
 
-    start() {
-    }
-
     show(elementRef: ViewContainerRef, idSelector: string) {
 
         this.elementRef = elementRef;
@@ -112,6 +109,7 @@ export class JoyrideBackdropService {
         this.renderer.appendChild(this.backdropContent, this.backdropBottom);
 
     }
+    
     hide() {
         this.removeBackdrop();
         this.elementRef = undefined;

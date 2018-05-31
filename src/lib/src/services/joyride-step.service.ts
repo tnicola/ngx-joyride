@@ -38,14 +38,14 @@ export class JoyrideStepService {
 
     private initViewportPositions() {
         this.winTopPosition = 0;
-        this.winBottomPosition = this.DOMService.nativeWindow.innerHeight - SCROLLBAR_SIZE;
+        this.winBottomPosition = this.DOMService.getNativeWindow().innerHeight - SCROLLBAR_SIZE;
     }
 
     private subscribeToScrollEvents() {
         this.eventListener.startListeningScrollEvents();
         this.eventListener.scrollEvent.subscribe((scroll) => {
             this.winTopPosition = scroll.scrollY;
-            this.winBottomPosition = this.winTopPosition + this.DOMService.nativeWindow.innerHeight - SCROLLBAR_SIZE;
+            this.winBottomPosition = this.winTopPosition + this.DOMService.getNativeWindow().innerHeight - SCROLLBAR_SIZE;
             this.backDropService.redraw(scroll);
         });
     }
@@ -64,7 +64,6 @@ export class JoyrideStepService {
     startTour() {
         this.documentService.setDocumentHeight();
         this.stepsContainerService.initSteps();
-        this.backDropService.start();
         this.currentStepIndex = 0;
         this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
         this.showCurrentStep();
@@ -74,7 +73,7 @@ export class JoyrideStepService {
 
     close() {
         this.removeCurrentStep();
-        this.DOMService.nativeWindow.scrollTo(0, 0);
+        this.DOMService.getNativeWindow().scrollTo(0, 0);
         this.eventListener.stopListeningResizeEvents();
     }
 
@@ -131,14 +130,14 @@ export class JoyrideStepService {
     private scrollWhenTargetIsHiddenBottom() {
         let totalTargetBottom = this.getTotalTargetBottomPosition();
         if (totalTargetBottom > this.winBottomPosition) {
-            this.DOMService.nativeWindow.scrollBy(0, totalTargetBottom - this.winBottomPosition);
+            this.DOMService.getNativeWindow().scrollBy(0, totalTargetBottom - this.winBottomPosition);
         }
     }
 
     private scrollWhenTargetIsHiddenTop() {
         let totalTargetTop = this.getTotalTargetTopPosition();
         if (totalTargetTop < this.winTopPosition) {
-            this.DOMService.nativeWindow.scrollBy(0, totalTargetTop - this.winTopPosition);
+            this.DOMService.getNativeWindow().scrollBy(0, totalTargetTop - this.winTopPosition);
         }
     }
 

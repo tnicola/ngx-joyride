@@ -26,7 +26,7 @@ export class EventListenerService {
 
     startListeningScrollEvents() {
         this.scrollUnlisten = this.renderer.listen('document', 'scroll', (evt) => {
-            this.scrollEvent.next({ scrollX: this.DOMService.nativeWindow.pageXOffset, scrollY: this.DOMService.nativeWindow.pageYOffset });
+            this.scrollEvent.next({ scrollX: this.DOMService.getNativeWindow().pageXOffset, scrollY: this.DOMService.getNativeWindow().pageYOffset });
         })
     }
 
