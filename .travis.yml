@@ -1,1 +1,9 @@
 language: node_js
+
+node_js:
+  - "7"
+
+script:
+  - npm run test
+  - npm run build:aot
+  - npm run build:lib
