@@ -25,10 +25,10 @@ module.exports = function (config) {
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['Chrome'],
+        browsers: ['Chrome', 'ChromeHeadless'],
         customLaunchers: {
-            Chrome_travis_ci: {
-                base: 'Chrome',
+            ChromeHeadlessNoSandbox: {
+                base: 'ChromeHeadless',
                 flags: ['--no-sandbox']
             }
         },
@@ -36,7 +36,7 @@ module.exports = function (config) {
         singleRun: false
     }
     if (process.env.TRAVIS) {
-        conf.browsers = ['Chrome_travis_ci'];
+        conf.browsers = ['ChromeHeadlessNoSandbox'];
     }
     config.set(conf);
 }
