@@ -37,6 +37,7 @@ module.exports = function (config) {
     }
     if (process.env.TRAVIS) {
         conf.browsers = ['ChromeHeadlessNoSandbox'];
+        singleRun: true
     }
     config.set(conf);
 }
