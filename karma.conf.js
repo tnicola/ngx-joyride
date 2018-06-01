@@ -1,7 +1,7 @@
 const webpackTest = require('./config/webpack.test');
 
 module.exports = function (config) {
-    config.set({
+    var conf = {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
@@ -26,6 +26,17 @@ module.exports = function (config) {
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: ['Chrome'],
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+
         singleRun: false
-    })
+    }
+    if (process.env.TRAVIS) {
+        cfg.browsers = ['Chrome_travis_ci'];
+    }
+    config.set(conf);
 }
