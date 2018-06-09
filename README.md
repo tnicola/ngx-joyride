@@ -1,7 +1,5 @@
 [![npm version](https://badge.fury.io/js/ngx-joyride.svg)](https://badge.fury.io/js/ngx-joyride)
 [![Build Status](https://travis-ci.org/tnicola/ngx-joyride.svg?branch=master)](https://travis-ci.org/tnicola/ngx-joyride)
-## :warning: RENAMING: 
-### In order to be compliant with the Angular 3rd Party Projects naming convention `angular2-joyride` has been renamed to `ngx-joyride`
 # Angular Joyride
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
