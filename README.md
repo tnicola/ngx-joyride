@@ -13,7 +13,7 @@ See the [demo](https://tnicola.github.io/ngx-joyride/). Let's take a tour! :eart
 
 ## Install
 
-    npm install ngx-joyride
+    npm install ngx-joyride --save
 or
 
     yarn add ngx-joyride
