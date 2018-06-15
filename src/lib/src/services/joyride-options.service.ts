@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { JoyrideOptions } from "../models/joyride-options.class";
 
-const DEFAULT_THEME_COLOR = "#3b5560";
-const THEME_COLOR = DEFAULT_THEME_COLOR;
-const STEP_DEFAULT_POSITION = "bottom";
+export const DEFAULT_THEME_COLOR = "#3b5560";
+export const THEME_COLOR = DEFAULT_THEME_COLOR;
+export const STEP_DEFAULT_POSITION = "bottom";
 
 @Injectable()
 export class JoyrideOptionsService {
