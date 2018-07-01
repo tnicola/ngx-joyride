@@ -8,12 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent {
+
+  stepVisible: boolean = false;
   constructor(
     private readonly joyrideService: JoyrideService,
     private router: Router
   ) { }
 
-  onNextCallback() {
+  toggleAction() {
+    this.stepVisible = true;
   }
 
   onPrev(){
@@ -25,7 +28,7 @@ export class HomeComponent {
       firstStep: 'step1',
       stepDefaultPosition: 'top',
       themeColor: '#345632',
-      showCounter: false,
+      //showCounter: false,
       showPrevButton: true
     };
     this.joyrideService.startTour(options);
