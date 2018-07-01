@@ -19,6 +19,7 @@ export default {
         "@angular/common",
         "@angular/compiler",
         "@angular/compiler-cli",
+        "@angular/router",
         "rxjs",
         "zone.js"
     ],
