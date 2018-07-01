@@ -8,25 +8,25 @@ export class Logger {
 
     constructor(private readonly optionService: JoyrideOptionsService) { }
 
-    debug(message?: string, data?: any) {
+    debug(message?: string, data: any = "") {
         if (this.optionService.areLogsEnabled) {
             console.debug(JOYRIDE + message, data);
         }
     }
 
-    info(message?: string, data?: any) {
+    info(message?: string, data: any = "") {
         if (this.optionService.areLogsEnabled) {
             console.info(JOYRIDE + message, data);
         }
     }
 
-    warn(message?: string, data?: any) {
+    warn(message?: string, data: any = "") {
         if (this.optionService.areLogsEnabled) {
             console.warn(JOYRIDE + message, data);
         }
     }
 
-    error(message?: string, data?: any) {
+    error(message?: string, data: any = "") {
         if (this.optionService.areLogsEnabled) {
             console.error(JOYRIDE + message, data);
         }

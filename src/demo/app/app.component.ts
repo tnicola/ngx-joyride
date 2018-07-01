@@ -1,24 +1,14 @@
-import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
-import { JoyrideService } from 'ngx-joyride';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'demo-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+    selector: 'demo-app',
+    template: `<nav>
+                    <a routerLink="">Home</a>
+                    <a routerLink="/about">About</a>
+                    <a routerLink="/info">Info</a>
+                </nav>
+                <router-outlet></router-outlet>`
 })
 export class AppComponent {
 
-  constructor(private readonly joyrideService: JoyrideService) {
-
-  }
-
-  startTour() {
-    let options = {
-      stepDefaultPosition: 'top',
-      themeColor: '#345632',
-      showCounter: false,
-      showPrevButton: false
-    };
-    this.joyrideService.startTour(options);
-  }
 }

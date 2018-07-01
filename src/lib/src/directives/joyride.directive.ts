@@ -1,11 +1,12 @@
-import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2, TemplateRef } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { JoyrideStep } from "../models/joyride-step.class";
 import { StepPosition } from "../models/joyride-step-position.enum";
 import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
 import { JoyrideError } from "../models/joyride-error.class";
 import { JoyrideStepService } from "../services/joyride-step.service";
+import { Logger } from '../services/logger.service';
+import { Router } from '@angular/router';
 
-export const TARGET_ATTRIBUTE = "data-joyride-step-number";
 export const NO_POSITION = "NO_POSITION";
 
 @Directive({
@@ -13,8 +14,11 @@ export const NO_POSITION = "NO_POSITION";
 })
 export class JoyrideDirective implements AfterViewInit {
 
+    @Input("joyrideStep")
+    name: string;
+
     @Input()
-    stepNumber: number;
+    nextStep?: string;
 
     @Input()
     title?: string;
@@ -28,40 +32,44 @@ export class JoyrideDirective implements AfterViewInit {
     @Input()
     stepContent?: TemplateRef<any>;
 
+    @Output()
+    prev?: EventEmitter<any> = new EventEmitter<any>();
+
+    @Output()
+    next?: EventEmitter<any> = new EventEmitter<any>();
+
+    @Output()
+    done?: EventEmitter<any> = new EventEmitter<any>();
+
     constructor(
         private el: ElementRef,
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
         private readonly viewContainerRef: ViewContainerRef,
-        private readonly renderer: Renderer2
+        private readonly renderer: Renderer2,
+        private readonly logger: Logger,
+        private readonly router: Router
     ) { }
 
     ngAfterViewInit() {
-        this.validateInputs();
         let step = new JoyrideStep();
-        step.idSelector = this.getStepNumber();
-        this.renderer.setAttribute(this.viewContainerRef.element.nativeElement, TARGET_ATTRIBUTE, this.getStepNumber());
-        step.stepNumber = this.stepNumber;
         step.position = this.stepPosition;
         step.targetViewContainer = this.viewContainerRef;
         step.text = this.text;
         step.title = this.title;
         step.stepContent = this.stepContent;
+        step.nextClicked = this.next;
+        step.prevCliked = this.prev;
+        step.tourDone = this.done;
+        if (!this.name) throw new JoyrideError("All the steps should have the 'joyrideStep' property set with a custom name.");
+        step.name = this.name;
+        step.route = this.router.url.substr(0, 1) === '/' ? this.router.url.substr(1) : this.router.url;
+        step.id = `${step.name}#${step.route}`;
+        step.nextStepRoute = this.nextStep && this.nextStep.includes("#") ? this.nextStep.split('#', 2)[0] : step.route;
+        step.nextStepName = this.nextStep && this.nextStep.includes("#") ? this.nextStep.split('#', 2)[1] : this.nextStep;
         step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
-        
+        if (step.name === step.nextStepName && step.route === step.nextStepRoute) throw new JoyrideError(`Circular reference, 'joyrideStep' and 'nextStep' have the same value '${step.name}' on '${step.route}' route.`);
+
         this.joyrideStepsContainer.addStep(step);
     }
 
-    private getStepNumber(): string {
-        return this.stepNumber.toString();
-    }
-
-    private validateInputs() {
-        let errors: JoyrideError[] = []
-        if (this.stepNumber < 0) {
-            errors.push(new JoyrideError("You have added a step with stepNumber = " + this.stepNumber + ". Steps number must be positive!"))
-        }
-        errors.forEach((error) => {
-            throw error;
-        })
-    }
 }

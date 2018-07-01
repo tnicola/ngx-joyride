@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
 import { JoyrideStep } from "../models/joyride-step.class";
 import { Subject } from "rxjs/Subject";
+import { JoyrideOptionsService } from "./joyride-options.service";
+import { JoyrideError } from "../models/joyride-error.class";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class JoyrideStepsContainerService {
@@ -8,7 +11,9 @@ export class JoyrideStepsContainerService {
     private stepsOriginal: JoyrideStep[];
     stepHasBeenModified: Subject<JoyrideStep> = new Subject<JoyrideStep>();
 
-    constructor() {
+    constructor(
+        private readonly stepOptions: JoyrideOptionsService
+    ) {
         this.stepsOriginal = [];
         this.steps = [];
     }
@@ -21,8 +26,13 @@ export class JoyrideStepsContainerService {
         return this.getStepIndex(step) + 1;
     }
 
-    addStep(step: JoyrideStep) {
-        this.stepsOriginal.push(step);
+    addStep(stepToAdd: JoyrideStep) {
+        let stepExist = this.stepsOriginal.filter(step => step.id === stepToAdd.id).length > 0;
+        if (!stepExist) this.stepsOriginal.push(stepToAdd);
+        else {
+            let stepIndexToReplace = this.stepsOriginal.findIndex(step => step.id === stepToAdd.id);
+            this.stepsOriginal[stepIndexToReplace] = stepToAdd;
+        }
     }
 
     getNumberOfSteps() {
@@ -38,13 +48,24 @@ export class JoyrideStepsContainerService {
     initSteps() {
         this.steps = [];
         this.stepsOriginal.forEach((step) => this.steps.push({ ...step }));
-        this.orderStepsByIndex();
+        this.sortSteps();
     }
 
-    private orderStepsByIndex() {
-        this.steps = this.steps.sort((a, b) => {
-            return a.stepNumber - b.stepNumber;
-        })
+    private sortSteps() {
+        let orderedSteps = [...this.steps];
+        let firstStepName = this.stepOptions.getFirstStepName();
+        orderedSteps[0] = this.steps.find(step => step.name === firstStepName);
+
+        for (let i = 1; i < orderedSteps.length; i++) {
+            let nextStep = this.steps.find(step => step.name === orderedSteps[i - 1].nextStepName && step.route === orderedSteps[i - 1].nextStepRoute);
+            if (nextStep) {
+                orderedSteps[i] = nextStep;
+                orderedSteps[i].prevStepName = orderedSteps[i - 1].name;
+                orderedSteps[i].prevStepRoute = orderedSteps[i - 1].route;
+            }
+        }
+
+        this.steps = [...orderedSteps];
     }
 
     private getStepIndex(step: JoyrideStep) {

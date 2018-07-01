@@ -32,7 +32,7 @@ export class JoyrideBackdropService {
         this.renderer = rendererFactory.createRenderer(null, null);
     }
 
-    show(elementRef: ViewContainerRef, idSelector: string) {
+    show(elementRef: ViewContainerRef) {
 
         this.elementRef = elementRef;
         this.targetAbsoluteTop = this.documentService.getElementAbsoluteTop(elementRef.element);
