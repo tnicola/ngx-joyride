@@ -11,15 +11,16 @@
             <img src="../../assets/images/angular.png" width="100" height="100">
         </ng-template>
     </joyrideStep>
-    <h1 joyrideStep="step2" nextStep="stepHide" (next)="toggleAction()" stepPosition="top" [stepContent]="step3Content">Angular2 Joyride library</h1>
-    <h4 *ngIf="stepVisible" joyrideStep="stepHide" nextStep="step3" stepPosition="top" [stepContent]="step3Content">Subtitle</h4>
-    <pre joyrideStep="step3" stepPosition="top" (prev)="toggleAction()" nextStep="about#step1" [title]="'Step1 Title'" [text]="'This is the text'" style="position: absolute; top: 15px; right: 15px">This is 
+    <h1 joyrideStep="step2" nextStep="stepHidden" (next)="toggleAction()" stepPosition="top" [stepContent]="step3Content">{{ title }}</h1>
+    <h4 *ngIf="stepVisible" joyrideStep="stepHidden" nextStep="step3" stepPosition="top" [stepContent]="step3Content">Subtitle</h4>
+    <pre joyrideStep="step3" stepPosition="top" (prev)="toggleAction()" nextStep="about#step1" [title]="'Step1 Title'" [text]="'This is the text'"
+        style="position: absolute; top: 15px; right: 15px">This is 
         js code</pre>
     <div id="tester" [style.width.px]="20">Tester</div>
-        <ng-template #step3Content>
+    <ng-template #step3Content>
         <aj-custom-component></aj-custom-component>
     </ng-template>
-   <img joyrideStep="step4" nextStep="step5" stepPosition="top" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
+    <img joyrideStep="step4" nextStep="step5" stepPosition="top" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
         src="../../assets/images/angular.png">
 
 
@@ -27,11 +28,11 @@
     <span joyrideStep="step12" nextStep="step13">
         Span
     </span>
-    <span joyrideStep="step6" nextStep="step7"  [stepContent]="step3Content">Step with custom content</span>
-    
-    
+    <span joyrideStep="step6" nextStep="step7" [stepContent]="step3Content">Step with custom content</span>
+
+
     <joyrideStep joyrideStep="step7" nextStep="step8" stepPosition="center"></joyrideStep>
-    <div joyrideStep="step13" class="lorem" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
+    <div joyrideStep="step13" (done)="stepDone()" class="lorem" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
@@ -49,7 +50,7 @@
     <div class="big-panel">
         This is a big div in order to have the page scroll
         <div joyrideStep="step9" nextStep="step10" title="My step" text="This element is Highlighted. Bla bla bla bla bla bal. This element is Highlighted. Bla bla bla bla bla bal"
-             stepPosition="bottom" class="big-panel__footer">I'm the target!</div>
+            stepPosition="bottom" class="big-panel__footer">I'm the target!</div>
         <div class="small-panel">
             <img joyrideStep="step10" class="big-panel__image" stepPosition="top" title="Img step" text="uuuuu  uuryf sdfdsf"
                 src="../../assets/images/angular.png" [style.width.px]="12" [style.height.px]="12">

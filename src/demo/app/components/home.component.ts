@@ -3,34 +3,40 @@ import { JoyrideService } from 'ngx-joyride';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass']
+    selector: 'home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.sass']
 })
 export class HomeComponent {
 
-  stepVisible: boolean = false;
-  constructor(
-    private readonly joyrideService: JoyrideService,
-    private router: Router
-  ) { }
+    stepVisible: boolean = false;
 
-  toggleAction() {
-    this.stepVisible = true;
-  }
+    title: string = "ngx-joyride library demo";
+    constructor(
+        private readonly joyrideService: JoyrideService,
+        private router: Router
+    ) { }
 
-  onPrev(){
-    console.log("Prev Clicked")
-  }
+    toggleAction() {
+        this.stepVisible = true;
+    }
 
-  startTour() {
-    let options = {
-      firstStep: 'step1',
-      stepDefaultPosition: 'top',
-      themeColor: '#345632',
-      //showCounter: false,
-      showPrevButton: true
-    };
-    this.joyrideService.startTour(options);
-  }
+    stepDone() {
+        this.title = "Tour Finished!";
+    }
+
+    onPrev() {
+        console.log("Prev Clicked")
+    }
+
+    startTour() {
+        let options = {
+            firstStep: 'step1',
+            stepDefaultPosition: 'top',
+            themeColor: '#345632',
+            //showCounter: false,
+            showPrevButton: true
+        };
+        this.joyrideService.startTour(options);
+    }
 }
