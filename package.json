@@ -22,7 +22,8 @@
     "compile-tsc": "./node_modules/.bin/tsc -p src/tmp",
     "compile-ngc": "./node_modules/.bin/ngc -p src/tmp",
     "precopy": "node packaging/tools/removecode.js",
-    "copy": "node packaging/tools/copy-package.js && node packaging/tools/copy-readme.js && node packaging/tools/copy-assets.js && node packaging/tools/cleanup.js"
+    "copy": "node packaging/tools/copy-package.js && node packaging/tools/copy-readme.js && node packaging/tools/copy-assets.js && node packaging/tools/cleanup.js",
+    "pack:lib": "npm pack src/lib/dist/"
   },
   "license": "MIT",
   "dependencies": {

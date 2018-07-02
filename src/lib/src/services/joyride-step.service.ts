@@ -64,11 +64,9 @@ export class JoyrideStepService {
     }
 
     startTour() {
-        this.documentService.setDocumentHeight();
-        if (this.optionsService.getFirstStepRoute()) {
-            this.router.navigate([this.optionsService.getFirstStepRoute()]);
-        }
         this.currentStepIndex = 0;
+        this.documentService.setDocumentHeight();
+        this.navigateToStepPage();
         this.showCurrentStep();
         this.eventListener.startListeningResizeEvents();
         this.subscribeToStepsUpdates();
@@ -85,9 +83,7 @@ export class JoyrideStepService {
         this.removeCurrentStep();
         this.currentStepIndex -= 1;
         this.currentStep.prevCliked.emit();
-        if (this.currentStep.prevStepRoute) {
-            this.router.navigate([this.currentStep.prevStepRoute]);
-        }
+        this.navigateToStepPage();
         this.showCurrentStep();
     }
 
@@ -95,9 +91,7 @@ export class JoyrideStepService {
         this.removeCurrentStep();
         this.currentStepIndex += 1;
         this.currentStep.nextClicked.emit();
-        if (this.currentStep.nextStepRoute) {
-            this.router.navigate([this.currentStep.nextStepRoute]);
-        }
+        this.navigateToStepPage();
         this.showCurrentStep();
     }
 
@@ -106,7 +100,14 @@ export class JoyrideStepService {
     }
 
     isLastStep() {
-        return !this.currentStep.nextStepName;
+        return this.currentStepIndex === this.stepsContainerService.getNumberOfSteps() - 1;
+    }
+
+    private navigateToStepPage() {
+        let stepRoute = this.stepsContainerService.getStepRoute(this.currentStepIndex);
+        if (stepRoute) {
+            this.router.navigate([stepRoute]);
+        }
     }
 
     private subscribeToStepsUpdates() {

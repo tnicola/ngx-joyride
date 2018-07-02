@@ -5,7 +5,8 @@ import { JoyrideStepsContainerService } from "../services/joyride-steps-containe
 import { JoyrideError } from "../models/joyride-error.class";
 import { JoyrideStepService } from "../services/joyride-step.service";
 import { Logger } from '../services/logger.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Button } from 'selenium-webdriver';
 
 export const NO_POSITION = "NO_POSITION";
 
@@ -63,11 +64,8 @@ export class JoyrideDirective implements AfterViewInit {
         if (!this.name) throw new JoyrideError("All the steps should have the 'joyrideStep' property set with a custom name.");
         step.name = this.name;
         step.route = this.router.url.substr(0, 1) === '/' ? this.router.url.substr(1) : this.router.url;
-        step.id = `${step.name}#${step.route}`;
-        step.nextStepRoute = this.nextStep && this.nextStep.includes("#") ? this.nextStep.split('#', 2)[0] : step.route;
-        step.nextStepName = this.nextStep && this.nextStep.includes("#") ? this.nextStep.split('#', 2)[1] : this.nextStep;
+        step.id = step.route ? `${step.name}@${step.route}` : step.name;
         step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
-        if (step.name === step.nextStepName && step.route === step.nextStepRoute) throw new JoyrideError(`Circular reference, 'joyrideStep' and 'nextStep' have the same value '${step.name}' on '${step.route}' route.`);
 
         this.joyrideStepsContainer.addStep(step);
     }

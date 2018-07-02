@@ -11,5 +11,6 @@ export class JoyrideStepsContainerServiceFake {
     getNumberOfSteps: jasmine.Spy = jasmine.createSpy("getNumberOfSteps");
     setPosition: jasmine.Spy = jasmine.createSpy("setPosition");
     initSteps: jasmine.Spy = jasmine.createSpy("initSteps");
+    getStepRoute: jasmine.Spy = jasmine.createSpy("getStepRoute ");
 
 }

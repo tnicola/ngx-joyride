@@ -13,12 +13,9 @@ export class JoyrideOptionsService {
     private logsEnabled: boolean = true;
     private showCounter: boolean = true;
     private showPrevButton: boolean = true;
-    private firstStepName: string = "";
-    private firstStepRoute: string = "";
-
+    private stepsOrder: string[] = [];
     setOptions(options: JoyrideOptions) {
-        this.firstStepRoute = options.firstStep && options.firstStep.includes('#') ? options.firstStep.split('#')[0] : null;
-        this.firstStepName = options.firstStep && options.firstStep.includes('#') ? options.firstStep.split('#')[1] : options.firstStep;
+        this.stepsOrder = options.steps;
         this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
         this.logsEnabled = typeof options.logsEnabled !== 'undefined' ? options.logsEnabled : this.logsEnabled;
         this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
@@ -38,12 +35,8 @@ export class JoyrideOptionsService {
         return this.stepDefaultPosition;
     }
 
-    getFirstStepName() {
-        return this.firstStepName;
-    }
-
-    getFirstStepRoute() {
-        return this.firstStepRoute;
+    getStepsOrder() {
+        return this.stepsOrder;
     }
 
     areLogsEnabled() {

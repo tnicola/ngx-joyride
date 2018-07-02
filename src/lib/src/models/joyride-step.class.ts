@@ -5,10 +5,6 @@ export class JoyrideStep {
     id: string;
     name: string;
     route: string;
-    prevStepName: string;
-    prevStepRoute: string;
-    nextStepName: string;
-    nextStepRoute: string;
     position: string;
     title: string;
     text: string;

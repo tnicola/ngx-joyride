@@ -1,6 +1,5 @@
 import { JoyrideStepService } from './joyride-step.service';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { JoyrideStepsContainerServiceFake } from '../test/fake/joyride-steps-container.service';
 import { JoyrideStepFakeService } from '../test/fake/joyride-step-fake.service';
 import { JoyrideBackdropService } from './joyride-backdrop.service';
 import { EventListenerServiceFake } from '../test/fake/event-listener-fake.service';
@@ -19,6 +18,7 @@ import { JoyrideStep } from '../models/joyride-step.class';
 import { ViewContainerRef, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterFake } from '../test/fake/router-fake.service';
+import { JoyrideStepsContainerServiceFake } from '../test/fake/joyride-steps-container-fake.service';
 
 describe("JoyrideStepService", () => {
 

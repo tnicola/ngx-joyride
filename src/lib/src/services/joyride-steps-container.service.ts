@@ -3,7 +3,6 @@ import { JoyrideStep } from "../models/joyride-step.class";
 import { Subject } from "rxjs/Subject";
 import { JoyrideOptionsService } from "./joyride-options.service";
 import { JoyrideError } from "../models/joyride-error.class";
-import { Router } from "@angular/router";
 
 @Injectable()
 export class JoyrideStepsContainerService {
@@ -22,6 +21,13 @@ export class JoyrideStepsContainerService {
         return this.steps[index];
     }
 
+    getStepRoute(index: number) {
+        let stepsOrder = this.stepOptions.getStepsOrder();
+        let stepName = stepsOrder[index];
+        let stepRoute = stepName && stepName.includes('@') ? stepName.split('@')[1] : "";
+        return stepRoute;
+    }
+
     getStepPosition(step: JoyrideStep): number {
         return this.getStepIndex(step) + 1;
     }
@@ -36,7 +42,8 @@ export class JoyrideStepsContainerService {
     }
 
     getNumberOfSteps() {
-        return this.stepsOriginal.length;
+        let stepsOrder = this.stepOptions.getStepsOrder();
+        return stepsOrder.length;
     }
 
     setPosition(step: JoyrideStep, position: string) {
@@ -52,18 +59,13 @@ export class JoyrideStepsContainerService {
     }
 
     private sortSteps() {
-        let orderedSteps = [...this.steps];
-        let firstStepName = this.stepOptions.getFirstStepName();
-        orderedSteps[0] = this.steps.find(step => step.name === firstStepName);
+        let orderedSteps: JoyrideStep[] = [];
+        let stepsOrder = this.stepOptions.getStepsOrder();
 
-        for (let i = 1; i < orderedSteps.length; i++) {
-            let nextStep = this.steps.find(step => step.name === orderedSteps[i - 1].nextStepName && step.route === orderedSteps[i - 1].nextStepRoute);
-            if (nextStep) {
-                orderedSteps[i] = nextStep;
-                orderedSteps[i].prevStepName = orderedSteps[i - 1].name;
-                orderedSteps[i].prevStepRoute = orderedSteps[i - 1].route;
-            }
-        }
+        stepsOrder.forEach((stepName) => {
+            let step = this.steps.find((step) => step.id === stepName);
+            if (step) orderedSteps.push(step);
+        });
 
         this.steps = [...orderedSteps];
     }

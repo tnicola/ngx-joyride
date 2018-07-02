@@ -1,5 +1,5 @@
 export class JoyrideOptions {
-    firstStep: string;
+    steps: string[];
     stepDefaultPosition?: string;
     themeColor?: string;
     showCounter?: boolean;
