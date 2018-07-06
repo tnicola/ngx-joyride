@@ -28,6 +28,7 @@ describe("JoyrideStepService", () => {
     let documentService: DocumentServiceFake;
     let stepsContainerService: JoyrideStepsContainerServiceFake;
     let domRefService: DomRefServiceFake;
+    let stepDrawerService: StepDrawerServiceFake;
     let FAKE_STEPS = <any>[];
     let STEP0: any = new JoyrideStep();
     let STEP1: any = new JoyrideStep();
@@ -60,6 +61,7 @@ describe("JoyrideStepService", () => {
         backdropService = TestBed.get(JoyrideBackdropService);
         documentService = TestBed.get(DocumentService);
         stepsContainerService = TestBed.get(JoyrideStepsContainerService);
+        stepDrawerService = TestBed.get(StepDrawerService);
 
         STEP0 = createNewStep("nav");
         STEP1 = createNewStep("credits");
@@ -115,8 +117,9 @@ describe("JoyrideStepService", () => {
         it("should call backDropService.hide", () => {
             expect(backdropService.hide).toHaveBeenCalled();
         })
-        it("should remove the step", () => {
-            expect(STEP0.targetViewContainer.remove).toHaveBeenCalledTimes(1);
+        it("should remove the step calling stepDrawerService.remove", () => {
+            expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
+            expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP0);
         });
         it("should scroll to 0, 0", () => {
             expect(FAKE_WINDOW.scrollTo).toHaveBeenCalledWith(0, 0);
@@ -153,8 +156,9 @@ describe("JoyrideStepService", () => {
         it("should call backDropService.hide", () => {
             expect(backdropService.hide).toHaveBeenCalled();
         })
-        it("should remove the step", () => {
-            expect(STEP0.targetViewContainer.remove).toHaveBeenCalledTimes(1);
+        it("should remove the step calling stepDrawerService.remove", () => {
+            expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
+            expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP0);
         });
         it("should call stepsContainerService.get with index of the current step + 1", () => {
             expect(stepsContainerService.get).toHaveBeenCalledWith(1);
@@ -187,14 +191,17 @@ describe("JoyrideStepService", () => {
                 tick(1);
                 backdropService.show.calls.reset();
                 stepsContainerService.get.calls.reset();
+                stepDrawerService.remove.calls.reset();
                 joyrideStepService.prev();
                 tick(1);
             }));
             it("should call backDropService.hide", () => {
                 expect(backdropService.hide).toHaveBeenCalled();
             })
-            it("should remove the step", () => {
-                expect(STEP0.targetViewContainer.remove).toHaveBeenCalledTimes(1);
+            it("should remove the step calling stepDrawerService.remove", () => {
+                expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
+                expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP1);
+
             });
             it("should call stepsContainerService.get with index of the current step - 1", () => {
                 expect(stepsContainerService.get).toHaveBeenCalledWith(0);
