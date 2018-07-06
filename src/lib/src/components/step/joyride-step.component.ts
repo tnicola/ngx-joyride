@@ -176,7 +176,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private setStyleTop() {
         this.stepsContainerService.setPosition(this.step, 'top');
-        this.topPosition = this.targetOffsetTop - DISTANCE_FROM_TARGET - this.stepHeight;
+        this.topPosition = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.stepAbsoluteTop = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.arrowTopPosition = this.stepHeight;
 
@@ -191,7 +191,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private setStyleRight() {
         this.stepsContainerService.setPosition(this.step, 'right');
-        this.topPosition = this.targetOffsetTop + this.targetHeight / 2 - this.stepHeight / 2;
+        this.topPosition = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
 
@@ -206,7 +206,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private setStyleBottom() {
         this.stepsContainerService.setPosition(this.step, 'bottom');
-        this.topPosition = this.targetOffsetTop + this.targetHeight + DISTANCE_FROM_TARGET;
+        this.topPosition = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.arrowTopPosition = -this.arrowSize;
 
@@ -221,7 +221,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private setStyleLeft() {
         this.stepsContainerService.setPosition(this.step, 'left');
-        this.topPosition = this.targetOffsetTop + this.targetHeight / 2 - this.stepHeight / 2;
+        this.topPosition = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
 

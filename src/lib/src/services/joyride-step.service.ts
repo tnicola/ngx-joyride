@@ -131,6 +131,7 @@ export class JoyrideStepService {
     private removeCurrentStep() {
         this.backDropService.hide();
         this.detachStep(this.currentStep);
+        this.stepDrawerService.remove(this.currentStep);
     }
 
     private detachStep(step: JoyrideStep) {
