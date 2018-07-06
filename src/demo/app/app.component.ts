@@ -7,7 +7,13 @@ import { Component } from "@angular/core";
                     <a routerLink="/about">About</a>
                     <a routerLink="/info">Info</a>
                 </nav>
-                <joyrideStep joyrideStep="ciao">ehila</joyrideStep>
+                <div>
+                    <joyrideStep joyrideStep="ciao">ehila</joyrideStep>
+                </div>
+                <div >
+                    <p>Paragraph 1</p>
+                    <p>Paragraph 2</p>
+                </div>
                 <router-outlet></router-outlet>`
 })
 export class AppComponent {

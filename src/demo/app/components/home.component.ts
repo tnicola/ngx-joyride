@@ -31,7 +31,7 @@ export class HomeComponent {
 
     startTour() {
         let options = {
-            steps: ['step1@app', 'ciao', 'step2@app', 'stepHidden@app', 'step1@about'],
+            steps: ['step1@app', 'ciao', 'step2@app', 'stepHidden@app', 'step3@app', 'step1@about', 'step2@about'],
             stepDefaultPosition: 'top',
             themeColor: '#345632',
             //showCounter: false,
