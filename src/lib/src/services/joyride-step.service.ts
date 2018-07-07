@@ -11,6 +11,7 @@ import { JoyrideOptionsService } from "./joyride-options.service";
 import { Router } from '@angular/router';
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { JoyrideStepInfo } from "../models/joyride-step-info.class";
+import { Observable } from "rxjs/Observable";
 
 const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;
@@ -66,7 +67,7 @@ export class JoyrideStepService {
         this.stepDrawerService.draw(step);
     }
 
-    startTour() {
+    startTour(): Observable<JoyrideStepInfo> {
         this.stepsObserver = new ReplaySubject<JoyrideStepInfo>();
         this.currentStepIndex = 0;
         this.documentService.setDocumentHeight();
