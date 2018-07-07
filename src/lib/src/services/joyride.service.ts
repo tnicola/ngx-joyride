@@ -15,7 +15,7 @@ export class JoyrideService {
         if (options) {
             this.optionsService.setOptions(options);
         }
-        this.stepService.startTour();
+        return this.stepService.startTour();
     }
 
 }

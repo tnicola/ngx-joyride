@@ -9,6 +9,8 @@ import { DomRefService } from "./dom.service";
 import { NO_POSITION } from "../directives/joyride.directive";
 import { JoyrideOptionsService } from "./joyride-options.service";
 import { Router } from '@angular/router';
+import { ReplaySubject } from "rxjs/ReplaySubject";
+import { JoyrideStepInfo } from "../models/joyride-step-info.class";
 
 const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;
@@ -21,6 +23,7 @@ export class JoyrideStepService {
 
     private winTopPosition: number = 0;
     private winBottomPosition: number = 0;
+    private stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
@@ -64,17 +67,19 @@ export class JoyrideStepService {
     }
 
     startTour() {
+        this.stepsObserver = new ReplaySubject<JoyrideStepInfo>();
         this.currentStepIndex = 0;
         this.documentService.setDocumentHeight();
         this.navigateToStepPage();
-        this.showCurrentStep();
+        this.showStep('NEXT');
         this.eventListener.startListeningResizeEvents();
         this.subscribeToStepsUpdates();
+        return this.stepsObserver.asObservable();
     }
 
     close() {
         this.removeCurrentStep();
-        this.currentStep.tourDone.emit();
+        this.notifyTourIsFinished();
         this.DOMService.getNativeWindow().scrollTo(0, 0);
         this.eventListener.stopListeningResizeEvents();
     }
@@ -84,7 +89,7 @@ export class JoyrideStepService {
         this.currentStepIndex -= 1;
         this.currentStep.prevCliked.emit();
         this.navigateToStepPage();
-        this.showCurrentStep();
+        this.showStep('PREV');
     }
 
     next() {
@@ -92,7 +97,7 @@ export class JoyrideStepService {
         this.currentStepIndex += 1;
         this.currentStep.nextClicked.emit();
         this.navigateToStepPage();
-        this.showCurrentStep();
+        this.showStep('NEXT');
     }
 
     isFirstStep() {
@@ -118,14 +123,30 @@ export class JoyrideStepService {
         });
     }
 
-    private showCurrentStep() {
+    private showStep(action: 'PREV' | 'NEXT') {
         setTimeout(() => {
             this.stepsContainerService.initSteps();
             this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
             this.backDropService.show(this.currentStep.targetViewContainer);
             this.drawStep(this.currentStep);
             this.scrollIfTargetNotVisible();
+            this.notifyStepClicked(action)
         }, 1)
+    }
+
+    private notifyStepClicked(action: 'PREV' | 'NEXT') {
+        let stepInfo: JoyrideStepInfo = {
+            number: this.currentStepIndex,
+            name: this.currentStep.name,
+            route: this.currentStep.route,
+            actionType: action
+        }
+        this.stepsObserver.next(stepInfo);
+    }
+
+    private notifyTourIsFinished() {
+        this.currentStep.tourDone.emit();
+        this.stepsObserver.complete();
     }
 
     private removeCurrentStep() {

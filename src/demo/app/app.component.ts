@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
     selector: 'demo-app',
     template: `<nav>
                     <a routerLink="">Home</a>
-                    <a routerLink="/about">About</a>
+                    <a routerLink="/about/you">About</a>
                     <a routerLink="/info">Info</a>
                 </nav>
                 <div>
