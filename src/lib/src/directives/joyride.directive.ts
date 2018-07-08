@@ -66,6 +66,7 @@ export class JoyrideDirective implements AfterViewInit {
         step.route = this.router.url.substr(0, 1) === '/' ? this.router.url.substr(1) : this.router.url;
         step.id = step.route ? `${step.name}@${step.route}` : step.name;
         step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
+        step.positionCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).position;
 
         this.joyrideStepsContainer.addStep(step);
     }

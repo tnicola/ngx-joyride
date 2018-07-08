@@ -35,7 +35,6 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     arrowPosition: string;
     arrowLeftPosition: number;
     arrowTopPosition: number;
-
     closeSvg = CLOSE_SVG;
 
     title: string;
@@ -110,13 +109,19 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private drawStep() {
+        let position = this.step.positionCssStyle === 'fixed' ? 'fixed' : 'absolute';
+        this.renderer.setStyle(this.stepHolder.nativeElement, "position", position);
         this.renderer.setStyle(this.stepHolder.nativeElement, "transform", this.step.transformCssStyle);
         this.targetWidth = this.step.targetViewContainer.element.nativeElement.getBoundingClientRect().width;
         this.targetHeight = this.step.targetViewContainer.element.nativeElement.getBoundingClientRect().height;
         this.targetOffsetTop = this.step.targetViewContainer.element.nativeElement.offsetTop;
         this.targetOffsetLeft = this.step.targetViewContainer.element.nativeElement.offsetLeft;
-        this.targetAbsoluteLeft = this.documentService.getElementAbsoluteLeft(this.step.targetViewContainer.element);
-        this.targetAbsoluteTop = this.documentService.getElementAbsoluteTop(this.step.targetViewContainer.element);
+        this.targetAbsoluteLeft = position === 'fixed' ?
+            this.documentService.getElementFixedLeft(this.step.targetViewContainer.element)
+            : this.documentService.getElementAbsoluteLeft(this.step.targetViewContainer.element);
+        this.targetAbsoluteTop = position === 'fixed' ?
+            this.documentService.getElementFixedTop(this.step.targetViewContainer.element)
+            : this.documentService.getElementAbsoluteTop (this.step.targetViewContainer.element);
         this.setStepStyle();
     }
 
@@ -180,7 +185,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.stepAbsoluteTop = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.arrowTopPosition = this.stepHeight;
 
-        this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetOffsetLeft;
+        this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetAbsoluteLeft;
         this.stepAbsoluteLeft = this.targetWidth / 2 - this.stepWidth / 2 + this.targetAbsoluteLeft;
         this.arrowLeftPosition = this.stepWidth / 2 - this.arrowSize;
         this.adjustLeftPosition();
@@ -195,7 +200,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
 
-        this.leftPosition = this.targetOffsetLeft + this.targetWidth + DISTANCE_FROM_TARGET;
+        this.leftPosition = this.targetAbsoluteLeft + this.targetWidth + DISTANCE_FROM_TARGET;
         this.stepAbsoluteLeft = this.targetAbsoluteLeft + this.targetWidth + DISTANCE_FROM_TARGET;
         this.arrowLeftPosition = - this.arrowSize;
         this.adjustTopPosition();
@@ -211,7 +216,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.arrowTopPosition = -this.arrowSize;
 
         this.arrowLeftPosition = this.stepWidth / 2 - this.arrowSize;
-        this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetOffsetLeft;
+        this.leftPosition = this.targetWidth / 2 - this.stepWidth / 2 + this.targetAbsoluteLeft;
         this.stepAbsoluteLeft = this.targetWidth / 2 - this.stepWidth / 2 + this.targetAbsoluteLeft;
         this.adjustLeftPosition();
         this.adjustRightPosition();
@@ -225,7 +230,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
 
-        this.leftPosition = this.targetOffsetLeft - this.stepWidth - DISTANCE_FROM_TARGET;
+        this.leftPosition = this.targetAbsoluteLeft - this.stepWidth - DISTANCE_FROM_TARGET;
         this.stepAbsoluteLeft = this.targetAbsoluteLeft - this.stepWidth - DISTANCE_FROM_TARGET;
         this.arrowLeftPosition = this.stepWidth;
         this.adjustTopPosition();

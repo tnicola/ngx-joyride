@@ -9,6 +9,15 @@ export class DocumentService {
         this.setDocumentHeight();
     }
 
+    
+    getElementFixedTop(elementRef: ElementRef) {
+        return elementRef.nativeElement.getBoundingClientRect().top;
+    }
+
+    getElementFixedLeft(elementRef: ElementRef) {
+        return elementRef.nativeElement.getBoundingClientRect().left;
+    }
+
     getElementAbsoluteTop(elementRef: ElementRef) {
         var scrollOffsets = this.getScrollOffsets();
         return elementRef.nativeElement.getBoundingClientRect().top + scrollOffsets.y;

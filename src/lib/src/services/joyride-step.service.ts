@@ -52,13 +52,13 @@ export class JoyrideStepService {
         this.eventListener.scrollEvent.subscribe((scroll) => {
             this.winTopPosition = scroll.scrollY;
             this.winBottomPosition = this.winTopPosition + this.DOMService.getNativeWindow().innerHeight - SCROLLBAR_SIZE;
-            this.backDropService.redraw(scroll);
+            this.backDropService.redraw(this.currentStep, scroll);
         });
     }
 
     private subscribeToResizeEvents() {
         this.eventListener.resizeEvent.subscribe(() => {
-            this.backDropService.redrawTarget(this.currentStep.targetViewContainer);
+            this.backDropService.redrawTarget(this.currentStep);
         });
     }
 
@@ -128,7 +128,7 @@ export class JoyrideStepService {
         setTimeout(() => {
             this.stepsContainerService.initSteps();
             this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
-            this.backDropService.show(this.currentStep.targetViewContainer);
+            this.backDropService.show(this.currentStep);
             this.drawStep(this.currentStep);
             this.scrollIfTargetNotVisible();
             this.notifyStepClicked(action)

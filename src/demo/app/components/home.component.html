@@ -11,9 +11,9 @@
             <img src="../../assets/images/angular.png" width="100" height="100">
         </ng-template>
     </joyrideStep>
-    <h1 joyrideStep="step2" (next)="toggleAction()" stepPosition="bottom" [stepContent]="step3Content">{{ title }}</h1>
+    <h1 style="position: fixed; top: 200px; left: 300px" joyrideStep="step2" (next)="toggleAction()" stepPosition="left" [stepContent]="step3Content">{{ title }}</h1>
     <h4 *ngIf="stepVisible" joyrideStep="stepHidden" stepPosition="bottom" [stepContent]="step3Content">Subtitle</h4>
-    <pre joyrideStep="step3" stepPosition="top" (prev)="toggleAction()" [title]="'Step1 Title'" [text]="'This is the text'"
+    <pre joyrideStep="step3" stepPosition="left" (prev)="toggleAction()" [title]="'Step1 Title'" [text]="'This is the text'"
         style="position: absolute; top: 15px; right: 15px">This is 
         js code</pre>
     <div id="tester" [style.width.px]="20">Tester</div>

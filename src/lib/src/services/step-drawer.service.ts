@@ -15,7 +15,6 @@ export class StepDrawerService {
 
     draw(step: JoyrideStep) {
         const factory: ComponentFactory<JoyrideStepComponent> = this.componentFactoryResolver.resolveComponentFactory(JoyrideStepComponent);
-        //const ref: ComponentRef<JoyrideStepComponent> = step.targetViewContainer.createComponent(factory);/*this._viewRef.components[0];*/
 
         // 1. Create a component reference from the component 
         const ref: ComponentRef<JoyrideStepComponent> = this.componentFactoryResolver

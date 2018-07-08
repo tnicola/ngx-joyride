@@ -20,7 +20,7 @@ export class HomeComponent {
 
     toggleAction() {
         this.stepVisible = true;
-        this.title = "Title changed";
+        //this.title = "Title changed";
     }
 
     stepDone() {
