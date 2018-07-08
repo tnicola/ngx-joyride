@@ -94,7 +94,7 @@ describe("JoyrideStepService", () => {
         it("should call backdropService.redraw with the right 'scroll' parameter", () => {
             eventListenerService.scrollEvent.next(240);
 
-            expect(backdropService.redraw).toHaveBeenCalledWith(240);
+            expect(backdropService.redraw).toHaveBeenCalledWith(undefined, 240);
         })
     })
 
@@ -170,7 +170,7 @@ describe("JoyrideStepService", () => {
         }));
         it("should call backDropService.show", () => {
             expect(backdropService.show).toHaveBeenCalledTimes(1)
-            expect(backdropService.show).toHaveBeenCalledWith(STEP1.targetViewContainer);
+            expect(backdropService.show).toHaveBeenCalledWith(STEP1);
         });
 
     });
@@ -213,7 +213,7 @@ describe("JoyrideStepService", () => {
             }));
             it("should call backDropService.show", () => {
                 expect(backdropService.show).toHaveBeenCalledTimes(1)
-                expect(backdropService.show).toHaveBeenCalledWith(STEP0.targetViewContainer);
+                expect(backdropService.show).toHaveBeenCalledWith(STEP0);
             })
         })
     });
