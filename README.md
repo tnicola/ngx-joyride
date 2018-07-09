@@ -80,17 +80,17 @@ stepPosition | No | The position in which the step will be drawn. | 'top', 'righ
 title | No | The step title. | string 
 text |  No | The step text content. | string 
 stepContent | No | An Angular template with custom content | TemplateRef\<any>
-
 N.B: Only for the older versions change `joyrideStep` in `stepNumber` (1.x.x)
-@Input | Required | Purpose  | Values/Type 
----- | ---- | ---- | ---- 
+
+@Input | Required | Purpose  | Values/Type
+---- | ---- | ---- | ----
 stepNumber | Yes **Only for 1.x.x** | The order in which the step should appear during the tour. | 1, ..., n 
 
 @Output | Required | Purpose 
----- | ---- | ---- | ---- 
+---- | ---- | ----
 next (**Only from 2.x.x**) | No | It fires an event when 'Next' button is clicked.
-prev (**Only from 2.x.x**)| No | It fires an event when 'Prev' button is clicked.
-done (**Only from 2.x.x**)| No | It fires an event when 'Done' button or 'Close' are clicked and the Tour is finished.
+prev (**Only from 2.x.x**) | No | It fires an event when 'Prev' button is clicked.
+done (**Only from 2.x.x**) | No | It fires an event when 'Done' button or 'Close' are clicked and the Tour is finished.
 
 	
 ## Options
