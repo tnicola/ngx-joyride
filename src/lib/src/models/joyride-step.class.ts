@@ -13,7 +13,7 @@ export class JoyrideStep {
     prevCliked: EventEmitter<any>;
     tourDone: EventEmitter<any>;
     transformCssStyle: string;
-    positionCssStyle: string;
+    isElementOrAncestorFixed: boolean;
     targetViewContainer: ViewContainerRef;
     stepInstance: JoyrideStepComponent;
 }

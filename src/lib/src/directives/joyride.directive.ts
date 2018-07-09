@@ -66,9 +66,23 @@ export class JoyrideDirective implements AfterViewInit {
         step.route = this.router.url.substr(0, 1) === '/' ? this.router.url.substr(1) : this.router.url;
         step.id = step.route ? `${step.name}@${step.route}` : step.name;
         step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
-        step.positionCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).position;
+        step.isElementOrAncestorFixed = this.isElementFixed(this.viewContainerRef.element) || this.isAncestorsFixed(this.viewContainerRef.element.nativeElement.parentElement);
 
         this.joyrideStepsContainer.addStep(step);
+    }
+
+    private isElementFixed(element: ElementRef) {
+        return window.getComputedStyle(element.nativeElement).position === 'fixed';
+    }
+
+    private isAncestorsFixed(nativeElement: any): boolean {
+        let isElementFixed = window.getComputedStyle(nativeElement.parentElement).position === 'fixed';
+        if (nativeElement.nodeName === 'BODY') {
+            if (isElementFixed) return true;
+            else return false;
+        }
+        if (isElementFixed) return true;
+        else return this.isAncestorsFixed(nativeElement.parentElement);
     }
 
 }

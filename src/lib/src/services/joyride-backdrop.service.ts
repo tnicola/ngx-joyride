@@ -123,7 +123,7 @@ export class JoyrideBackdropService {
 
     private getTargetTotalTop(step: JoyrideStep) {
         let targetVC = step.targetViewContainer;
-        return step.positionCssStyle === 'fixed' ?
+        return step.isElementOrAncestorFixed ?
             this.documentService.getElementFixedTop(targetVC.element)
             : this.documentService.getElementAbsoluteTop(targetVC.element)
     }
@@ -131,7 +131,7 @@ export class JoyrideBackdropService {
     private getTargetTotalLeft(step: JoyrideStep) {
         let targetVC = step.targetViewContainer;
 
-        return step.positionCssStyle === 'fixed' ?
+        return step.isElementOrAncestorFixed ?
             this.documentService.getElementFixedLeft(targetVC.element)
             : this.documentService.getElementAbsoluteLeft(targetVC.element)
     }
@@ -152,7 +152,7 @@ export class JoyrideBackdropService {
     }
 
     private handleHorizontalScroll(step: JoyrideStep) {
-        let newBackdropLeftWidth = step.positionCssStyle === 'fixed' ?
+        let newBackdropLeftWidth = step.isElementOrAncestorFixed ?
             this.targetAbsoluteLeft :
             this.targetAbsoluteLeft - this.lastXScroll;
 
@@ -177,7 +177,7 @@ export class JoyrideBackdropService {
     }
 
     private handleVerticalScroll(step: JoyrideStep) {
-        let newBackdropTopHeight = step.positionCssStyle === 'fixed' ?
+        let newBackdropTopHeight = step.isElementOrAncestorFixed ?
             this.targetAbsoluteTop :
             this.targetAbsoluteTop - this.lastYScroll;
 
