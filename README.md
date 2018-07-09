@@ -80,7 +80,8 @@ stepPosition | No | The position in which the step will be drawn. | 'top', 'righ
 title | No | The step title. | string 
 text |  No | The step text content. | string 
 stepContent | No | An Angular template with custom content | TemplateRef\<any>
-N.B: Only for the older versions change `joyrideStep` in `stepNumber` (1.x.x)
+
+N.B: Only for the older versions (1.x.x) change `joyrideStep` in `stepNumber`.
 
 @Input | Required | Purpose  | Values/Type
 ---- | ---- | ---- | ----
