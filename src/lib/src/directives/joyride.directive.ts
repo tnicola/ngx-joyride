@@ -46,8 +46,6 @@ export class JoyrideDirective implements AfterViewInit {
         private el: ElementRef,
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
         private readonly viewContainerRef: ViewContainerRef,
-        private readonly renderer: Renderer2,
-        private readonly logger: Logger,
         private readonly router: Router
     ) { }
 
