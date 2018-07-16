@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, ModuleWithProviders } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { JoyrideDirective } from './directives/joyride.directive';
 import { JoyrideService } from './services/joyride.service';
@@ -17,7 +17,7 @@ import { Logger } from './services/logger.service';
 import { RouterModule } from "@angular/router";
 
 @NgModule({
-    imports: [CommonModule, RouterModule.forRoot([])],
+    imports: [CommonModule, RouterModule.forChild([])],
     declarations: [
         JoyrideDirective,
         JoyrideStepComponent,
@@ -27,18 +27,30 @@ import { RouterModule } from "@angular/router";
     entryComponents: [JoyrideStepComponent],
     exports: [
         JoyrideDirective
-    ],
-    providers: [
-        JoyrideService,
-        JoyrideStepService,
-        JoyrideStepsContainerService,
-        JoyrideBackdropService,
-        EventListenerService,
-        DocumentService,
-        JoyrideOptionsService,
-        StepDrawerService,
-        DomRefService,
-        Logger
     ]
 })
-export class JoyrideModule { }
+export class JoyrideModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: JoyrideModule,
+            providers: [
+                JoyrideService,
+                JoyrideStepService,
+                JoyrideStepsContainerService,
+                JoyrideBackdropService,
+                EventListenerService,
+                DocumentService,
+                JoyrideOptionsService,
+                StepDrawerService,
+                DomRefService,
+                Logger
+            ]
+        }
+    }
+    static forChild(): ModuleWithProviders {
+        return {
+            ngModule: JoyrideModule,
+            providers: []
+        }
+    }
+}
