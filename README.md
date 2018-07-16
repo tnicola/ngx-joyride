@@ -192,6 +192,7 @@ What you should do is adding your steps in this way:
     this.joyrideService.startTour({steps: ["navbar", "user-avatar@user/details", "info@about"]); 
 ...
 ```
+**NB**: If you're using lazy modules, you should import the JoyrideModule in your AppModule using `JoyrideModule.forRoot()`. In your lazy loaded feature modules use `JoyrideModule.forChild()` instead. 
 
 ## Licence
 MIT
