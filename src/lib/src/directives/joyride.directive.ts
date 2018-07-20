@@ -1,12 +1,8 @@
 import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { JoyrideStep } from "../models/joyride-step.class";
-import { StepPosition } from "../models/joyride-step-position.enum";
 import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
 import { JoyrideError } from "../models/joyride-error.class";
-import { JoyrideStepService } from "../services/joyride-step.service";
-import { Logger } from '../services/logger.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Button } from 'selenium-webdriver';
+import { Router } from '@angular/router';
 
 export const NO_POSITION = "NO_POSITION";
 
@@ -65,7 +61,7 @@ export class JoyrideDirective implements AfterViewInit {
         step.id = step.route ? `${step.name}@${step.route}` : step.name;
         step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
         step.isElementOrAncestorFixed = this.isElementFixed(this.viewContainerRef.element) || this.isAncestorsFixed(this.viewContainerRef.element.nativeElement.parentElement);
-
+        
         this.joyrideStepsContainer.addStep(step);
     }
 
