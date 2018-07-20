@@ -6,7 +6,7 @@ import { HomeModule } from './components/home.module';
 
 const routes: Routes = [
     { path: '', redirectTo: '/app', pathMatch: 'full' },
-    { path: 'app', loadChildren: () => HomeModule},
+    { path: 'app', loadChildren: './components/home.module#HomeModule'},
     { path: 'info', component: InfoComponent },
     { path: 'about/you', component: AboutComponent }
 ];
