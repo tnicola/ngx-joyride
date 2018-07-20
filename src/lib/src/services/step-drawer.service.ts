@@ -36,13 +36,13 @@ export class StepDrawerService {
         ref.changeDetectorRef.detectChanges();
         step.stepInstance = instance;
 
-        this.mappa[step.id] = ref;
+        this.mappa[step.name] = ref;
 
     }
 
     remove(step: JoyrideStep) {
-        this.appRef.detachView(this.mappa[step.id].hostView);
-        this.mappa[step.id].destroy();
+        this.appRef.detachView(this.mappa[step.name].hostView);
+        this.mappa[step.name].destroy();
     }
 
 }

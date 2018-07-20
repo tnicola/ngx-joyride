@@ -9,7 +9,6 @@ import { JoyrideStepInfo } from '../models/joyride-step-info.class';
 export class JoyrideService {
 
     private tourInProgress: boolean = false;
-
     private tourSubscription$: Observable<JoyrideStepInfo>;
 
     constructor(

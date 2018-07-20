@@ -2,7 +2,6 @@ import { ViewContainerRef, TemplateRef, EventEmitter } from "@angular/core";
 import { JoyrideStepComponent } from "../components/step/joyride-step.component";
 
 export class JoyrideStep {
-    id: string;
     name: string;
     route: string;
     position: string;

@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import { JoyrideStep } from "../models/joyride-step.class";
 import { Subject } from "rxjs/Subject";
 import { JoyrideOptionsService } from "./joyride-options.service";
-import { JoyrideError } from "../models/joyride-error.class";
+
+const ROUTE_SEPARATOR = '@';
 
 @Injectable()
 export class JoyrideStepsContainerService {
@@ -23,8 +24,8 @@ export class JoyrideStepsContainerService {
 
     getStepRoute(index: number) {
         let stepsOrder = this.stepOptions.getStepsOrder();
-        let stepName = stepsOrder[index];
-        let stepRoute = stepName && stepName.includes('@') ? stepName.split('@')[1] : "";
+        let stepID = stepsOrder[index];
+        let stepRoute = stepID && stepID.includes(ROUTE_SEPARATOR) ? stepID.split(ROUTE_SEPARATOR)[1] : "";
         return stepRoute;
     }
 
@@ -33,10 +34,10 @@ export class JoyrideStepsContainerService {
     }
 
     addStep(stepToAdd: JoyrideStep) {
-        let stepExist = this.stepsOriginal.filter(step => step.id === stepToAdd.id).length > 0;
+        let stepExist = this.stepsOriginal.filter(step => step.name === stepToAdd.name).length > 0;
         if (!stepExist) this.stepsOriginal.push(stepToAdd);
         else {
-            let stepIndexToReplace = this.stepsOriginal.findIndex(step => step.id === stepToAdd.id);
+            let stepIndexToReplace = this.stepsOriginal.findIndex(step => step.name === stepToAdd.name);
             this.stepsOriginal[stepIndexToReplace] = stepToAdd;
         }
     }
@@ -62,8 +63,8 @@ export class JoyrideStepsContainerService {
         let orderedSteps: JoyrideStep[] = [];
         let stepsOrder = this.stepOptions.getStepsOrder();
 
-        stepsOrder.forEach((stepName) => {
-            let step = this.steps.find((step) => step.id === stepName);
+        stepsOrder.forEach((stepID) => {
+            let step = this.steps.find((step) => step.name === this.getStepName(stepID));
             if (step) orderedSteps.push(step);
         });
 
@@ -72,5 +73,10 @@ export class JoyrideStepsContainerService {
 
     private getStepIndex(step: JoyrideStep) {
         return this.steps.indexOf(step);
+    }
+
+    private getStepName(stepID: string): string {
+        let stepName = stepID && stepID.includes(ROUTE_SEPARATOR) ? stepID.split(ROUTE_SEPARATOR)[0] : stepID;
+        return stepName;
     }
 }

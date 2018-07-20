@@ -1,5 +1,5 @@
 <div class="main">
-    <joyrideStep joyrideStep="step1" stepPosition="center" [stepContent]="myCustomContent" (prev)="onPrev()">
+    <joyrideStep joyrideStep="home1" stepPosition="center" [stepContent]="myCustomContent" (prev)="onPrev()">
         <ng-template #myCustomContent>
             <div style="width:500px"> Della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo,
                 quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard
@@ -11,7 +11,7 @@
             <img src="../../assets/images/angular.png" width="100" height="100">
         </ng-template>
     </joyrideStep>
-    <h1 style="position: fixed; top: 200px; left: 300px" joyrideStep="step2" (next)="toggleAction()" stepPosition="left" [stepContent]="step3Content">{{ title }}</h1>
+    <h1 style="position: fixed; top: 200px; left: 300px" joyrideStep="home2" (next)="toggleAction()" stepPosition="left" [stepContent]="step3Content">{{ title }}</h1>
     <h4 *ngIf="stepVisible" joyrideStep="stepHidden" stepPosition="bottom" [stepContent]="step3Content">Subtitle</h4>
     <pre joyrideStep="step3" stepPosition="left" (prev)="toggleAction()" [title]="'Step1 Title'" [text]="'This is the text'"
         style="position: absolute; top: 15px; right: 15px">This is 

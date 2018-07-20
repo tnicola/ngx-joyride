@@ -75,7 +75,7 @@ You can use the `joyrideStep` directive with these inputs:
 
 @Input | Required | Purpose  | Values/Type 
 ---- | ---- | ---- | ---- 
-joyrideStep | Yes, (**Only from 2.x.x**) | The step name. This input is required from v. 2.0.0 | string |
+joyrideStep | Yes, (**Only from 2.x.x**) | The step name, it should be unique. This input is required from v. 2.0.0 | string |
 stepPosition | No | The position in which the step will be drawn. | 'top', 'right', 'bottom', 'left', 'center'
 title | No | The step title. | string 
 text |  No | The step text content. | string 

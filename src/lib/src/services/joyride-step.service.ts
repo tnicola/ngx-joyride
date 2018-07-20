@@ -118,7 +118,7 @@ export class JoyrideStepService {
 
     private subscribeToStepsUpdates() {
         this.stepsContainerService.stepHasBeenModified.subscribe((updatedStep) => {
-            if (this.currentStep.id === updatedStep.id) {
+            if (this.currentStep.name === updatedStep.name) {
                 this.currentStep = updatedStep;
             }
         });

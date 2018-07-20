@@ -30,7 +30,7 @@ export class AppComponent {
     }
     startTour() {
         let options = {
-            steps: ['myStep@app/routeA', 'step1@app', 'step2@app', 'stepHidden@app', 'step3@app', 'step1@about/you', 'ciao', 'step2@about/you'],
+            steps: ['myStep@app/routeA', 'step1@about/you', 'myStep2@app/routeB', 'home1@app', 'ciao', 'home2@app', 'stepHidden@app', 'step3@app', 'step2@about/you'],
             stepDefaultPosition: 'top',
             themeColor: '#345632',
             showPrevButton: true

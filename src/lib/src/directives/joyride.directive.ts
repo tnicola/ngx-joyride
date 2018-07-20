@@ -58,7 +58,6 @@ export class JoyrideDirective implements AfterViewInit {
         if (!this.name) throw new JoyrideError("All the steps should have the 'joyrideStep' property set with a custom name.");
         step.name = this.name;
         step.route = this.router.url.substr(0, 1) === '/' ? this.router.url.substr(1) : this.router.url;
-        step.id = step.route ? `${step.name}@${step.route}` : step.name;
         step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
         step.isElementOrAncestorFixed = this.isElementFixed(this.viewContainerRef.element) || this.isAncestorsFixed(this.viewContainerRef.element.nativeElement.parentElement);
         
