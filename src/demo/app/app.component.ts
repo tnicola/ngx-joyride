@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import { JoyrideService } from "ngx-joyride";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'demo-app',
@@ -17,5 +19,39 @@ import { Component } from "@angular/core";
                 <router-outlet></router-outlet>`
 })
 export class AppComponent {
+
+    constructor(
+        private readonly joyrideService: JoyrideService,
+        private router: Router
+    ) { }
+
+    ngOnInit(): void {
+        //this.startTour();
+    }
+    startTour() {
+        let options = {
+            steps: ['myStep@app/routeA', 'step1@app', 'step2@app', 'stepHidden@app', 'step3@app', 'step1@about/you', 'ciao', 'step2@about/you'],
+            stepDefaultPosition: 'top',
+            themeColor: '#345632',
+            showPrevButton: true
+        };
+        this.joyrideService.startTour(options).subscribe((step) => {
+            console.log("Next:", step);
+        }, (e) => {
+            console.log("Error", e);
+        }, () => {
+            //this.stepDone();
+            console.log("Tour finished");
+        });
+    }
+
+
+    stepDone() {
+        this.router.navigate(['app']);
+        setTimeout(() => {
+            // this.title = "Tour Finished!";
+            console.log("Step done!")
+        }, 3000);
+    }
 
 }

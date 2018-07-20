@@ -8,8 +8,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./home.component.sass'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
-
+export class HomeComponent implements AfterViewInit, OnInit {
     stepVisible: boolean = false;
 
     title: string = "ngx-joyride library demo";
@@ -18,13 +17,19 @@ export class HomeComponent {
         private router: Router
     ) { }
 
+    ngAfterViewInit(): void {
+        //this.startTour();
+    }
+
+    ngOnInit(): void {
+        //this.startTour();
+    }
+
     toggleAction() {
         this.stepVisible = true;
-        //this.title = "Title changed";
     }
 
     stepDone() {
-        this.router.navigate(['app']);
         setTimeout(() => {
             this.title = "Tour Finished!";
             console.log("Step done!")
@@ -37,7 +42,7 @@ export class HomeComponent {
 
     startTour() {
         let options = {
-            steps: ['step1@app', 'ciao', 'step2@app', 'stepHidden@app', 'step3@app', 'step1@about/you', 'step2@about/you'],
+            steps: ['myStep@app/routeA', 'step1@about/you', 'myStep2@app/routeB', 'step1@app', 'ciao', 'step2@app', 'stepHidden@app', 'step3@app', 'step2@about/you'],
             stepDefaultPosition: 'top',
             themeColor: '#345632',
             showPrevButton: true
