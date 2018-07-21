@@ -1,5 +1,5 @@
 {
-  "name": "angular2-webpack",
+  "name": "ngx-joyride-demo",
   "version": "1.0.0",
   "description": "Angular-Webpack starter",
   "types": "src/lib/index.ts",

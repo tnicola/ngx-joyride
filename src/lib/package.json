@@ -1,7 +1,7 @@
 {
   "name": "ngx-joyride",
-  "version": "2.0.1",
-  "description": "Angular 2 Joyride Library",
+  "version": "2.0.2",
+  "description": "Angular Joyride Library",
   "main": "./bundles/ngx-joyride.umd.js",
   "jsnext:main": "./esm5/ngx-joyride.esm.js",
   "module": "./esm5/ngx-joyride.esm.js",
@@ -27,7 +27,7 @@
     "@angular/compiler": ">=4.0.0 <=5.2.10",
     "@angular/compiler-cli": ">=4.0.0 <=5.2.10",
     "@angular/router": ">=4.0.0 <=5.2.10",
-    "rxjs": "5.5.0",
-    "zone.js": "0.8.12"
+    "rxjs": ">=5.0.1",
+    "zone.js": ">=0.8.12"
   }
 }
