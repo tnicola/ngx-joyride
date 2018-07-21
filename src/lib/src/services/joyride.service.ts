@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { JoyrideStepService } from "./joyride-step.service";
-import { JoyrideOptionsService } from '../services/joyride-options.service';
+import { JoyrideOptionsService } from './joyride-options.service';
 import { JoyrideOptions } from '../models/joyride-options.class';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
 import { JoyrideStepInfo } from '../models/joyride-step-info.class';
 
 @Injectable()

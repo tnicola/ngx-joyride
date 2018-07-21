@@ -1,9 +1,9 @@
 import { Injectable, ComponentRef, ComponentFactory, ComponentFactoryResolver, assertPlatform } from "@angular/core";
 import { JoyrideStep } from "../models/joyride-step.class";
-import { JoyrideBackdropService } from "../services/joyride-backdrop.service";
-import { EventListenerService } from "../services/event-listener.service";
-import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
-import { DocumentService } from "../services/document.service";
+import { JoyrideBackdropService } from "./joyride-backdrop.service";
+import { EventListenerService } from "./event-listener.service";
+import { JoyrideStepsContainerService } from "./joyride-steps-container.service";
+import { DocumentService } from "./document.service";
 import { StepDrawerService } from "./step-drawer.service";
 import { DomRefService } from "./dom.service";
 import { NO_POSITION } from "../directives/joyride.directive";
