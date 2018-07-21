@@ -8,9 +8,9 @@ const devPlugins = [
   // Workaround for angular/angular#11580
   new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)/, path.resolve(__dirname, '../src/demo')),
 
-  new webpack.optimize.CommonsChunkPlugin({
-    name: ['app', 'vendor', 'polyfills']
-  })
+   new webpack.optimize.CommonsChunkPlugin({
+     name: ['app', 'vendor', 'polyfills']
+   })
 
 ];
 
@@ -28,11 +28,11 @@ module.exports = webpackMerge(commonConfig, {
     rules: [
       {
         test: /\.ts$/,
-        use: [
-          {
-            loader: 'awesome-typescript-loader',
-            options: { configFileName: helpers.root('tsconfig.json') }
-          },
+        use: [{
+          loader: 'awesome-typescript-loader',
+          options: { configFileName: helpers.root('tsconfig.json') }
+        },
+          'angular-router-loader',
           'angular2-template-loader'
         ]
       },
