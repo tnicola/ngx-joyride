@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { HomeComponent } from './home.component';
-import { HomeRoutingModule, PageAComponent, PageBComponent } from './home-routing.module';
+import { HomeComponent } from './components/home.component';
+import { HomeRoutingModule, PageAComponent, PageBComponent } from './components/home-routing.module';
 import { JoyrideModule } from 'ngx-joyride';
-import { CustomComponent } from './custom.component';
+import { CustomComponent } from './components/custom.component';
 import { CommonModule } from '@angular/common';
 
 @NgModule({

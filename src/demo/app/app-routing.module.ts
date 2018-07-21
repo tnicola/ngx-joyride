@@ -4,8 +4,8 @@ import { InfoComponent } from './components/info.component';
 import { AboutComponent } from './components/about.component';
 
 const routes: Routes = [
+    { path: 'app', loadChildren: './home.module#HomeModule' },
     { path: '', redirectTo: '/app', pathMatch: 'full' },
-    { path: 'app', loadChildren: './components/home.module#HomeModule'},
     { path: 'info', component: InfoComponent },
     { path: 'about/you', component: AboutComponent }
 ];
