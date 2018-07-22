@@ -39,7 +39,6 @@ export class JoyrideDirective implements AfterViewInit {
     done?: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(
-        private el: ElementRef,
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
         private readonly viewContainerRef: ViewContainerRef,
         private readonly router: Router
