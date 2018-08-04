@@ -68,10 +68,10 @@ export class JoyrideDirective implements AfterViewInit {
     }
 
     private isAncestorsFixed(nativeElement: any): boolean {
+        if(!nativeElement.parentElement) return false;
         let isElementFixed = window.getComputedStyle(nativeElement.parentElement).position === 'fixed';
         if (nativeElement.nodeName === 'BODY') {
-            if (isElementFixed) return true;
-            else return false;
+            return isElementFixed;
         }
         if (isElementFixed) return true;
         else return this.isAncestorsFixed(nativeElement.parentElement);
