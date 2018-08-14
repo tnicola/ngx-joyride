@@ -1,6 +1,6 @@
 {
   "name": "ngx-joyride",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Angular Joyride Library",
   "main": "./bundles/ngx-joyride.umd.js",
   "jsnext:main": "./esm5/ngx-joyride.esm.js",
