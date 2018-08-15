@@ -49,7 +49,9 @@
         padding-left: 8px;
     }
     &__buttons-container {
-        margin-left: auto;
+        display: grid;
+        grid-gap: 5px;
+        grid-template-columns: auto auto;
     }
     &__counter {
         font-weight: bold;
