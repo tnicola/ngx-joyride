@@ -1,9 +1,10 @@
 [![npm version](https://badge.fury.io/js/ngx-joyride.svg)](https://badge.fury.io/js/ngx-joyride)
 [![Build Status](https://travis-ci.org/tnicola/ngx-joyride.svg?branch=master)](https://travis-ci.org/tnicola/ngx-joyride)
-## 💥 New: Angular 6 is fully supported 💥
+
 # Angular Joyride
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
+## 💥 New: Angular 6 is fully supported 💥
 
 <p align="center">
 	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyrideStepExample.PNG" />
