@@ -3,7 +3,7 @@ import { JoyrideStep } from "../../models/joyride-step.class";
 import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET } from "../../services/joyride-step.service";
 import { JoyrideStepsContainerService } from "../../services/joyride-steps-container.service";
 import { EventListenerService } from "../../services/event-listener.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { DocumentService } from "../../services/document.service";
 import { JoyrideOptionsService } from "../../services/joyride-options.service";
 import { Logger } from "../../services/logger.service";

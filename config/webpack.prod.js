@@ -1,20 +1,20 @@
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-const AotPlugin = require('@ngtools/webpack').AotPlugin;
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
 var path = require('path');
 
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 
-const extractSass = new ExtractTextPlugin({
-  filename: "[name].[contenthash].css",
-  disable: process.env.NODE_ENV === "development"
+const extractSass = new MiniCssExtractPlugin({
+  filename: "[name].css",
+  chunkFilename: "[id].css"
 });
 
 const prodPlugins = [
-  new AotPlugin({
+  new AngularCompilerPlugin({
     tsConfigPath: 'tsconfig-aot.json',
     entryModule: path.resolve(__dirname, '../src/demo/app/app.module#AppModule'),
     sourceMap: true,
@@ -25,6 +25,7 @@ const prodPlugins = [
 
 module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
+  mode: 'production',
 
   output: {
     path: helpers.root('dist'),
@@ -42,12 +43,6 @@ module.exports = webpackMerge(commonConfig, {
 
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ // https://github.com/angular/angular/issues/10618
-      mangle: {
-        keep_fnames: true
-      }
-    }),
-    new ExtractTextPlugin('[name].[hash].css'),
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(ENV)

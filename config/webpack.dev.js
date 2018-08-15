@@ -6,16 +6,13 @@ const path = require('path');
 
 const devPlugins = [
   // Workaround for angular/angular#11580
-  new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)/, path.resolve(__dirname, '../src/demo')),
-
-   new webpack.optimize.CommonsChunkPlugin({
-     name: ['app', 'vendor', 'polyfills']
-   })
+  new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)/, path.resolve(__dirname, '../src/demo'))
 
 ];
 
 module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
+  mode: 'development',
 
   output: {
     path: helpers.root('dist'),

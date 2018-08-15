@@ -16,8 +16,10 @@ import { DomRefService } from './services/dom.service';
 import { Logger } from './services/logger.service';
 import { RouterModule } from "@angular/router";
 
+export const routerModuleForChild: ModuleWithProviders = RouterModule.forChild([]);
+
 @NgModule({
-    imports: [CommonModule, RouterModule.forChild([])],
+    imports: [CommonModule, routerModuleForChild],
     declarations: [
         JoyrideDirective,
         JoyrideStepComponent,

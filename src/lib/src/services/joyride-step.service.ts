@@ -9,9 +9,8 @@ import { DomRefService } from "./dom.service";
 import { NO_POSITION } from "../directives/joyride.directive";
 import { JoyrideOptionsService } from "./joyride-options.service";
 import { Router } from '@angular/router';
-import { ReplaySubject } from "rxjs/ReplaySubject";
+import { ReplaySubject, Observable } from "rxjs";
 import { JoyrideStepInfo } from "../models/joyride-step-info.class";
-import { Observable } from "rxjs/Observable";
 
 const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;

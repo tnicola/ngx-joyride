@@ -1,6 +1,6 @@
 {
   "name": "ngx-joyride",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Angular Joyride Library",
   "main": "./bundles/ngx-joyride.umd.js",
   "jsnext:main": "./esm5/ngx-joyride.esm.js",
@@ -22,12 +22,11 @@
     "ui component"
   ],
   "peerDependencies": {
-    "@angular/core": ">=4.0.0 <=5.2.10",
-    "@angular/common": ">=4.0.0 <=5.2.10",
-    "@angular/compiler": ">=4.0.0 <=5.2.10",
-    "@angular/compiler-cli": ">=4.0.0 <=5.2.10",
-    "@angular/router": ">=4.0.0 <=5.2.10",
-    "rxjs": ">=5.0.1",
+    "@angular/core": ">=4.0.0 <8.0.0",
+    "@angular/common": ">=4.0.0 <8.0.0",
+    "@angular/compiler": ">=4.0.0 <8.0.0",
+    "@angular/router": ">=4.0.0 <8.0.0",
+    "rxjs": ">=5.0.0",
     "zone.js": ">=0.8.12"
   }
 }

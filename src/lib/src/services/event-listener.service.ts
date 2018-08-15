@@ -1,5 +1,5 @@
 import { Injectable, Renderer2, RendererFactory2 } from "@angular/core";
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import { DomRefService } from "./dom.service";
 
 export class Scroll {
