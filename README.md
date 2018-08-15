@@ -32,7 +32,8 @@ or
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
-		JoyrideModule,
+    JoyrideModule,
+    RouterModule.forRoot([]),
 		BrowserModule
 	],
 	providers: [],
