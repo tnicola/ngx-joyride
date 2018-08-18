@@ -164,6 +164,7 @@ export class AppComponent {
   }
 }
 ```
+N.B.: Using events is very helpful when your next step is hidden in the DOM. If a step is not visible (e.g. *ngIf='false') you should use the (next) event to make the step somehow findable in the DOM.
 
 ### How to get Multi Pages Joyride navigation
 If your steps are scattered among different pages you can now reach them, just add their name in the `steps` list followed by `@route/to/page`.
