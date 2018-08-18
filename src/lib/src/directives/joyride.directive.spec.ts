@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { RouterFake } from '../test/fake/router-fake.service';
 import { JoyrideError } from '../models/joyride-error.class';
 import { JoyrideStep } from '../models/joyride-step.class';
+import { DomRefService } from '../services/dom.service';
+import { DomRefServiceFake } from '../test/fake/dom-fake.service';
 
 
 @Component({
@@ -21,7 +23,7 @@ import { JoyrideStep } from '../models/joyride-step.class';
     `
 })
 
-class HostComponent { 
+class HostComponent {
     onPrev: jasmine.Spy = jasmine.createSpy("onPrev");
     onNext: jasmine.Spy = jasmine.createSpy("onNext");
     onDone: jasmine.Spy = jasmine.createSpy("onDone");
@@ -54,6 +56,7 @@ describe('JorideDirective', () => {
         TestBed.configureTestingModule({
             declarations: [JoyrideDirective, HostComponent, HostComponentFixed, HostComponentNotFixed],
             providers: [
+                { provide: DomRefService, useClass: DomRefServiceFake },
                 { provide: JoyrideStepsContainerService, useClass: JoyrideStepsContainerServiceFake },
                 { provide: Router, useClass: RouterFake }
             ]

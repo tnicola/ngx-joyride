@@ -1,8 +1,10 @@
-import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit, Input, ViewContainerRef, ViewChild, Renderer2, TemplateRef, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { JoyrideStep } from "../models/joyride-step.class";
 import { JoyrideStepsContainerService } from "../services/joyride-steps-container.service";
 import { JoyrideError } from "../models/joyride-error.class";
 import { Router } from '@angular/router';
+import { DomRefService } from '../services/dom.service';
+import { isPlatformBrowser } from '@angular/common';
 
 export const NO_POSITION = "NO_POSITION";
 
@@ -38,13 +40,22 @@ export class JoyrideDirective implements AfterViewInit {
     @Output()
     done?: EventEmitter<any> = new EventEmitter<any>();
 
+    private windowRef: Window;
+
+
     constructor(
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
         private readonly viewContainerRef: ViewContainerRef,
-        private readonly router: Router
-    ) { }
+        private readonly domService: DomRefService,
+        private readonly router: Router,
+        @Inject(PLATFORM_ID) private platformId: Object
+
+    ) {
+        this.windowRef = this.domService.getNativeWindow()
+    }
 
     ngAfterViewInit() {
+        if (!isPlatformBrowser(this.platformId)) return;
         let step = new JoyrideStep();
         step.position = this.stepPosition;
         step.targetViewContainer = this.viewContainerRef;
@@ -57,19 +68,19 @@ export class JoyrideDirective implements AfterViewInit {
         if (!this.name) throw new JoyrideError("All the steps should have the 'joyrideStep' property set with a custom name.");
         step.name = this.name;
         step.route = this.router.url.substr(0, 1) === '/' ? this.router.url.substr(1) : this.router.url;
-        step.transformCssStyle = window.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
+        step.transformCssStyle = this.windowRef.getComputedStyle(this.viewContainerRef.element.nativeElement).transform;
         step.isElementOrAncestorFixed = this.isElementFixed(this.viewContainerRef.element) || this.isAncestorsFixed(this.viewContainerRef.element.nativeElement.parentElement);
-        
+
         this.joyrideStepsContainer.addStep(step);
     }
 
     private isElementFixed(element: ElementRef) {
-        return window.getComputedStyle(element.nativeElement).position === 'fixed';
+        return this.windowRef.getComputedStyle(element.nativeElement).position === 'fixed';
     }
 
     private isAncestorsFixed(nativeElement: any): boolean {
-        if(!nativeElement.parentElement) return false;
-        let isElementFixed = window.getComputedStyle(nativeElement.parentElement).position === 'fixed';
+        if (!nativeElement.parentElement) return false;
+        let isElementFixed = this.windowRef.getComputedStyle(nativeElement.parentElement).position === 'fixed';
         if (nativeElement.nodeName === 'BODY') {
             return isElementFixed;
         }
