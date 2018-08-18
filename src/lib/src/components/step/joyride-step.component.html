@@ -2,7 +2,7 @@
     <joyride-arrow *ngIf="showArrow" class="joyride-step__arrow" [position]="arrowPosition" [style.top.px]="arrowTopPosition"
         [style.left.px]="arrowLeftPosition"></joyride-arrow>
     <div #stepContainer class="joyride-step__container">
-        <img [src]="closeSvg" class="joyride-step__close" (click)="close()">
+        <joy-close-button class="joyride-step__close" (click)="close()"></joy-close-button>
         <div class="joyride-step__header">
             <div class="joyride-step__title" [style.color]="themeColor">{{ title }}</div>
         </div>

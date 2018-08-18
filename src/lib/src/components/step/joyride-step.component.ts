@@ -7,7 +7,6 @@ import { Subscription } from "rxjs";
 import { DocumentService } from "../../services/document.service";
 import { JoyrideOptionsService } from "../../services/joyride-options.service";
 import { Logger } from "../../services/logger.service";
-import { CLOSE_SVG } from "../assets";
 
 const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
@@ -35,8 +34,6 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     arrowPosition: string;
     arrowLeftPosition: number;
     arrowTopPosition: number;
-    closeSvg = CLOSE_SVG;
-
     title: string;
     text: string;
     counter: string;
