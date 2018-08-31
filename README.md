@@ -73,6 +73,7 @@ stepPosition | No | The position in which the step will be drawn. | 'top', 'righ
 title | No | The step title. | string 
 text |  No | The step text content. | string 
 stepContent | No | An Angular template with custom content | TemplateRef\<any>
+stepContentParams | No | Data object to pass in with Angular template | Object
 
 @Output | Required | Purpose 
 ---- | ---- | ----
@@ -101,6 +102,15 @@ If you'd like to use custom HTML content instead of simple text you can use the 
 <div joyrideStep="step1" [stepContent]="customContent">I'm the target element.</div>
 <ng-template #customContent>
 	... Insert whatever you'd like to ...
+</ng-template>
+ ```
+ 
+### Using Custom Content With Dynamic Data
+If you'd like to pass params to template, use the `stepContentParams` property. Let's see how.
+```html
+<div joyrideStep="step1" [stepContent]="customContent" [stepContentParams]="{'name': 'John'}">I'm the target element.</div>
+<ng-template #customContent let-person="name">
+	Hello {{name}}
 </ng-template>
  ```
 

@@ -8,6 +8,7 @@ export class JoyrideStep {
     title: string;
     text: string;
     stepContent: TemplateRef<any>;
+    stepContentParams: Object;
     nextClicked: EventEmitter<any>;
     prevCliked: EventEmitter<any>;
     tourDone: EventEmitter<any>;
