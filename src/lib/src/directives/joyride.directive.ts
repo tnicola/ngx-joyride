@@ -31,6 +31,9 @@ export class JoyrideDirective implements AfterViewInit {
     @Input()
     stepContent?: TemplateRef<any>;
 
+    @Input()
+    stepContentParams?: Object;
+
     @Output()
     prev?: EventEmitter<any> = new EventEmitter<any>();
 
@@ -62,6 +65,7 @@ export class JoyrideDirective implements AfterViewInit {
         step.text = this.text;
         step.title = this.title;
         step.stepContent = this.stepContent;
+        step.stepContentParams = this.stepContentParams;
         step.nextClicked = this.next;
         step.prevCliked = this.prev;
         step.tourDone = this.done;
