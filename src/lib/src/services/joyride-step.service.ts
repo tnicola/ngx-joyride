@@ -16,8 +16,17 @@ const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;
 export const ARROW_SIZE = 10;
 
+export interface IJoyrideStepService {
+    startTour(): Observable<JoyrideStepInfo>;
+    close(): any;
+    prev(): any;
+    next(): any;
+    isFirstStep(): boolean;
+    isLastStep(): boolean;
+}
+
 @Injectable()
-export class JoyrideStepService {
+export class JoyrideStepService implements IJoyrideStepService {
     private currentStepIndex: number;
     private currentStep: JoyrideStep;
 

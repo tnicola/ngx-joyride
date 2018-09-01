@@ -1,6 +1,6 @@
-import { Component, Input, AfterViewInit, forwardRef, Inject, ViewEncapsulation, OnInit, OnDestroy, ViewContainerRef, ElementRef, ViewChild, Renderer2, Injector, TemplateRef } from "@angular/core";
+import { Component, Input, AfterViewInit, ViewEncapsulation, OnInit, OnDestroy, ViewContainerRef, ElementRef, ViewChild, Renderer2, Injector, TemplateRef, Inject } from "@angular/core";
 import { JoyrideStep } from "../../models/joyride-step.class";
-import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET } from "../../services/joyride-step.service";
+import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET, IJoyrideStepService } from "../../services/joyride-step.service";
 import { JoyrideStepsContainerService } from "../../services/joyride-steps-container.service";
 import { EventListenerService } from "../../services/event-listener.service";
 import { Subscription } from "rxjs";
@@ -48,13 +48,11 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     private stepAbsoluteTop: number;
     private targetWidth: number;
     targetHeight: number;
-    private targetOffsetTop: number;
-    private targetOffsetLeft: number;
     private targetAbsoluteLeft: number;
     private targetAbsoluteTop: number;
 
     private subscriptions: Subscription[] = [];
-    private joyrideStepService: JoyrideStepService;
+    joyrideStepService: IJoyrideStepService;
 
     private positionAlreadyFixed: boolean;
     private documentHeight: number;
@@ -64,20 +62,20 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('stepContainer') stepContainer: ElementRef;
 
     constructor(
-        injector: Injector,
+        private injector: Injector,
         private readonly stepsContainerService: JoyrideStepsContainerService,
         private readonly eventListenerService: EventListenerService,
         private readonly documentService: DocumentService,
-        private readonly viewContainerRef: ViewContainerRef,
         private readonly renderer: Renderer2,
         private readonly logger: Logger,
         private readonly optionsService: JoyrideOptionsService
-    ) {
-        // Need to Inject here otherwise you will obtain a circular dependency
-        this.joyrideStepService = injector.get(JoyrideStepService)
-    }
+    ) { }
 
+    
     ngOnInit(): void {
+        // Need to Inject here otherwise you will obtain a circular dependency
+        this.joyrideStepService = this.injector.get(JoyrideStepService)
+        
         this.documentHeight = this.documentService.getDocumentHeight();
         this.subscriptions.push(this.subscribeToResizeEvents());
         this.title = this.step.title;
@@ -113,14 +111,12 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.renderer.setStyle(this.stepHolder.nativeElement, "transform", this.step.transformCssStyle);
         this.targetWidth = this.step.targetViewContainer.element.nativeElement.getBoundingClientRect().width;
         this.targetHeight = this.step.targetViewContainer.element.nativeElement.getBoundingClientRect().height;
-        this.targetOffsetTop = this.step.targetViewContainer.element.nativeElement.offsetTop;
-        this.targetOffsetLeft = this.step.targetViewContainer.element.nativeElement.offsetLeft;
         this.targetAbsoluteLeft = position === 'fixed' ?
             this.documentService.getElementFixedLeft(this.step.targetViewContainer.element)
             : this.documentService.getElementAbsoluteLeft(this.step.targetViewContainer.element);
         this.targetAbsoluteTop = position === 'fixed' ?
             this.documentService.getElementFixedTop(this.step.targetViewContainer.element)
-            : this.documentService.getElementAbsoluteTop (this.step.targetViewContainer.element);
+            : this.documentService.getElementAbsoluteTop(this.step.targetViewContainer.element);
         this.setStepStyle();
     }
 
