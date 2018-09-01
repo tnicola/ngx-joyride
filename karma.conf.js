@@ -10,7 +10,8 @@ module.exports = function (config) {
         exclude: [
         ],
         preprocessors: {
-            './config/karma-test-shim.js': ['webpack', 'sourcemap']
+            './config/karma-test-shim.js': ['webpack', 'sourcemap'],
+            './src/lib/src/**/*.ts': 'coverage'
         },
         webpack: webpackTest,
         webpackMiddleware: {
@@ -19,7 +20,11 @@ module.exports = function (config) {
         webpackServer: {
             noInfo: true
         },
-        reporters: ['progress', 'kjhtml'],
+        reporters: ['progress', 'kjhtml', 'coverage'],
+        coverageReporter: {
+            type: 'html',
+            dir: 'coverage/'
+        },
         client: { clearContext: false },
         port: 9876,
         colors: true,

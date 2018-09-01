@@ -13,6 +13,16 @@ module.exports = {
     module: {
         rules: [
             {
+                enforce: 'post',
+                test: /\.ts$/,
+                loader: 'istanbul-instrumenter-loader',
+                query: {
+                    esModules: true
+                },
+                include: helpers.root('src', 'lib', 'src'),
+                exclude: /(node_modules|spec\.ts$|fake|class)/,
+            },
+            {
                 test: /\.ts$/,
                 loaders: [
                     {

@@ -1,2 +1,2 @@
-export class JoyrideError extends Error{
+export class JoyrideError extends Error {
 }
