@@ -6,7 +6,7 @@ import { EventListenerService } from "../../services/event-listener.service";
 import { Subscription } from "rxjs";
 import { DocumentService } from "../../services/document.service";
 import { JoyrideOptionsService } from "../../services/joyride-options.service";
-import { Logger } from "../../services/logger.service";
+import { LoggerService } from "../../services/logger.service";
 
 const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
@@ -67,7 +67,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly eventListenerService: EventListenerService,
         private readonly documentService: DocumentService,
         private readonly renderer: Renderer2,
-        private readonly logger: Logger,
+        private readonly logger: LoggerService,
         private readonly optionsService: JoyrideOptionsService
     ) { }
 

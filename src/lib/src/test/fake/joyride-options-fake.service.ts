@@ -10,4 +10,5 @@ export class JoyrideOptionsServiceFake {
     isCounterVisible: jasmine.Spy = jasmine.createSpy("isCounterVisible");
     isPrevButtonVisible: jasmine.Spy = jasmine.createSpy("isPrevButtonVisible");
     getFirstStepRoute: jasmine.Spy = jasmine.createSpy("getFirstStepRoute");
+    getStepsOrder: jasmine.Spy = jasmine.createSpy("getStepsOrder");
 }

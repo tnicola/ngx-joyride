@@ -4,7 +4,7 @@ import { JoyrideOptionsService } from './joyride-options.service';
 const JOYRIDE = 'ngx-joyride:::';
 
 @Injectable()
-export class Logger {
+export class LoggerService {
 
     constructor(private readonly optionService: JoyrideOptionsService) { }
 

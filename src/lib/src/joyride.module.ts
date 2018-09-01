@@ -14,7 +14,7 @@ import { DocumentService } from "./services/document.service";
 import { JoyrideOptionsService } from './services/joyride-options.service';
 import { StepDrawerService } from './services/step-drawer.service';
 import { DomRefService } from './services/dom.service';
-import { Logger } from './services/logger.service';
+import { LoggerService } from './services/logger.service';
 import { RouterModule } from "@angular/router";
 
 export const routerModuleForChild: ModuleWithProviders = RouterModule.forChild([]);
@@ -47,7 +47,7 @@ export class JoyrideModule {
                 JoyrideOptionsService,
                 StepDrawerService,
                 DomRefService,
-                Logger
+                LoggerService
             ]
         }
     }

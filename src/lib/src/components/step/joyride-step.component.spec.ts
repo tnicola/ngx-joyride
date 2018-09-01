@@ -9,7 +9,7 @@ import { EventListenerServiceFake } from '../../test/fake/event-listener-fake.se
 import { DocumentService } from '../../services/document.service';
 import { DocumentServiceFake } from '../../test/fake/document-fake.service';
 import { LoggerFake } from '../../test/fake/logger-fake.service';
-import { Logger } from '../../services/logger.service';
+import { LoggerService } from '../../services/logger.service';
 import { JoyrideOptionsServiceFake } from '../../test/fake/joyride-options-fake.service';
 import { JoyrideStep } from '../../models/joyride-step.class';
 import { JoyrideOptionsService } from '../../services/joyride-options.service';
@@ -97,7 +97,7 @@ describe("JoyrideStepComponent", () => {
                 { provide: JoyrideStepsContainerService, useClass: JoyrideStepsContainerServiceFake },
                 { provide: EventListenerService, useClass: EventListenerServiceFake },
                 { provide: DocumentService, useClass: DocumentServiceFake },
-                { provide: Logger, useClass: LoggerFake },
+                { provide: LoggerService, useClass: LoggerFake },
                 { provide: JoyrideOptionsService, useClass: JoyrideOptionsServiceFake },
                 { provide: JoyrideStepService, useClass: JoyrideStepFakeService }
             ]

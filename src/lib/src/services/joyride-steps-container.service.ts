@@ -72,7 +72,7 @@ export class JoyrideStepsContainerService {
     }
 
     private getStepIndex(step: JoyrideStep) {
-        return this.steps.indexOf(step);
+        return this.steps.findIndex((s) => step.name + step.route === s.name + s.route);
     }
 
     private getStepName(stepID: string): string {
