@@ -8,7 +8,9 @@ describe("JoyrideStepsContainerService", () => {
 
     let joyrideOptionsService: JoyrideOptionsServiceFake;
     let joyrideStepsContainerService: JoyrideStepsContainerService;
-    let STEP1, STEP2, STEP3: JoyrideStep;
+    let STEP1: JoyrideStep;
+    let STEP2: JoyrideStep;
+    let STEP3: JoyrideStep;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
