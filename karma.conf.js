@@ -22,7 +22,7 @@ module.exports = function (config) {
         },
         reporters: ['progress', 'kjhtml', 'coverage'],
         coverageReporter: {
-            type: 'lcov',
+            type: 'json',
             dir: 'coverage/'
         },
         client: { clearContext: false },
@@ -37,6 +37,9 @@ module.exports = function (config) {
                 flags: ['--no-sandbox']
             }
         },
+        plugins: [
+            'karma-coverage',
+        ],
         singleRun: false
     }
     if (process.env.TRAVIS) {

@@ -6,6 +6,10 @@ node_js:
 sudo: required
 addons:
   chrome: stable
+
+env:
+  global:
+    - CODECOV_TOKEN="38702dcb-0848-4a8a-a1d3-f97f0197a193"
   
 before_install: 
   - npm i -g npm@5.8.0
