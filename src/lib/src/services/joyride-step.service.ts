@@ -1,4 +1,4 @@
-import { Injectable, ComponentRef, ComponentFactory, ComponentFactoryResolver, assertPlatform } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { JoyrideStep } from "../models/joyride-step.class";
 import { JoyrideBackdropService } from "./joyride-backdrop.service";
 import { EventListenerService } from "./event-listener.service";
@@ -35,7 +35,6 @@ export class JoyrideStepService implements IJoyrideStepService {
     private stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly backDropService: JoyrideBackdropService,
         private readonly eventListener: EventListenerService,
         private readonly stepsContainerService: JoyrideStepsContainerService,

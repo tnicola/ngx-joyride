@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef, Renderer2, ElementRef, ViewContainerRef, Type } from '@angular/core';
+import { Component, ViewChild, TemplateRef, ElementRef, ViewContainerRef, Type } from '@angular/core';
 import { TestBed, async, ComponentFixture, } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { JoyrideStepComponent } from './joyride-step.component';
@@ -18,6 +18,7 @@ import { JoyrideButtonComponent } from '../button/button.component';
 import { JoyrideCloseButtonComponent } from '../close-button/close-button.component';
 import { JoyrideStepService } from '../../services/joyride-step.service';
 import { JoyrideStepFakeService } from '../../test/fake/joyride-step-fake.service';
+import { FakeElementRef, FakeViewContainerRef } from '../../test/fake/dom-elements-fake.class';
 
 @Component({
     selector: 'host',
@@ -40,35 +41,6 @@ class HostComponent {
 
 }
 
-class FakeElementRef implements ElementRef {
-    nativeElement: any;
-    constructor() {
-        this.nativeElement = {
-            getBoundingClientRect: () => { return { width: 10, height: 15 } }
-        };
-    }
-
-}
-
-class FakeViewContainerRef implements ViewContainerRef {
-    element: ElementRef<any>;
-    injector: any;
-    parentInjector: any;
-    move: jasmine.Spy = jasmine.createSpy("move");
-    clear: jasmine.Spy = jasmine.createSpy("clear");
-    insert: jasmine.Spy = jasmine.createSpy("insert");
-    get: jasmine.Spy = jasmine.createSpy("get");
-    createEmbeddedView: jasmine.Spy = jasmine.createSpy("createEmbeddedView");
-    createComponent: jasmine.Spy = jasmine.createSpy("createComponent");
-    length: number;
-    remove: jasmine.Spy = jasmine.createSpy("remove");
-    indexOf: jasmine.Spy = jasmine.createSpy("indexOf");
-    detach: jasmine.Spy = jasmine.createSpy("detach");
-    constructor(elemRef: FakeElementRef) {
-        this.element = elemRef;
-    }
-
-}
 
 
 describe("JoyrideStepComponent", () => {

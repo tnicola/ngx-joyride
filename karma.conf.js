@@ -22,7 +22,7 @@ module.exports = function (config) {
         },
         reporters: ['progress', 'kjhtml', 'coverage'],
         coverageReporter: {
-            type: 'html',
+            type: 'lcov',
             dir: 'coverage/'
         },
         client: { clearContext: false },
@@ -37,7 +37,6 @@ module.exports = function (config) {
                 flags: ['--no-sandbox']
             }
         },
-
         singleRun: false
     }
     if (process.env.TRAVIS) {

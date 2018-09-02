@@ -7,9 +7,14 @@ sudo: required
 addons:
   chrome: stable
   
-before_install: npm i -g npm@5.8.0
+before_install: 
+  - npm i -g npm@5.8.0
+  - npm install codecov -g
 
 script:
   - npm run test
   - npm run build:aot
   - npm run build:lib
+
+after_success:
+  - codecov

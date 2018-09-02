@@ -1,4 +1,4 @@
-import { Injectable, Renderer2, ElementRef, RendererFactory2, ViewContainerRef } from "@angular/core";
+import { Injectable, Renderer2, ElementRef, RendererFactory2, ViewContainerRef, RendererType2 } from "@angular/core";
 import { DocumentService } from "./document.service";
 import { Scroll } from "./event-listener.service";
 import { JoyrideOptionsService } from "./joyride-options.service";
@@ -26,9 +26,13 @@ export class JoyrideBackdropService {
     constructor(
         private readonly documentService: DocumentService,
         private readonly optionsService: JoyrideOptionsService,
-        rendererFactory: RendererFactory2
+        private readonly rendererFactory: RendererFactory2
     ) {
-        this.renderer = rendererFactory.createRenderer(null, null);
+         this.setRenderer()
+    }
+
+    private setRenderer() {
+        this.renderer = this.rendererFactory.createRenderer(null, null);
     }
 
     show(step: JoyrideStep) {
