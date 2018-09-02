@@ -47,6 +47,7 @@
     "angular-router-loader": "^0.8.5",
     "angular2-template-loader": "0.6.2",
     "awesome-typescript-loader": "5.2.0",
+    "codecov": "^3.0.4",
     "codecov.io": "^0.1.6",
     "css-loader": "0.28.7",
     "del": "2.2.2",
