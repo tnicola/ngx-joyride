@@ -113,8 +113,8 @@ describe("JoyrideStepService", () => {
             tick(1);
             joyrideStepService.close();
         }));
-        it("should call backDropService.hide", () => {
-            expect(backdropService.hide).toHaveBeenCalled();
+        it("should call backDropService.remove", () => {
+            expect(backdropService.remove).toHaveBeenCalled();
         })
         it("should remove the step calling stepDrawerService.remove", () => {
             expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
@@ -148,13 +148,10 @@ describe("JoyrideStepService", () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
             tick(1);
-            backdropService.show.calls.reset();
+            backdropService.draw.calls.reset();
             joyrideStepService.next();
             tick(1);
         }));
-        it("should call backDropService.hide", () => {
-            expect(backdropService.hide).toHaveBeenCalled();
-        })
         it("should remove the step calling stepDrawerService.remove", () => {
             expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
             expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP0);
@@ -167,9 +164,9 @@ describe("JoyrideStepService", () => {
             tick(1);
             expect(stepsContainerService.get).toHaveBeenCalledWith(2);
         }));
-        it("should call backDropService.show", () => {
-            expect(backdropService.show).toHaveBeenCalledTimes(1)
-            expect(backdropService.show).toHaveBeenCalledWith(STEP1);
+        it("should call backDropService.draw", () => {
+            expect(backdropService.draw).toHaveBeenCalledTimes(1)
+            expect(backdropService.draw).toHaveBeenCalledWith(STEP1);
         });
 
     });
@@ -180,7 +177,7 @@ describe("JoyrideStepService", () => {
         }));
         describe("on the first step", () => {
             beforeEach(() => {
-                backdropService.show.calls.reset();
+                backdropService.draw.calls.reset();
                 joyrideStepService.prev();
             });
         });
@@ -188,15 +185,12 @@ describe("JoyrideStepService", () => {
             beforeEach(fakeAsync(() => {
                 joyrideStepService.next();
                 tick(1);
-                backdropService.show.calls.reset();
+                backdropService.draw.calls.reset();
                 stepsContainerService.get.calls.reset();
                 stepDrawerService.remove.calls.reset();
                 joyrideStepService.prev();
                 tick(1);
             }));
-            it("should call backDropService.hide", () => {
-                expect(backdropService.hide).toHaveBeenCalled();
-            })
             it("should remove the step calling stepDrawerService.remove", () => {
                 expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
                 expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP1);
@@ -210,9 +204,9 @@ describe("JoyrideStepService", () => {
                 tick(1);
                 expect(stepsContainerService.get).toHaveBeenCalledWith(-1);
             }));
-            it("should call backDropService.show", () => {
-                expect(backdropService.show).toHaveBeenCalledTimes(1)
-                expect(backdropService.show).toHaveBeenCalledWith(STEP0);
+            it("should call backDropService.draw", () => {
+                expect(backdropService.draw).toHaveBeenCalledTimes(1)
+                expect(backdropService.draw).toHaveBeenCalledWith(STEP0);
             })
         })
     });

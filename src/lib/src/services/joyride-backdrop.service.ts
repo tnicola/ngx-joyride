@@ -8,7 +8,8 @@ import { JoyrideStep } from "../models/joyride-step.class";
 export class JoyrideBackdropService {
 
     private renderer: Renderer2;
-    private backdropContainer: any;
+    private currentBackdropContainer: any;
+    private lastBackdropContainer: any;
     private backdropContent: any;
     private backdropTop: any;
     private backdropBottom: any;
@@ -28,28 +29,27 @@ export class JoyrideBackdropService {
         private readonly optionsService: JoyrideOptionsService,
         private readonly rendererFactory: RendererFactory2
     ) {
-         this.setRenderer()
+        this.setRenderer()
     }
 
     private setRenderer() {
         this.renderer = this.rendererFactory.createRenderer(null, null);
     }
 
-    show(step: JoyrideStep) {
+    draw(step: JoyrideStep) {
 
         this.elementRef = step.targetViewContainer;
         this.targetAbsoluteTop = this.getTargetTotalTop(step);
         this.targetAbsoluteLeft = this.getTargetTotalLeft(step);
 
-        this.backdropContainer = this.renderer.createElement('div');
-        this.renderer.addClass(this.backdropContainer, "backdrop-container");
-        this.renderer.setStyle(this.backdropContainer, "position", "fixed");
-        this.renderer.setStyle(this.backdropContainer, "top", "0px");
-        this.renderer.setStyle(this.backdropContainer, "left", "0px");
-        this.renderer.setStyle(this.backdropContainer, "width", "100%");
-        this.renderer.setStyle(this.backdropContainer, "height", "100%");
-        this.renderer.setStyle(this.backdropContainer, "z-index", "1000");
-        this.renderer.appendChild(document.body, this.backdropContainer);
+        this.currentBackdropContainer = this.renderer.createElement('div');
+        this.renderer.addClass(this.currentBackdropContainer, "backdrop-container");
+        this.renderer.setStyle(this.currentBackdropContainer, "position", "fixed");
+        this.renderer.setStyle(this.currentBackdropContainer, "top", "0px");
+        this.renderer.setStyle(this.currentBackdropContainer, "left", "0px");
+        this.renderer.setStyle(this.currentBackdropContainer, "width", "100%");
+        this.renderer.setStyle(this.currentBackdropContainer, "height", "100%");
+        this.renderer.setStyle(this.currentBackdropContainer, "z-index", "1000");
 
         this.backdropContent = this.renderer.createElement('div');
         this.renderer.addClass(this.backdropContent, "backdrop-content");
@@ -57,7 +57,7 @@ export class JoyrideBackdropService {
         this.renderer.setStyle(this.backdropContent, "height", "100%");
         this.renderer.setStyle(this.backdropContent, "display", "flex");
         this.renderer.setStyle(this.backdropContent, "flex-direction", "column");
-        this.renderer.appendChild(this.backdropContainer, this.backdropContent);
+        this.renderer.appendChild(this.currentBackdropContainer, this.backdropContent);
 
         this.backdropTop = this.renderer.createElement('div');
         this.renderer.addClass(this.backdropTop, "joyride-backdrop");
@@ -111,11 +111,13 @@ export class JoyrideBackdropService {
         this.renderer.setStyle(this.backdropBottom, "background-color", `rgba(${this.optionsService.getBackdropColor()}, 0.7)`);
         this.renderer.appendChild(this.backdropContent, this.backdropBottom);
 
+        this.removeLastBackdrop();
+        this.drawCurrentBackdrop();
+        this.lastBackdropContainer = this.currentBackdropContainer;
     }
 
-    hide() {
-        this.removeBackdrop();
-        this.elementRef = undefined;
+    remove() {
+        this.removeLastBackdrop();
     }
 
     redrawTarget(step: JoyrideStep) {
@@ -205,7 +207,14 @@ export class JoyrideBackdropService {
         }
     }
 
-    private removeBackdrop() {
-        this.renderer.removeChild(document.body, this.backdropContainer);
+    private removeLastBackdrop() {
+        if (this.lastBackdropContainer) {
+            this.renderer.removeChild(document.body, this.lastBackdropContainer);
+            this.lastBackdropContainer = undefined;
+        }
+    }
+
+    private drawCurrentBackdrop() {
+        this.renderer.appendChild(document.body, this.currentBackdropContainer);
     }
 }

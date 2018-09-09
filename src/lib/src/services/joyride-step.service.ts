@@ -90,6 +90,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.notifyTourIsFinished();
         this.DOMService.getNativeWindow().scrollTo(0, 0);
         this.eventListener.stopListeningResizeEvents();
+        this.backDropService.remove();
     }
 
     prev() {
@@ -135,7 +136,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         setTimeout(() => {
             this.stepsContainerService.initSteps();
             this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
-            this.backDropService.show(this.currentStep);
+            this.backDropService.draw(this.currentStep);
             this.drawStep(this.currentStep);
             this.scrollIfTargetNotVisible();
             this.notifyStepClicked(action)
@@ -158,7 +159,6 @@ export class JoyrideStepService implements IJoyrideStepService {
     }
 
     private removeCurrentStep() {
-        this.backDropService.hide();
         this.stepDrawerService.remove(this.currentStep);
     }
 

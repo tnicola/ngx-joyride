@@ -36,9 +36,9 @@ describe("JoyrideBackdropService", () => {
 
     });
 
-    describe("show()", () => {
+    describe("draw()", () => {
         it("should create a backdrop-container", () => {
-            backdropService.show(STEP);
+            backdropService.draw(STEP);
 
             let backdropContainer = document.getElementsByClassName('backdrop-container')[0]; 
             let styles = window.getComputedStyle(backdropContainer);
@@ -51,7 +51,7 @@ describe("JoyrideBackdropService", () => {
         });
         
         it("should create a backdrop-content", () => {
-            backdropService.show(STEP);
+            backdropService.draw(STEP);
 
             let backdropContent = document.getElementsByClassName('backdrop-content')[0]; 
             let styles = window.getComputedStyle(backdropContent);
@@ -63,7 +63,20 @@ describe("JoyrideBackdropService", () => {
         });
 
         it("should create a backdrop-middle-container", () => {
-            backdropService.show(STEP);
+            backdropService.draw(STEP);
+
+            let backdropMiddleContainer = document.getElementsByClassName('backdrop-middle-container')[0]; 
+            let styles = window.getComputedStyle(backdropMiddleContainer);
+            
+            expect(backdropMiddleContainer).not.toBe(null);
+            expect(styles.height).toBe('34px');
+            expect(styles.getPropertyValue('flex-shrink')).toBe('0');
+        });
+
+        it("should draw again if I call draw(), remove() and then draw()", () => {
+            backdropService.draw(STEP);
+            backdropService.remove();
+            backdropService.draw(STEP);
 
             let backdropMiddleContainer = document.getElementsByClassName('backdrop-middle-container')[0]; 
             let styles = window.getComputedStyle(backdropMiddleContainer);
