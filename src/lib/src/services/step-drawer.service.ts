@@ -1,11 +1,11 @@
-import { Injectable, ComponentFactory, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ApplicationRef, Injector, EmbeddedViewRef } from '@angular/core';
+import { Injectable, ComponentRef, ComponentFactoryResolver, ApplicationRef, Injector, EmbeddedViewRef } from '@angular/core';
 import { JoyrideStepComponent } from "../components/step/joyride-step.component";
 import { JoyrideStep } from '../models/joyride-step.class';
 
 @Injectable()
 export class StepDrawerService {
 
-    mappa: { [key: string]: ComponentRef<JoyrideStepComponent>; } = {};
+    private refMap: { [key: string]: ComponentRef<JoyrideStepComponent>; } = {};
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
@@ -14,7 +14,6 @@ export class StepDrawerService {
     ) { }
 
     draw(step: JoyrideStep) {
-        const factory: ComponentFactory<JoyrideStepComponent> = this.componentFactoryResolver.resolveComponentFactory(JoyrideStepComponent);
 
         // 1. Create a component reference from the component 
         const ref: ComponentRef<JoyrideStepComponent> = this.componentFactoryResolver
@@ -36,13 +35,13 @@ export class StepDrawerService {
         ref.changeDetectorRef.detectChanges();
         step.stepInstance = instance;
 
-        this.mappa[step.name] = ref;
+        this.refMap[step.name] = ref;
 
     }
 
     remove(step: JoyrideStep) {
-        this.appRef.detachView(this.mappa[step.name].hostView);
-        this.mappa[step.name].destroy();
+        this.appRef.detachView(this.refMap[step.name].hostView);
+        this.refMap[step.name].destroy();
     }
 
 }
