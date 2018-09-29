@@ -7,6 +7,7 @@ import { Subscription } from "rxjs";
 import { DocumentService } from "../../services/document.service";
 import { JoyrideOptionsService } from "../../services/joyride-options.service";
 import { LoggerService } from "../../services/logger.service";
+import { TemplatesService } from "../../services/templates.service";
 
 const STEP_MIN_WIDTH = 200;
 const STEP_MAX_WIDTH = 400;
@@ -41,6 +42,11 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     isPrevButtonVisible: boolean;
     themeColor: string;
     customContent: TemplateRef<any>;
+    customPrevButton: TemplateRef<any>;
+    customNextButton: TemplateRef<any>;
+    customDoneButton: TemplateRef<any>;
+    customCounter: TemplateRef<any>;
+    counterData: any;
     ctx: Object;
 
     private arrowSize: number = ARROW_SIZE;
@@ -68,20 +74,22 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly documentService: DocumentService,
         private readonly renderer: Renderer2,
         private readonly logger: LoggerService,
-        private readonly optionsService: JoyrideOptionsService
+        private readonly optionsService: JoyrideOptionsService,
+        private readonly templateService: TemplatesService
     ) { }
 
-    
+
     ngOnInit(): void {
         // Need to Inject here otherwise you will obtain a circular dependency
         this.joyrideStepService = this.injector.get(JoyrideStepService)
-        
+
         this.documentHeight = this.documentService.getDocumentHeight();
         this.subscriptions.push(this.subscribeToResizeEvents());
         this.title = this.step.title;
         this.text = this.step.text;
-        this.customContent = this.step.stepContent;
-        this.ctx = this.step.stepContentParams;
+
+        this.setCustomTemplates()
+
         this.counter = this.getCounter();
         this.isCounterVisible = this.optionsService.isCounterVisible();
         this.isPrevButtonVisible = this.optionsService.isPrevButtonVisible();
@@ -123,7 +131,17 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     private getCounter(): string {
         let stepPosition = this.stepsContainerService.getStepPosition(this.step);
         let numberOfSteps = this.stepsContainerService.getNumberOfSteps();
+        this.counterData = { step: stepPosition, total: numberOfSteps };
         return stepPosition + '/' + numberOfSteps;
+    }
+
+    private setCustomTemplates() {
+        this.customContent = this.step.stepContent;
+        this.ctx = this.step.stepContentParams;
+        this.customPrevButton = this.templateService.getPrevButton();
+        this.customNextButton = this.templateService.getNextButton();
+        this.customDoneButton = this.templateService.getDoneButton();
+        this.customCounter = this.templateService.getCounter();
     }
 
     prev() {

@@ -5,6 +5,7 @@ import { JoyrideError } from "../models/joyride-error.class";
 import { Router } from '@angular/router';
 import { DomRefService } from '../services/dom.service';
 import { isPlatformBrowser } from '@angular/common';
+import { TemplatesService } from '../services/templates.service';
 
 export const NO_POSITION = "NO_POSITION";
 
@@ -34,6 +35,18 @@ export class JoyrideDirective implements AfterViewInit {
     @Input()
     stepContentParams?: Object;
 
+    @Input()
+    prevTemplate?: TemplateRef<any>;
+    
+    @Input()
+    nextTemplate?: TemplateRef<any>;
+
+    @Input()
+    doneTemplate?: TemplateRef<any>;
+
+    @Input()
+    counterTemplate?: TemplateRef<any>;
+
     @Output()
     prev?: EventEmitter<any> = new EventEmitter<any>();
 
@@ -51,6 +64,7 @@ export class JoyrideDirective implements AfterViewInit {
         private readonly viewContainerRef: ViewContainerRef,
         private readonly domService: DomRefService,
         private readonly router: Router,
+        private readonly templateService: TemplatesService,
         @Inject(PLATFORM_ID) private platformId: Object
 
     ) {
@@ -59,6 +73,10 @@ export class JoyrideDirective implements AfterViewInit {
 
     ngAfterViewInit() {
         if (!isPlatformBrowser(this.platformId)) return;
+        if (this.prevTemplate) this.templateService.setPrevButton(this.prevTemplate);
+        if (this.nextTemplate) this.templateService.setNextButton(this.nextTemplate);
+        if (this.doneTemplate) this.templateService.setDoneButton(this.doneTemplate);
+        if (this.counterTemplate) this.templateService.setCounter(this.counterTemplate);
         let step = new JoyrideStep();
         step.position = this.stepPosition;
         step.targetViewContainer = this.viewContainerRef;
