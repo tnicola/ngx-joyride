@@ -1,6 +1,5 @@
-import { Component, OnInit, AfterViewInit, ElementRef, Injector, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { JoyrideService } from 'ngx-joyride';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'home',
@@ -13,16 +12,13 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
     title: string = "ngx-joyride library demo";
     constructor(
-        private readonly joyrideService: JoyrideService,
-        private router: Router
+        private readonly joyrideService: JoyrideService
     ) { }
 
     ngAfterViewInit(): void {
-        //this.startTour();
     }
 
     ngOnInit(): void {
-        //this.startTour();
     }
 
     toggleAction() {
