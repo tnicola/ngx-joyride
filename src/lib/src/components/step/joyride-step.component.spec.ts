@@ -19,6 +19,8 @@ import { JoyrideCloseButtonComponent } from '../close-button/close-button.compon
 import { JoyrideStepService } from '../../services/joyride-step.service';
 import { JoyrideStepFakeService } from '../../test/fake/joyride-step-fake.service';
 import { FakeElementRef, FakeViewContainerRef } from '../../test/fake/dom-elements-fake.class';
+import { TemplatesService } from '../../services/templates.service';
+import { TemplatesFakeService } from '../../test/fake/templates-fake.service';
 
 @Component({
     selector: 'host',
@@ -71,7 +73,8 @@ describe("JoyrideStepComponent", () => {
                 { provide: DocumentService, useClass: DocumentServiceFake },
                 { provide: LoggerService, useClass: LoggerFake },
                 { provide: JoyrideOptionsService, useClass: JoyrideOptionsServiceFake },
-                { provide: JoyrideStepService, useClass: JoyrideStepFakeService }
+                { provide: JoyrideStepService, useClass: JoyrideStepFakeService },
+                { provide: TemplatesService, useClass: TemplatesFakeService }
             ]
         }).compileComponents();
     }));

@@ -10,6 +10,8 @@ import { JoyrideError } from '../models/joyride-error.class';
 import { JoyrideStep } from '../models/joyride-step.class';
 import { DomRefService } from '../services/dom.service';
 import { DomRefServiceFake } from '../test/fake/dom-fake.service';
+import { TemplatesService } from '../services/templates.service';
+import { TemplatesFakeService } from '../test/fake/templates-fake.service';
 
 
 @Component({
@@ -58,7 +60,8 @@ describe('JorideDirective', () => {
             providers: [
                 { provide: DomRefService, useClass: DomRefServiceFake },
                 { provide: JoyrideStepsContainerService, useClass: JoyrideStepsContainerServiceFake },
-                { provide: Router, useClass: RouterFake }
+                { provide: Router, useClass: RouterFake },
+                { provide: TemplatesService, useClass: TemplatesFakeService }
             ]
 
         }).compileComponents();
