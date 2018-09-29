@@ -4,9 +4,32 @@ import { NgModule, Component } from "@angular/core";
 
 @Component({
     selector: 'sel-a',
-    template: '<div joyrideStep="myStep">Route A</div><div>Route A subtitle</div>'
+    template: `<div joyrideStep="myStep" 
+                    title="Title 1"
+                    text="Prova"
+                    [prevTemplate]="prev" 
+                    [nextTemplate]="next" 
+                    [doneTemplate]="done"
+                    [counterTemplate]="counter">
+                Route A
+                </div>
+                <ng-template #prev>
+                    <button>Previous</button>
+                </ng-template>
+                <ng-template #next>
+                    <button>Next</button>
+                </ng-template>
+                <ng-template #done>
+                    <button>Done</button>
+                </ng-template>
+                <ng-template #counter let-step="step" let-total="total">
+                     {{ step }} of {{ total }} steps
+                </ng-template>
+            <div>Route A subtitle</div>`
 })
-export class PageAComponent { }
+export class PageAComponent {
+    text = 'Mike';
+ }
 
 @Component({
     selector: 'sel-b',
@@ -19,8 +42,7 @@ export class PageBComponent {
     };
  }
 
-
-const routes: Routes = [
+ const routes: Routes = [
     {
         path: '',
         component: HomeComponent
