@@ -97,7 +97,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        if (this.step.stepContent) {
+        if (this.isCustomized()) {
             this.stepWidth = this.stepContainer.nativeElement.clientWidth;
             this.stepHeight = this.stepContainer.nativeElement.clientHeight;
         }
@@ -111,6 +111,14 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
             this.renderer.setStyle(this.stepContainer.nativeElement, "height", this.stepHeight + 'px');
         }
         this.drawStep();
+    }
+
+    private isCustomized() {
+        return this.step.stepContent
+            || this.templateService.getCounter()
+            || this.templateService.getPrevButton()
+            || this.templateService.getNextButton()
+            || this.templateService.getDoneButton()
     }
 
     private drawStep() {
