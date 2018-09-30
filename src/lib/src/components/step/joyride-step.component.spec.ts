@@ -26,11 +26,13 @@ import { TemplatesFakeService } from '../../test/fake/templates-fake.service';
     selector: 'host',
     template: `
     <div #elem>Element</div>
+    <div #customTemplate>Template</div>
     <joyride-step ></joyride-step>`
 })
 class HostComponent {
 
     @ViewChild('elem') element: TemplateRef<any>;
+    @ViewChild('customTemplate') customTemplate: TemplateRef<any>;
 
     color: string;
     onClick: jasmine.Spy = jasmine.createSpy("onClick");
@@ -54,8 +56,10 @@ describe("JoyrideStepComponent", () => {
     let optionsService: JoyrideOptionsServiceFake;
     let joyrideStepService: JoyrideStepFakeService = new JoyrideStepFakeService();
     let documentService: DocumentServiceFake;
+    let templatesService: TemplatesFakeService;
     let STEP: JoyrideStep;
     let STEP_CONTAINER: ElementRef;
+    let TEMPLATE: TemplateRef<any>;
 
 
     beforeEach(async(() => {
@@ -87,6 +91,7 @@ describe("JoyrideStepComponent", () => {
         stepsContainerService = TestBed.get(JoyrideStepsContainerService);
         optionsService = TestBed.get(JoyrideOptionsService);
         documentService = TestBed.get(DocumentService);
+        templatesService = TestBed.get(TemplatesService);
     });
 
     describe("ngOnInit", () => {
@@ -97,6 +102,10 @@ describe("JoyrideStepComponent", () => {
             STEP.stepContent = hostComponent.element;
             STEP.stepContentParams = { param1: 'name', param2: 'surname' };
             component.step = STEP;
+            templatesService.getPrevButton.and.returnValue(TEMPLATE);
+            templatesService.getNextButton.and.returnValue(TEMPLATE);
+            templatesService.getDoneButton.and.returnValue(TEMPLATE);
+            templatesService.getCounter.and.returnValue(TEMPLATE);
         });
 
         it("should call documentService", () => {
@@ -121,6 +130,30 @@ describe("JoyrideStepComponent", () => {
             component.ngOnInit();
 
             expect(component.customContent).toBe(STEP.stepContent);
+        });
+
+        it("should set the customPrevButton template of the step", () => {
+            component.ngOnInit();
+
+            expect(component.customPrevButton).toBe(TEMPLATE);
+        });
+
+        it("should set the customNextButton template of the step", () => {
+            component.ngOnInit();
+
+            expect(component.customNextButton).toBe(TEMPLATE);
+        });
+
+        it("should set the customDoneButton template of the step", () => {
+            component.ngOnInit();
+
+            expect(component.customDoneButton).toBe(TEMPLATE);
+        });
+
+        it("should set the customCounter template of the step", () => {
+            component.ngOnInit();
+
+            expect(component.customCounter).toBe(TEMPLATE);
         });
 
         it("should set the ctx of the step", () => {
