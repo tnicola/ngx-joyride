@@ -63,6 +63,8 @@ export class AppComponent {
 
 ```
   #### 4. En-joy :wink:
+
+# API reference
   
 ## Directive Inputs/Outputs
 You can use the `joyrideStep` directive with these inputs:
@@ -73,8 +75,12 @@ joyrideStep | Yes | The step name, it should be unique. | string |
 stepPosition | No | The position in which the step will be drawn. | 'top', 'right', 'bottom', 'left', 'center'
 title | No | The step title. | string 
 text |  No | The step text content. | string 
-stepContent | No | An Angular template with custom content | TemplateRef\<any>
+stepContent | No | An Angular template with custom content. | TemplateRef\<any>
 stepContentParams | No | Data object to pass in with Angular template | Object
+prevTemplate | No | An Angular template with a custom prev button. | TemplateRef\<any> 
+nextTemplate | No | An Angular template with a custom next button.  | TemplateRef\<any> 
+doneTemplate | No | An Angular template with a custom done button.  | TemplateRef\<any> 
+counterTemplate | No | An Angular template with a custom counter component. | TemplateRef\<any> 
 
 @Output | Required | Purpose 
 ---- | ---- | ----
@@ -96,8 +102,16 @@ logsEnabled | No | Enable logs to see info about the library status. Usuful to g
 
 You can change each element step css overriding the default style.
 
-## How tos
-### Using Custom Content
+# How tos
+* [Use Custom Content](#use-custom-content)
+* [Use Custom Content With Dynamic Data](#use-custom-content-with-dynamic-data)
+* [Use custom buttons and/or counter](#use-custom-buttons-and/or-counter)
+* [Set the options](#set-the-options)
+* [Listen for events](#listen-for-events)
+* [Multi Pages navigation](#get-multi-pages-navigation)
+
+
+### Use Custom Content
 If you'd like to use custom HTML content instead of simple text you can use the `stepContent` property instead of `text`. Let's see how.
 ```html
 <div joyrideStep="step1" [stepContent]="customContent">I'm the target element.</div>
@@ -106,7 +120,7 @@ If you'd like to use custom HTML content instead of simple text you can use the 
 </ng-template>
  ```
  
-### Using Custom Content With Dynamic Data
+### Use Custom Content With Dynamic Data
 If you'd like to pass params to template, use the `stepContentParams` property. Let's see how.
 ```html
 <div joyrideStep="step1" [stepContent]="customContent" [stepContentParams]="{'name': 'John'}">I'm the target element.</div>
@@ -115,7 +129,34 @@ If you'd like to pass params to template, use the `stepContentParams` property. 
 </ng-template>
  ```
 
-### How to set the options
+### Use custom buttons and/or counter
+If you'd like to customize the next, prev and done button or you want to use your own counter component, you can:
+
+**Important**: These inputs should be used just once, in the first step of your tour.
+
+```html
+<div joyrideStep="step1" 
+     [prevTemplate]="prevButton" 
+     [nextTemplate]="nextButton"
+     [doneTemplate]="doneButton"
+     [counterTemplate]="counter">
+     I'm the target element.</div>
+    <ng-template #prevButton>
+       <my-button>Go back!</my-button>
+    </ng-template>
+    <ng-template #nextButton>
+       <my-button>Go ahead!</my-button>
+    </ng-template>
+    <ng-template #doneButton>
+       <my-button>Complete</my-button>
+    </ng-template>
+    <ng-template #counter let-step="step" let-total="total">
+       {{ step }} of {{ total }} steps
+    </ng-template>
+ ```
+  N.B.: The counter template has 2 parameters, `step` represents the current step number, `total` is the total number of steps.
+
+### Set the options
 ```typescript
 this.joyrideService.startTour({
     steps: ['step1', 'my-step@home', 'lastStep@home']
@@ -125,7 +166,7 @@ this.joyrideService.startTour({
 });
  ```
 
-### How to listen for events
+### Listen for events
 **Mode 1: Using directive output events**
 ```typescript
 @Component({
@@ -175,9 +216,9 @@ export class AppComponent {
   }
 }
 ```
-N.B.: Using events is very helpful when your next step is hidden in the DOM. If a step is not visible (e.g. *ngIf='false') you should use the (next) event to make the step somehow findable in the DOM.
+N.B.: Using events is very helpful when your next target is hidden in the DOM. If a target is not visible (e.g. *ngIf='false') you should use the (next) event to make the target somehow findable in the DOM.
 
-### How to get Multi Pages Joyride navigation
+### Get Multi Pages navigation
 If your steps are scattered among different pages you can now reach them, just add their name in the `steps` list followed by `@route/to/page`.
 
 Lets suppose you have three steps: 
