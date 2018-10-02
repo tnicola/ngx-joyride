@@ -26,7 +26,7 @@ describe("JoyrideStepsContainerService", () => {
         joyrideStepsContainerService = TestBed.get(JoyrideStepsContainerService);
     });
 
-    function setSteps() {
+    function setSteps(stepsName: string[]) {
         STEP1 = new JoyrideStep();
         STEP2 = new JoyrideStep();
         STEP3 = new JoyrideStep();
@@ -40,7 +40,7 @@ describe("JoyrideStepsContainerService", () => {
         STEP3.position = 'center';
         STEP3.route = 'ghi';
 
-        joyrideOptionsService.getStepsOrder.and.returnValue(["firstStep", "second", "third"]);
+        joyrideOptionsService.getStepsOrder.and.returnValue(stepsName);
         joyrideStepsContainerService.addStep(STEP1);
         joyrideStepsContainerService.addStep(STEP2);
         joyrideStepsContainerService.addStep(STEP3);
@@ -57,15 +57,43 @@ describe("JoyrideStepsContainerService", () => {
 
     describe("setPosition", () => {
         it("should publish the change with stepHasBeenModified", () => {
-            setSteps();
+            setSteps(["firstStep", "second", "third"]);
             let STEP1_MODIFIED = { ...STEP1 };
             STEP1_MODIFIED.position = 'bottom';
             let stepHasBeenModifiedSpy = spyOn(joyrideStepsContainerService, 'stepHasBeenModified');
             let nextSpy = spyOn(stepHasBeenModifiedSpy, 'next');
 
             joyrideStepsContainerService.setPosition(STEP1, 'bottom');
-           
+
             expect(nextSpy).toHaveBeenCalledWith(STEP1_MODIFIED);
+        });
+    });
+
+    describe("addStep", () => {
+        it("should not add one step to the list if a step with the same name already exist", () => {
+            let THIS_STEP_ALREADY_EXIST = new JoyrideStep();
+            THIS_STEP_ALREADY_EXIST.name = 'second';
+            setSteps(["firstStep", "second", "third"]);
+            joyrideStepsContainerService.addStep(THIS_STEP_ALREADY_EXIST);
+            joyrideStepsContainerService.initSteps();
+
+            expect(joyrideStepsContainerService.get(3)).toBe(undefined);
+        });
+        it("should add one step to the list if a step with the same name doesn't exist", () => {
+            let STEP = new JoyrideStep();
+            STEP.name = 'fourth';
+            setSteps(["firstStep", "second", "third", "fourth"]);
+            joyrideStepsContainerService.addStep(STEP);
+            joyrideStepsContainerService.initSteps();
+
+            expect(joyrideStepsContainerService.get(3)).toEqual(jasmine.objectContaining(STEP));
+        });
+    });
+
+    describe('getStepPosition', () => { 
+        it('should return the stepPosition + 1', () => {
+            setSteps(["firstStep", "second", "third", "fourth"]);
+            expect(joyrideStepsContainerService.getStepPosition(STEP3)).toBe(3)
         });
     });
 })
