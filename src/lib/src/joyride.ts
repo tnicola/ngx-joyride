@@ -10,4 +10,5 @@ export * from './services/joyride-options.service';
 export * from './services/step-drawer.service';
 export * from './services/dom.service';
 export * from './services/logger.service';
+export * from './services/templates.service';
 export * from './components/index';
