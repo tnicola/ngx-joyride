@@ -1,5 +1,6 @@
 import { JoyrideOptionsService, STEP_DEFAULT_POSITION, DEFAULT_THEME_COLOR } from "./joyride-options.service";
 import { TestBed } from "@angular/core/testing";
+import { JoyrideOptions } from "../models/joyride-options.class";
 
 describe("JoyrideOptionsService", () => {
     let optionsService: JoyrideOptionsService;
@@ -79,8 +80,25 @@ describe("JoyrideOptionsService", () => {
     describe("getStepsOrder()", () => {
         it("should return the steps, as the user passed them", () => {
             optionsService.setOptions({ steps: ['one', 'two', 'three'] });
-        
+
             expect(optionsService.getStepsOrder()).toEqual(jasmine.objectContaining(['one', 'two', 'three']));
         })
     });
+
+    describe("isPrevButtonVisible", () => {
+        it("should return true if showPrevButton is set to true",() => {
+            let step = new JoyrideOptions();
+            step.showPrevButton = true;
+            optionsService.setOptions(step);
+
+            expect(optionsService.isPrevButtonVisible()).toBe(true);
+        });
+        it("should return false if showPrevButton is set to false",() => {
+            let step = new JoyrideOptions();
+            step.showPrevButton = false;
+            optionsService.setOptions(step);
+
+            expect(optionsService.isPrevButtonVisible()).toBe(false);
+        });
+    })
 })

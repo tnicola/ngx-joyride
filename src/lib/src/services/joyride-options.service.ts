@@ -2,13 +2,12 @@ import { Injectable } from "@angular/core";
 import { JoyrideOptions } from "../models/joyride-options.class";
 
 export const DEFAULT_THEME_COLOR = "#3b5560";
-export const THEME_COLOR = DEFAULT_THEME_COLOR;
 export const STEP_DEFAULT_POSITION = "bottom";
 
 @Injectable()
 export class JoyrideOptionsService {
 
-    private themeColor: string = THEME_COLOR;
+    private themeColor: string = DEFAULT_THEME_COLOR;
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
     private logsEnabled: boolean = true;
     private showCounter: boolean = true;
