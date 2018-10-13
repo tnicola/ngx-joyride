@@ -75,4 +75,12 @@ describe("JoyrideOptionsService", () => {
             expect(optionsService.getBackdropColor()).toBe('161, 103, 254');
         })
     })
+
+    describe("getStepsOrder()", () => {
+        it("should return the steps, as the user passed them", () => {
+            optionsService.setOptions({ steps: ['one', 'two', 'three'] });
+        
+            expect(optionsService.getStepsOrder()).toEqual(jasmine.objectContaining(['one', 'two', 'three']));
+        })
+    });
 })
