@@ -25,6 +25,9 @@ module.exports = function (config) {
             type: 'lcov',
             dir: 'coverage/'
         },
+        mime: {
+            'text/x-typescript': ['ts']
+        },
         client: { clearContext: false },
         port: 9876,
         colors: true,
