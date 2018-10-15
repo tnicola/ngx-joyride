@@ -29,7 +29,13 @@ module.exports = function (config) {
             'text/x-typescript': ['ts']
         },
         client: { clearContext: false },
-        colors: true
+        colors: true,
+        customLaunchers: {
+            ChromeHeadlessNoSandbox: {
+                base: 'ChromeHeadless',
+                flags: ['--no-sandbox']
+            }
+        }
     };
     if (process.env.TRAVIS) {
         conf.browsers = ['ChromeHeadlessNoSandbox'];
