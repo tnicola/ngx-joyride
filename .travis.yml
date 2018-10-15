@@ -21,4 +21,4 @@ script:
   - npm run build:lib
 
 after_success:
-  - codecov
+  - npm run codecov
