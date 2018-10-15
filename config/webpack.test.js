@@ -2,6 +2,7 @@ const path = require('path');
 const helpers = require('./helpers');
 
 module.exports = {
+    mode: 'production',
     devtool: 'inline-source-map',
 
     resolve: {
