@@ -2,7 +2,6 @@ const path = require('path');
 const helpers = require('./helpers');
 
 module.exports = {
-    mode: 'production',
     devtool: 'inline-source-map',
 
     resolve: {
@@ -14,16 +13,6 @@ module.exports = {
     module: {
         rules: [
             {
-                enforce: 'post',
-                test: /\.ts$/,
-                loader: 'istanbul-instrumenter-loader',
-                query: {
-                    esModules: true
-                },
-                include: helpers.root('src', 'lib', 'src'),
-                exclude: /(node_modules|spec\.ts$|fake|class)/,
-            },
-            {
                 test: /\.ts$/,
                 loaders: [
                     {
@@ -31,6 +20,16 @@ module.exports = {
                         options: { configFileName: helpers.root('tsconfig-spec.json') }
                     }, 'angular2-template-loader'
                 ]
+            },
+            {
+                enforce: 'post',
+                test: /\.ts$/,
+                loader: 'istanbul-instrumenter-loader',
+                query: {
+                    esModules: true
+                },
+                include: helpers.root('src', 'lib', 'src'),
+                exclude: /(node_modules|spec\.ts|\.js|fake|class)/,
             },
             {
                 test: /\.html$/,

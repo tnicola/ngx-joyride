@@ -8,8 +8,8 @@ module.exports = function (config) {
             { pattern: './config/karma-test-shim.js', watched: false }
         ],
         preprocessors: {
-            './config/karma-test-shim.js': ['webpack', 'sourcemap'],
-            './src/lib/src/**/*.ts': 'coverage'
+            './src/lib/src/**/*.ts': ['webpack', 'sourcemap', 'coverage'],
+            './config/karma-test-shim.js': ['webpack', 'sourcemap']
         },
         webpack: webpackTest,
         webpackMiddleware: {
@@ -17,7 +17,7 @@ module.exports = function (config) {
         },
         reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
         coverageIstanbulReporter: {
-            dir:  'coverage/',
+            dir: 'coverage/',
             reports: ['text-summary', 'html', 'lcovonly'],
             fixWebpackSourcePaths: true
         },
@@ -25,9 +25,6 @@ module.exports = function (config) {
         autoWatch: true,
         browsers: ['Chrome'],
         singleRun: false,
-        mime: {
-            'text/x-typescript': ['ts']
-        },
         client: { clearContext: false },
         colors: true,
         customLaunchers: {
