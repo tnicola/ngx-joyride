@@ -17,12 +17,12 @@ describe("DocumentService", () => {
     });
 
     beforeEach(() => {
-        documentService = TestBed.get(DocumentService);
+        // documentService = TestBed.get(DocumentService);
     });
 
     describe("getElementFixedTop", () => {
         beforeEach(() => {
-            spyOn(documentService, 'setDocumentHeight');
+            // spyOn(documentService, 'setDocumentHeight');
         });
         it("should return the relative top position", () => {
             // FAKE di getNativeDocument, altrimenti il body va ad undefined
