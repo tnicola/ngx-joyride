@@ -28,11 +28,6 @@ export class DocumentService {
         return elementRef.nativeElement.getBoundingClientRect().left + scrollOffsets.x;
     }
 
-    getElementAbsoluteRight(elementRef: ElementRef) {
-        var scrollOffsets = this.getScrollOffsets();
-        return elementRef.nativeElement.getBoundingClientRect().right;
-    }
-
     setDocumentHeight(){
         this.documentHeight = this.calculateDocumentHeight();
     }
