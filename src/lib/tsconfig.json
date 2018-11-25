@@ -21,7 +21,7 @@
         "skipTemplateCodegen": true,
         "flatModuleOutFile": "joyride.js",
         "flatModuleId": "ngx-joyride",
-        "annotateForClosureCompiler": true,
+        "annotateForClosureCompiler": false,
         "debug": true
     }
 }
