@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { JoyrideStep } from "../models/joyride-step.class";
-import { JoyrideBackdropService } from "./joyride-backdrop.service";
-import { EventListenerService } from "./event-listener.service";
-import { JoyrideStepsContainerService } from "./joyride-steps-container.service";
-import { DocumentService } from "./document.service";
-import { StepDrawerService } from "./step-drawer.service";
-import { DomRefService } from "./dom.service";
-import { NO_POSITION } from "../directives/joyride.directive";
-import { JoyrideOptionsService } from "./joyride-options.service";
+import { Injectable } from '@angular/core';
+import { JoyrideStep } from '../models/joyride-step.class';
+import { JoyrideBackdropService } from './joyride-backdrop.service';
+import { EventListenerService } from './event-listener.service';
+import { JoyrideStepsContainerService } from './joyride-steps-container.service';
+import { DocumentService } from './document.service';
+import { StepDrawerService } from './step-drawer.service';
+import { DomRefService } from './dom.service';
+import { NO_POSITION } from '../directives/joyride.directive';
+import { JoyrideOptionsService } from './joyride-options.service';
 import { Router } from '@angular/router';
-import { ReplaySubject, Observable } from "rxjs";
-import { JoyrideStepInfo } from "../models/joyride-step-info.class";
+import { ReplaySubject, Observable } from 'rxjs';
+import { JoyrideStepInfo } from '../models/joyride-step-info.class';
 
 const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;
@@ -56,7 +56,7 @@ export class JoyrideStepService implements IJoyrideStepService {
 
     private subscribeToScrollEvents() {
         this.eventListener.startListeningScrollEvents();
-        this.eventListener.scrollEvent.subscribe((scroll) => {
+        this.eventListener.scrollEvent.subscribe(scroll => {
             this.winTopPosition = scroll.scrollY;
             this.winBottomPosition = this.winTopPosition + this.DOMService.getNativeWindow().innerHeight - SCROLLBAR_SIZE;
             this.backDropService.redraw(this.currentStep, scroll);
@@ -125,7 +125,7 @@ export class JoyrideStepService implements IJoyrideStepService {
     }
 
     private subscribeToStepsUpdates() {
-        this.stepsContainerService.stepHasBeenModified.subscribe((updatedStep) => {
+        this.stepsContainerService.stepHasBeenModified.subscribe(updatedStep => {
             if (this.currentStep.name === updatedStep.name) {
                 this.currentStep = updatedStep;
             }
@@ -136,11 +136,15 @@ export class JoyrideStepService implements IJoyrideStepService {
         setTimeout(() => {
             this.stepsContainerService.initSteps();
             this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
+            // Scroll the element to get it visible if it's in a scrollable element
+            if (this.isParentScrollable(this.currentStep.targetViewContainer.element.nativeElement)) {
+                this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
+            }
             this.backDropService.draw(this.currentStep);
             this.drawStep(this.currentStep);
-            this.scrollIfTargetNotVisible();
-            this.notifyStepClicked(action)
-        }, 1)
+            this.scrollIfStepAndTargetAreNotVisible();
+            this.notifyStepClicked(action);
+        }, 1);
     }
 
     private notifyStepClicked(action: 'PREV' | 'NEXT') {
@@ -149,7 +153,7 @@ export class JoyrideStepService implements IJoyrideStepService {
             name: this.currentStep.name,
             route: this.currentStep.route,
             actionType: action
-        }
+        };
         this.stepsObserver.next(stepInfo);
     }
 
@@ -158,50 +162,64 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.stepsObserver.complete();
     }
 
+    private isParentScrollable(nativeElement: any) {
+        return this.documentService.getFirstScrollableParent(nativeElement) !== this.DOMService.getNativeDocument().body;
+    }
+
     private removeCurrentStep() {
         this.stepDrawerService.remove(this.currentStep);
     }
 
-    private scrollIfTargetNotVisible() {
-        this.scrollWhenTargetIsHiddenBottom();
-        this.scrollWhenTargetIsHiddenTop();
+    private scrollIfStepAndTargetAreNotVisible() {
+        this.scrollWhenTargetOrStepAreHiddenBottom();
+        this.scrollWhenTargetOrStepAreHiddenTop();
     }
 
-    private scrollWhenTargetIsHiddenBottom() {
-        let totalTargetBottom = this.getTotalTargetBottomPosition();
+    private scrollWhenTargetOrStepAreHiddenBottom() {
+        let totalTargetBottom = this.getMaxTargetAndStepBottomPosition();
         if (totalTargetBottom > this.winBottomPosition) {
             this.DOMService.getNativeWindow().scrollBy(0, totalTargetBottom - this.winBottomPosition);
         }
     }
 
-    private scrollWhenTargetIsHiddenTop() {
-        let totalTargetTop = this.getTotalTargetTopPosition();
+    private scrollWhenTargetOrStepAreHiddenTop() {
+        let totalTargetTop = this.getMaxTargetAndStepTopPosition();
         if (totalTargetTop < this.winTopPosition) {
             this.DOMService.getNativeWindow().scrollBy(0, totalTargetTop - this.winTopPosition);
         }
     }
 
-    private getTotalTargetBottomPosition(): number {
+    private getMaxTargetAndStepBottomPosition(): number {
         let targetAbsoluteTop = this.documentService.getElementAbsoluteTop(this.currentStep.targetViewContainer.element);
         if (this.currentStep.position === 'top') {
             return targetAbsoluteTop + this.currentStep.stepInstance.targetHeight;
         } else if (this.currentStep.position === 'bottom') {
-            return targetAbsoluteTop + this.currentStep.stepInstance.targetHeight + this.currentStep.stepInstance.stepHeight + ARROW_SIZE + DISTANCE_FROM_TARGET;
+            return (
+                targetAbsoluteTop +
+                this.currentStep.stepInstance.targetHeight +
+                this.currentStep.stepInstance.stepHeight +
+                ARROW_SIZE +
+                DISTANCE_FROM_TARGET
+            );
         } else if (this.currentStep.position === 'right' || this.currentStep.position === 'left') {
-            return Math.max(targetAbsoluteTop + this.currentStep.stepInstance.targetHeight,
-                targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 + this.currentStep.stepInstance.stepHeight / 2);
+            return Math.max(
+                targetAbsoluteTop + this.currentStep.stepInstance.targetHeight,
+                targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 + this.currentStep.stepInstance.stepHeight / 2
+            );
         }
     }
 
-    private getTotalTargetTopPosition() {
+    private getMaxTargetAndStepTopPosition() {
         let targetAbsoluteTop = this.documentService.getElementAbsoluteTop(this.currentStep.targetViewContainer.element);
         if (this.currentStep.position === 'top') {
             return targetAbsoluteTop - (this.currentStep.stepInstance.stepHeight + ARROW_SIZE + DISTANCE_FROM_TARGET);
         } else if (this.currentStep.position === 'bottom') {
             return targetAbsoluteTop;
         } else if (this.currentStep.position === 'right' || this.currentStep.position === 'left') {
-            return Math.min(targetAbsoluteTop, targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 - this.currentStep.stepInstance.stepHeight / 2);
+            return Math.min(
+                targetAbsoluteTop,
+                targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 - this.currentStep.stepInstance.stepHeight / 2
+            );
         }
     }
-
 }

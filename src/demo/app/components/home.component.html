@@ -57,6 +57,13 @@
         </div>
     </div>
 
+    <div class="scroll">
+        <ul>
+            <li *ngFor="let topic of topics; index as i">{{topic.name}}</li>
+            <li joyrideStep="scrollStep" title="Prova Scroll">Last topic</li>
+        </ul>
+    </div>
+
     <div joyrideStep="step10" stepPosition="right" class="right-bottom">Right-bottom</div>
     <div joyrideStep="step11" stepPosition="right" title="left bottom" class="bottom">Step on the right</div>
     <footer></footer>
