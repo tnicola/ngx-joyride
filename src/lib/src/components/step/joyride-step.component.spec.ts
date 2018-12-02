@@ -227,6 +227,13 @@ describe("JoyrideStepComponent", () => {
                 component.step = STEP;
             });
 
+            it('should set the stepContainer max-width to CUSTOM_STEP_MAX_WIDTH_VW', () => {
+                component.ngAfterViewInit();
+                let stepContainer = hostFixture.debugElement.query(By.css('.joyride-step__container'));
+
+                expect(stepContainer.nativeElement.style.maxWidth).toBe('90vw');
+            });
+
             it("should set stepWidth equals to the stepContainer clientWidth", () => {
                 component.stepContainer = STEP_CONTAINER;
 
@@ -388,7 +395,7 @@ describe("JoyrideStepComponent", () => {
                     expect(stepHolder.nativeElement.style.position).toBe('fixed');
                     expect(stepHolder.nativeElement.style.top).toBe('50%');
                     expect(stepHolder.nativeElement.style.left).toBe('50%');
-                    expect(stepHolder.nativeElement.style.transform).toBe('translate(-100px, -82.5083px)');
+                    expect(stepHolder.nativeElement.style.transform).toBe('translate(-100px, -82.5px)');
 
                 });
 

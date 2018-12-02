@@ -6,7 +6,14 @@ import { NgModule, Component } from "@angular/core";
     selector: 'sel-a',
     template: `<div joyrideStep="myStep" 
                     title="Title 1"
-                    text="Prova"
+                    text="This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. 
+                    This is a long text. This is a long text. This is a long text. This is a long text. This is a long text. "
                     [prevTemplate]="prev" 
                     [nextTemplate]="next" 
                     [doneTemplate]="done"
@@ -25,7 +32,7 @@ import { NgModule, Component } from "@angular/core";
                 <ng-template #counter let-step="step" let-total="total">
                      {{ step }} of {{ total }} steps
                 </ng-template>
-            <div>Route A subtitle</div>`
+            <div>Route A subtitle</div>`,
 })
 export class PageAComponent {
     text = 'Mike';
