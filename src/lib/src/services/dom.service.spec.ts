@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DomRefService } from './dom.service';
 import { PLATFORM_ID } from '@angular/core';
 
-fdescribe('DomRefService', () => {
+describe('DomRefService', () => {
     let platformId = '';
     let domService: DomRefService;
     beforeEach(() => {
