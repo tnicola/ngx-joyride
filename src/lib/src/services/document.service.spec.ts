@@ -8,7 +8,7 @@ import { FakeElementRef } from '../test/fake/dom-elements-fake.class';
 describe('DocumentService', () => {
     let documentService: DocumentService;
     let domRefService: DomRefServiceFake;
-    const getFakeDocument = compatMode => {
+    const getFakeDocument = (compatMode: string) => {
         return {
             compatMode,
             documentElement: {
