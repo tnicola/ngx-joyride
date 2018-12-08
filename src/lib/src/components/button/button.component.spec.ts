@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { TestBed, async, ComponentFixture, } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { JoyrideButtonComponent } from './button.component';
 
@@ -9,11 +9,10 @@ import { JoyrideButtonComponent } from './button.component';
 })
 class HostComponent {
     color: string;
-    onClick: jasmine.Spy = jasmine.createSpy("onClick");
+    onClick: jasmine.Spy = jasmine.createSpy('onClick');
 }
 
-describe("ButtonComponent", () => {
-
+describe('ButtonComponent', () => {
     let fixture: ComponentFixture<JoyrideButtonComponent>;
     let hostFixture: ComponentFixture<HostComponent>;
     let component: JoyrideButtonComponent;
@@ -32,8 +31,8 @@ describe("ButtonComponent", () => {
         component = hostFixture.debugElement.query(By.directive(JoyrideButtonComponent)).componentInstance;
     });
 
-    it("should have the color equals to the one passed by the host", () => {
-        hostComponent.color = "#123456";
+    it('should have the color equals to the one passed by the host', () => {
+        hostComponent.color = '#123456';
 
         hostFixture.detectChanges();
 
@@ -41,26 +40,36 @@ describe("ButtonComponent", () => {
     });
 
     it("should call onClick() when 'clicked' event is fired", () => {
-        component.clicked.emit()
+        component.clicked.emit();
 
         expect(hostComponent.onClick).toHaveBeenCalledTimes(1);
     });
 
-    it("should set hover to true when the mouse is overing the button", () => {
+    it('should set hover to true when the mouse is overing the button', () => {
         component.hover = false;
 
-        button = hostFixture.debugElement.query(By.css(".joyride-button"));
-        button.triggerEventHandler("mouseover", null);
+        button = hostFixture.debugElement.query(By.css('.joyride-button'));
+        button.triggerEventHandler('mouseover', null);
 
         expect(component.hover).toBe(true);
     });
 
-    it("should set hover to false when the mouse is leaving the button", () => {
+    it('should set hover to false when the mouse is leaving the button', () => {
         component.hover = true;
 
-        button = hostFixture.debugElement.query(By.css(".joyride-button"));
-        button.triggerEventHandler("mouseleave", null);
+        button = hostFixture.debugElement.query(By.css('.joyride-button'));
+        button.triggerEventHandler('mouseleave', null);
 
         expect(component.hover).toBe(false);
     });
+
+    it('should emit when onClick is called', async(() => {
+        let called = false;
+        component.clicked.subscribe(() => {
+            called = true;
+        });
+        component.onClick();
+
+        expect(called).toBeTruthy();
+    }));
 });
