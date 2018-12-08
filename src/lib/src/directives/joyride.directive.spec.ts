@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { JoyrideDirective } from './joyride.directive';
 import { JoyrideStepsContainerService } from '../services/joyride-steps-container.service';
 import { JoyrideStepsContainerServiceFake } from '../test/fake/joyride-steps-container-fake.service';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, PLATFORM_ID, TemplateRef, ViewContainerRef, ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterFake } from '../test/fake/router-fake.service';
@@ -13,46 +13,61 @@ import { DomRefServiceFake } from '../test/fake/dom-fake.service';
 import { TemplatesService } from '../services/templates.service';
 import { TemplatesFakeService } from '../test/fake/templates-fake.service';
 
-
 @Component({
     selector: 'cmp',
     template: `
-    <div style="position: fixed">
-        <div>
-            <div style="transform: translateX(-50px)" joyrideStep="myStep" title="Title" (prev)="onPrev()" (next)="onNext()" (done)="onDone()">Test</div>
+        <div style="position: fixed">
+            <div>
+                <div
+                    style="transform: translateX(-50px)"
+                    joyrideStep="myStep"
+                    title="Title"
+                    (prev)="onPrev()"
+                    (next)="onNext()"
+                    (done)="onDone()"
+                >
+                    Test
+                </div>
+            </div>
         </div>
-    </div>
     `
 })
-
 class HostComponent {
-    onPrev: jasmine.Spy = jasmine.createSpy("onPrev");
-    onNext: jasmine.Spy = jasmine.createSpy("onNext");
-    onDone: jasmine.Spy = jasmine.createSpy("onDone");
+    onPrev: jasmine.Spy = jasmine.createSpy('onPrev');
+    onNext: jasmine.Spy = jasmine.createSpy('onNext');
+    onDone: jasmine.Spy = jasmine.createSpy('onDone');
 }
 
 @Component({
     selector: 'cmp-fixed',
-    template: `<div style="position: fixed" joyrideStep="myStep" title="Title">Test</div>`
+    template: `
+        <div style="position: fixed" joyrideStep="myStep" title="Title">Test</div>
+    `
 })
-
-class HostComponentFixed { }
+class HostComponentFixed {}
 
 @Component({
     selector: 'cmp-fixed',
-    template: `<div joyrideStep="myStep" title="Title">Test</div>`
+    template: `
+        <div joyrideStep="myStep" title="Title">Test</div>
+    `
 })
-
-class HostComponentNotFixed { }
+class HostComponentNotFixed {}
 
 describe('JorideDirective', () => {
-
     let stepContainerService: JoyrideStepsContainerServiceFake;
     let fixture: ComponentFixture<any>;
     let hostComponent: HostComponent;
     let joyDirectiveDebugElement: DebugElement;
     let joyDirective: JoyrideDirective;
     let routerService: RouterFake;
+    let templatesService: TemplatesFakeService;
+    let domRefService: DomRefServiceFake;
+    let FAKE_WINDOW: any = {
+        getComputedStyle: () => {
+            return { transform: 'transform', position: 'absolute' };
+        }
+    };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -63,7 +78,6 @@ describe('JorideDirective', () => {
                 { provide: Router, useClass: RouterFake },
                 { provide: TemplatesService, useClass: TemplatesFakeService }
             ]
-
         }).compileComponents();
     });
 
@@ -72,11 +86,14 @@ describe('JorideDirective', () => {
         joyDirective = joyDirectiveDebugElement.injector.get(JoyrideDirective) as JoyrideDirective;
         stepContainerService = TestBed.get(JoyrideStepsContainerService);
         routerService = TestBed.get(Router);
+        domRefService = TestBed.get(DomRefService);
+        domRefService.getNativeWindow.and.returnValue(FAKE_WINDOW);
     }
 
     beforeEach(() => {
         fixture = TestBed.createComponent(HostComponent);
         hostComponent = fixture.componentInstance;
+        templatesService = TestBed.get(TemplatesService);
         initDirective();
     });
 
@@ -87,7 +104,7 @@ describe('JorideDirective', () => {
             expect(stepContainerService.addStep).toHaveBeenCalledTimes(1);
         });
 
-        it('should set the route without /', () => {
+        it("should set the route without / if the router.url doesn't end up with /", () => {
             routerService.url = '/my/route';
 
             fixture.detectChanges();
@@ -96,7 +113,16 @@ describe('JorideDirective', () => {
             expect(stepAdded.route).toBe('my/route');
         });
 
-        it('should set the route to empty if it\'s on the root route', () => {
+        it('should set the entire router.url if the router.url ends up with / ', () => {
+            routerService.url = 'my/great/url/';
+
+            fixture.detectChanges();
+            let stepAdded: JoyrideStep = stepContainerService.addStep.calls.argsFor(0)[0];
+
+            expect(stepAdded.route).toBe('my/great/url/');
+        });
+
+        it("should set the route to empty if it's on the root route", () => {
             routerService.url = '/';
 
             fixture.detectChanges();
@@ -161,13 +187,110 @@ describe('JorideDirective', () => {
             expect(hostComponent.onDone).toHaveBeenCalledTimes(1);
         });
 
-        xit('should throw a JoyrideError if the step name is not defined', () => {
-            joyDirective.name = '';
+        describe('when the platform is server', () => {
+            beforeEach(() => {
+                joyDirective['platformId'] = 'server';
+            });
 
-            fixture.detectChanges();
+            it('should do nothing', () => {
+                expect(() => joyDirective.ngAfterViewInit()).not.toThrow();
+            });
+        });
 
-            expect(joyDirective.ngAfterViewInit).toThrow(new JoyrideError("All the steps should have the 'joyrideStep' property set with a custom name."));
+        describe('when the platform is browser', () => {
+            beforeEach(() => {
+                joyDirective['platformId'] = 'browser';
+            });
+
+            it('should throw a JoyrideError if the step name is not defined', () => {
+                expect(() => joyDirective.ngAfterViewInit()).toThrowError(
+                    "All the steps should have the 'joyrideStep' property set with a custom name."
+                );
+            });
+
+            it('should NOT throw a JoyrideError if the step name is defined', () => {
+                joyDirective.name = 'pippo';
+
+                expect(() => joyDirective.ngAfterViewInit()).not.toThrow();
+            });
+
+            it('should set the prev template if it is defined', () => {
+                joyDirective.name = 'pippo';
+                joyDirective.prevTemplate = <TemplateRef<any>>{};
+
+                joyDirective.ngAfterViewInit();
+
+                expect(templatesService.setPrevButton).toHaveBeenCalled();
+            });
+
+            it('should set the next template if it is defined', () => {
+                joyDirective.name = 'pippo';
+                joyDirective.nextTemplate = <TemplateRef<any>>{};
+
+                joyDirective.ngAfterViewInit();
+
+                expect(templatesService.setNextButton).toHaveBeenCalled();
+            });
+
+            it('should set the done template if it is defined', () => {
+                joyDirective.name = 'pippo';
+                joyDirective.doneTemplate = <TemplateRef<any>>{};
+
+                joyDirective.ngAfterViewInit();
+
+                expect(templatesService.setDoneButton).toHaveBeenCalled();
+            });
+
+            it('should set the counter template if it is defined', () => {
+                joyDirective.name = 'pippo';
+                joyDirective.counterTemplate = <TemplateRef<any>>{};
+
+                joyDirective.ngAfterViewInit();
+
+                expect(templatesService.setCounter).toHaveBeenCalled();
+            });
+
+            it('should not set the templates if they are undefined', () => {
+                joyDirective.name = 'pippo';
+                joyDirective.prevTemplate = undefined;
+                joyDirective.prevTemplate = undefined;
+                joyDirective.prevTemplate = undefined;
+                joyDirective.prevTemplate = undefined;
+
+                joyDirective.ngAfterViewInit();
+
+                expect(templatesService.setPrevButton).not.toHaveBeenCalled();
+                expect(templatesService.setNextButton).not.toHaveBeenCalled();
+                expect(templatesService.setDoneButton).not.toHaveBeenCalled();
+                expect(templatesService.setCounter).not.toHaveBeenCalled();
+            });
+        });
+
+        it("should add a step with isElementOrAncestorFixed if the element is not fixed and it doesn't have a parent", () => {
+            joyDirective.name = 'title';
+            joyDirective['viewContainerRef'] = <ViewContainerRef>{
+                element: {
+                    nativeElement: {
+                        parentElement: null
+                    }
+                },
+                injector: {},
+                parentInjector: {},
+                length: 2,
+                clear: undefined,
+                get: undefined,
+                createEmbeddedView: undefined,
+                createComponent: undefined,
+                insert: undefined,
+                move: undefined,
+                indexOf: undefined,
+                remove: undefined,
+                detach: undefined
+            };
+            joyDirective['windowRef'] = FAKE_WINDOW;
+            joyDirective.ngAfterViewInit();
+
+            expect(stepContainerService.addStep.calls.first().args[0].isElementOrAncestorFixed).toBe(false);
         });
     });
-
 });

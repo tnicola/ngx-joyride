@@ -61,7 +61,7 @@ export class JoyrideDirective implements AfterViewInit {
 
     constructor(
         private readonly joyrideStepsContainer: JoyrideStepsContainerService,
-        private readonly viewContainerRef: ViewContainerRef,
+        private viewContainerRef: ViewContainerRef,
         private readonly domService: DomRefService,
         private readonly router: Router,
         private readonly templateService: TemplatesService,
@@ -101,7 +101,7 @@ export class JoyrideDirective implements AfterViewInit {
     }
 
     private isAncestorsFixed(nativeElement: any): boolean {
-        if (!nativeElement.parentElement) return false;
+        if (!nativeElement || !nativeElement.parentElement) return false;
         let isElementFixed = this.windowRef.getComputedStyle(nativeElement.parentElement).position === 'fixed';
         if (nativeElement.nodeName === 'BODY') {
             return isElementFixed;
