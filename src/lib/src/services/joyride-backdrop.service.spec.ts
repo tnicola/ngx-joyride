@@ -8,7 +8,7 @@ import { JoyrideStep } from '../models/joyride-step.class';
 import { FakeElementRef, FakeViewContainerRef } from '../test/fake/dom-elements-fake.class';
 import { Scroll } from './event-listener.service';
 
-fdescribe('JoyrideBackdropService', () => {
+describe('JoyrideBackdropService', () => {
     let backdropService: JoyrideBackdropService;
     let documentService: DocumentServiceFake;
     let optionsService: DocumentServiceFake;
