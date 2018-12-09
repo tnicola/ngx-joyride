@@ -19,6 +19,14 @@ script:
   - npm run test
   - npm run build:aot
   - npm run build:lib
+  # start server in the background
+  - npm run start -- --silent &
+  # run all Cypress tests and record on the dashboard
+  - npm run cy:run:record -- --record
+  # after all tests finish running we need
+  # to kill all background jobs (like "npm start &")
+  # this avoids flake in Travis jobs
+  - kill $(jobs -p) || true
 
 after_success:
   - npm run codecov

@@ -1,7 +1,7 @@
 {
   "name": "ngx-joyride-demo",
   "version": "1.0.0",
-  "description": "Angular-Webpack starter",
+  "description": "ngx-joyride playground project",
   "types": "src/lib/index.ts",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js --inline --progress --color --port 8080",
@@ -9,9 +9,7 @@
     "webpack": "webpack --display-error-details",
     "test": "karma start",
     "codecov": "cat coverage/lcov.info | codecov",
-    "pree2e": "tsc -p e2e",
-    "e2e": "protractor protractor.conf.js",
-    "poste2e": "rimraf e2e/tmp",
+    "cy:run:record": "./node_modules/.bin/cypress run --record --key b9998b75-1f8c-4168-92a8-b149d0444e6e",
     "build": "rimraf dist && webpack --config config/webpack.dev.js --progress --profile --bail",
     "build:aot": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
     "build:lib": "npm run clean && npm run inline-resources && npm run bundle-umd && npm run bundle-esm && npm run bundle-esm2015 && npm run compile-tsc && npm run compile-ngc && npm run copy",
