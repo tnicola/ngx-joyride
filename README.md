@@ -2,17 +2,18 @@
 [![Build Status](https://travis-ci.org/tnicola/ngx-joyride.svg?branch=master)](https://travis-ci.org/tnicola/ngx-joyride)
 [![codecov](https://codecov.io/gh/tnicola/ngx-joyride/branch/master/graph/badge.svg)](https://codecov.io/gh/tnicola/ngx-joyride)
 
-# Angular Joyride
+# Angular Joyride 
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
-## 💥 New: Angular 6 is fully supported 💥
+
+For Angular 2+ (2, 4, 5, 6, 7)
 
 <p align="center">
-	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyrideStepExample.PNG" />
+	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyride-tour.gif" />
 </p>
 
 ## Demo
-See the [demo](https://tnicola.github.io/ngx-joyride/). Let's take a tour! :earth_americas: 
+See the [demo](https://tnicola.github.io/ngx-joyride/). Let's take a tour! ✈️ :earth_americas:
 
 ## Install
 
