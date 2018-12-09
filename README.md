@@ -1,6 +1,7 @@
 [![npm version](https://badge.fury.io/js/ngx-joyride.svg)](https://badge.fury.io/js/ngx-joyride)
 [![Build Status](https://travis-ci.org/tnicola/ngx-joyride.svg?branch=master)](https://travis-ci.org/tnicola/ngx-joyride)
 [![codecov](https://codecov.io/gh/tnicola/ngx-joyride/branch/master/graph/badge.svg)](https://codecov.io/gh/tnicola/ngx-joyride)
+[![Cypress.io tests](https://img.shields.io/badge/cypress.io-tests-green.svg?style=flat-square)](https://dashboard.cypress.io/#/projects/3yary2/runs)
 
 # Angular Joyride 
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
