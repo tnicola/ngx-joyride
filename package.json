@@ -9,6 +9,7 @@
     "webpack": "webpack --display-error-details",
     "test": "karma start",
     "codecov": "cat coverage/lcov.info | codecov",
+    "cy:run": "./node_modules/.bin/cypress run",
     "cy:run:record": "./node_modules/.bin/cypress run --record --key b9998b75-1f8c-4168-92a8-b149d0444e6e",
     "build": "rimraf dist && webpack --config config/webpack.dev.js --progress --profile --bail",
     "build:aot": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
