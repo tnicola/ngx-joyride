@@ -81,13 +81,13 @@ describe('JorideDirective', () => {
         }).compileComponents();
     });
 
-    function initDirective() {
+    function initDirective(win?: any) {
         joyDirectiveDebugElement = fixture.debugElement.query(By.directive(JoyrideDirective));
         joyDirective = joyDirectiveDebugElement.injector.get(JoyrideDirective) as JoyrideDirective;
         stepContainerService = TestBed.get(JoyrideStepsContainerService);
         routerService = TestBed.get(Router);
         domRefService = TestBed.get(DomRefService);
-        domRefService.getNativeWindow.and.returnValue(FAKE_WINDOW);
+        domRefService.getNativeWindow.and.returnValue(win ? win : FAKE_WINDOW);
     }
 
     beforeEach(() => {
@@ -146,9 +146,14 @@ describe('JorideDirective', () => {
         });
 
         it('should set isElementOrAncestorFixed to true if the target has position:fixed', () => {
-            fixture = TestBed.createComponent(HostComponentFixed);
-            initDirective();
-            fixture.detectChanges();
+            let winWithTargetFixed: any = {
+                getComputedStyle: () => {
+                    return { transform: 'transform', position: 'fixed' };
+                }
+            };
+            joyDirective['windowRef'] = winWithTargetFixed;
+            joyDirective.name = 'Name';
+            joyDirective.ngAfterViewInit();
             let stepAdded: JoyrideStep = stepContainerService.addStep.calls.argsFor(0)[0];
 
             expect(stepAdded.isElementOrAncestorFixed).toBe(true);
