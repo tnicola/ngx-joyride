@@ -1,25 +1,19 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "noImplicitAny": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "ngx-joyride": [
-        "./src/lib/public_api.ts"
-      ]
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": ["es2015", "dom"],
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "typeRoots": ["node_modules/@types"],
+        "baseUrl": ".",
+        "paths": {
+            "ngx-joyride": ["./src/lib/public_api.ts"]
+        },
+        "skipLibCheck": true // https://github.com/cypress-io/cypress/issues/1087
     }
-  }
 }
