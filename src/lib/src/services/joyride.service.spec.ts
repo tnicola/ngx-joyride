@@ -6,12 +6,14 @@ import { JoyrideOptionsService } from "./joyride-options.service";
 import { JoyrideOptionsServiceFake } from "../test/fake/joyride-options-fake.service";
 import { Subject } from "rxjs";
 import { JoyrideStepInfo } from "../models/joyride-step-info.class";
+import { JoyrideOptions } from "../models/joyride-options.class";
 
 describe('JoyrideService', () => {
 
     let joyrideStepService: JoyrideStepFakeService;
     let joyrideService: JoyrideService;
     let tourSubject: Subject<JoyrideStepInfo>;
+    let optionsService: JoyrideOptionsServiceFake;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -27,9 +29,21 @@ describe('JoyrideService', () => {
     beforeEach(() => {
         joyrideService = TestBed.get(JoyrideService);
         joyrideStepService = TestBed.get(JoyrideStepService);
+        optionsService = TestBed.get(JoyrideOptionsService);
         
         tourSubject = new Subject<JoyrideStepInfo>();
         joyrideStepService.startTour.and.returnValue(tourSubject.asObservable());
+    });
+
+    describe('when the platformId is not the browser', () => {
+        it('should return an empty JoyrideStepInfo', () => {
+            const joyrideInfo = new JoyrideStepInfo();
+            joyrideService['platformId'] = 'server';
+
+            const returnedValue = joyrideService.startTour();
+
+            expect(returnedValue).toEqual(jasmine.objectContaining(joyrideInfo));
+        });
     });
 
     describe('isTourInProgress', () => {
@@ -77,6 +91,13 @@ describe('JoyrideService', () => {
             joyrideService.startTour();
 
             expect(joyrideStepService.startTour).toHaveBeenCalledTimes(1);
+        });
+
+        it('should set the options to optionsService', () => {
+            const options =  <JoyrideOptions>{ themeColor: '#123456'};
+            joyrideService.startTour(options);
+
+            expect(optionsService.setOptions).toHaveBeenCalledWith(options);
         });
     })
 });

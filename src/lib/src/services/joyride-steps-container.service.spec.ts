@@ -1,11 +1,10 @@
-import { TestBed } from "@angular/core/testing";
-import { JoyrideStepsContainerService } from "./joyride-steps-container.service";
-import { JoyrideOptionsService } from "./joyride-options.service";
-import { JoyrideOptionsServiceFake } from "../test/fake/joyride-options-fake.service";
-import { JoyrideStep } from "../models/joyride-step.class";
+import { TestBed } from '@angular/core/testing';
+import { JoyrideStepsContainerService } from './joyride-steps-container.service';
+import { JoyrideOptionsService } from './joyride-options.service';
+import { JoyrideOptionsServiceFake } from '../test/fake/joyride-options-fake.service';
+import { JoyrideStep } from '../models/joyride-step.class';
 
-describe("JoyrideStepsContainerService", () => {
-
+describe('JoyrideStepsContainerService', () => {
     let joyrideOptionsService: JoyrideOptionsServiceFake;
     let joyrideStepsContainerService: JoyrideStepsContainerService;
     let STEP1: JoyrideStep;
@@ -14,10 +13,7 @@ describe("JoyrideStepsContainerService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [
-                JoyrideStepsContainerService,
-                { provide: JoyrideOptionsService, useClass: JoyrideOptionsServiceFake }
-            ]
+            providers: [JoyrideStepsContainerService, { provide: JoyrideOptionsService, useClass: JoyrideOptionsServiceFake }]
         });
     });
 
@@ -33,9 +29,9 @@ describe("JoyrideStepsContainerService", () => {
         STEP1.name = 'firstStep';
         STEP1.position = 'top';
         STEP1.route = 'abc';
-        STEP2.name = 'second';
+        STEP2.name = 'second';   // Step without route
         STEP2.position = 'bottom';
-        STEP2.route = 'def';
+        STEP2.route = '';
         STEP3.name = 'third';
         STEP3.position = 'center';
         STEP3.route = 'ghi';
@@ -47,17 +43,17 @@ describe("JoyrideStepsContainerService", () => {
         joyrideStepsContainerService.initSteps();
     }
 
-    describe("getNumberOfSteps", () => {
-        it("should return the number of steps passed by optionService", () => {
-            joyrideOptionsService.getStepsOrder.and.returnValue(["one", "two", "three"]);
+    describe('getNumberOfSteps', () => {
+        it('should return the number of steps passed by optionService', () => {
+            joyrideOptionsService.getStepsOrder.and.returnValue(['one', 'two', 'three']);
 
             expect(joyrideStepsContainerService.getNumberOfSteps()).toBe(3);
         });
     });
 
-    describe("setPosition", () => {
-        it("should publish the change with stepHasBeenModified", () => {
-            setSteps(["firstStep", "second", "third"]);
+    describe('setPosition', () => {
+        it('should publish the change with stepHasBeenModified', () => {
+            setSteps(['firstStep', 'second', 'third']);
             let STEP1_MODIFIED = { ...STEP1 };
             STEP1_MODIFIED.position = 'bottom';
             let stepHasBeenModifiedSpy = spyOn(joyrideStepsContainerService, 'stepHasBeenModified');
@@ -69,11 +65,11 @@ describe("JoyrideStepsContainerService", () => {
         });
     });
 
-    describe("addStep", () => {
-        it("should not add one step to the list if a step with the same name already exist", () => {
+    describe('addStep', () => {
+        it('should not add one step to the list if a step with the same name already exist', () => {
             let THIS_STEP_ALREADY_EXIST = new JoyrideStep();
             THIS_STEP_ALREADY_EXIST.name = 'second';
-            setSteps(["firstStep", "second", "third"]);
+            setSteps(['firstStep', 'second', 'third']);
             joyrideStepsContainerService.addStep(THIS_STEP_ALREADY_EXIST);
             joyrideStepsContainerService.initSteps();
 
@@ -82,7 +78,7 @@ describe("JoyrideStepsContainerService", () => {
         it("should add one step to the list if a step with the same name doesn't exist", () => {
             let STEP = new JoyrideStep();
             STEP.name = 'fourth';
-            setSteps(["firstStep", "second", "third", "fourth"]);
+            setSteps(['firstStep', 'second', 'third', 'fourth']);
             joyrideStepsContainerService.addStep(STEP);
             joyrideStepsContainerService.initSteps();
 
@@ -90,10 +86,18 @@ describe("JoyrideStepsContainerService", () => {
         });
     });
 
-    describe('getStepPosition', () => { 
+    describe('getStepPosition', () => {
         it('should return the stepPosition + 1', () => {
-            setSteps(["firstStep", "second", "third", "fourth"]);
-            expect(joyrideStepsContainerService.getStepPosition(STEP3)).toBe(3)
+            setSteps(['firstStep', 'second', 'third', 'fourth']);
+            expect(joyrideStepsContainerService.getStepPosition(STEP3)).toBe(3);
         });
     });
-})
+
+    describe('getStepRoute()', () => {
+        it('should return the route of a specific step', () => {
+            joyrideOptionsService.getStepsOrder.and.returnValue(['step1@url1', 'step2@url2', 'step3@url3']);
+            
+            expect(joyrideStepsContainerService.getStepRoute(1)).toBe('url2');
+        });
+    });
+});
