@@ -23,10 +23,9 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - Browser [e.g. chrome, safari]
- - Version of the browser
- - List of the dependencies
+**Details (please complete the following information):**
+ - Browser [e.g. chrome, safari] + version
+ - List of the dependencies with their version (Angular, rxjs, ngx-joyride,...)
 
 
 **Additional context**
