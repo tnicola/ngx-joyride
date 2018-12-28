@@ -9,13 +9,13 @@ import {
     ViewChild,
     Renderer2,
     Injector,
-    TemplateRef,
+    TemplateRef
 } from '@angular/core';
 import { JoyrideStep } from '../../models/joyride-step.class';
 import { JoyrideStepService, ARROW_SIZE, DISTANCE_FROM_TARGET, IJoyrideStepService } from '../../services/joyride-step.service';
 import { JoyrideStepsContainerService } from '../../services/joyride-steps-container.service';
 import { EventListenerService } from '../../services/event-listener.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { DocumentService } from '../../services/document.service';
 import { JoyrideOptionsService } from '../../services/joyride-options.service';
 import { LoggerService } from '../../services/logger.service';
@@ -46,8 +46,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     arrowPosition: string;
     arrowLeftPosition: number;
     arrowTopPosition: number;
-    title: string;
-    text: string;
+    title: string | Observable<string>;
+    text: string | Observable<string>;
     counter: string;
     isCounterVisible: boolean;
     isPrevButtonVisible: boolean;

@@ -1,12 +1,13 @@
 import { ViewContainerRef, TemplateRef, EventEmitter } from "@angular/core";
 import { JoyrideStepComponent } from "../components/step/joyride-step.component";
+import { Observable } from "rxjs";
 
 export class JoyrideStep {
     name: string;
     route: string;
     position: string;
-    title: string;
-    text: string;
+    title: string | Observable<string>;
+    text: string | Observable<string>;
     stepContent: TemplateRef<any>;
     stepContentParams: Object;
     nextClicked: EventEmitter<any>;

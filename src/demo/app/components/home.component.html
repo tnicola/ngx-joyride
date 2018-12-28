@@ -1,38 +1,65 @@
 <div class="main">
-    <joyrideStep joyrideStep="home1" stepPosition="center" [stepContent]="myCustomContent" (prev)="onPrev()">
+    {{ 'title' | joyTranslate | async }}
+    <joyrideStep
+        [title]="'title' | joyTranslate "
+        joyrideStep="home1"
+        stepPosition="center"
+        [stepContent]="myCustomContent"
+        (prev)="onPrev()"
+    >
         <ng-template #myCustomContent>
-            <div style="width: 300px"> Della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo,
-                quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard
-                sin dal sedicesimo secolo, quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il
-                testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo prese una cassetta di caratteri
-                e li assemblò per preparare un testo campione. Lorem Ipsum è considerato il testo segnaposto standard sin
-                dal sedicesimo secolo, quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo
-                segnaposto standard sin dal sedicesimo secolo, quando un anonimo </div>
-            <img src="../../assets/images/angular.png" width="100" height="100">
+            <div style="width: 300px">
+                Della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo, quando un
+                anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo,
+                quando un anonimo della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo
+                secolo, quando un anonimo tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione. Lorem
+                Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo della tipografia e della
+                stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo
+            </div>
+            <img src="../../assets/images/angular.png" width="100" height="100" />
         </ng-template>
     </joyrideStep>
-    <h1 style="position: fixed; top: 200px; left: 300px" joyrideStep="home2" (next)="toggleAction()" stepPosition="left" [stepContent]="step3Content">{{ title }}</h1>
+    <h1
+        style="position: fixed; top: 200px; left: 300px"
+        joyrideStep="home2"
+        (next)="toggleAction()"
+        stepPosition="left"
+        [stepContent]="step3Content"
+    >
+        {{ title }}
+    </h1>
     <h4 *ngIf="stepVisible" joyrideStep="stepHidden" stepPosition="bottom" [stepContent]="step3Content">Subtitle</h4>
-    <pre joyrideStep="step3" stepPosition="left" (prev)="toggleAction()" [title]="'Step1 Title'" [text]="'This is the text'"
-        style="position: absolute; top: 15px; right: 15px">This is 
-        js code</pre>
+    <pre
+        joyrideStep="step3"
+        stepPosition="left"
+        (prev)="toggleAction()"
+        [title]="'Step1 Title'"
+        [text]="'This is the text'"
+        style="position: absolute; top: 15px; right: 15px"
+    >
+This is 
+        js code</pre
+    >
     <div id="tester" [style.width.px]="20">Tester</div>
-    <ng-template #step3Content>
-        <aj-custom-component></aj-custom-component>
-    </ng-template>
-    <img joyrideStep="step4" stepPosition="top" title="Img step" text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
-        src="../../assets/images/angular.png">
-
+    <ng-template #step3Content> <aj-custom-component></aj-custom-component> </ng-template>
+    <img
+        joyrideStep="step4"
+        stepPosition="top"
+        title="Img step"
+        text="Lorem ipsum, Lorem ipsumLsdorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem Lorem ipsum, Lorem"
+        src="../../assets/images/angular.png"
+    />
 
     <div joyrideStep="step5" stepPosition="left">Step2</div>
-    <span joyrideStep="step12">
-        Span
-    </span>
-    <span joyrideStep="step6" [stepContent]="step3Content">Step with custom content</span>
-
+    <span joyrideStep="step12"> Span </span> <span joyrideStep="step6" [stepContent]="step3Content">Step with custom content</span>
 
     <joyrideStep joyrideStep="step7" stepPosition="center"></joyrideStep>
-    <div joyrideStep="step13" (done)="stepDone()" class="lorem" title="Lorem" text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
+    <div
+        joyrideStep="step13"
+        (done)="stepDone()"
+        class="lorem"
+        title="Lorem"
+        text="Lorem Ipsum è un testo segnaposto utilizzato nel settore 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
@@ -44,23 +71,41 @@
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
         della tipografia e della stampa. Lorem Ipsum è considerato il 
         testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo 
-        tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione.">Lorem</div>
+        tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione."
+    >
+        Lorem
+    </div>
     <div class="stepOnRight" joyrideStep="step8">Step on the right side</div>
 
     <div class="big-panel">
         This is a big div in order to have the page scroll
-        <div joyrideStep="step9" title="My step" text="This element is Highlighted. Bla bla bla bla bla bal. This element is Highlighted. Bla bla bla bla bla bal"
-            stepPosition="bottom" class="big-panel__footer">I'm the target!</div>
+        <div
+            joyrideStep="step9"
+            title="My step"
+            text="This element is Highlighted. Bla bla bla bla bla bal. This element is Highlighted. Bla bla bla bla bla bal"
+            stepPosition="bottom"
+            class="big-panel__footer"
+        >
+            I'm the target!
+        </div>
         <div class="small-panel">
-            <img joyrideStep="step10" class="big-panel__image" stepPosition="top" title="Img step" text="uuuuu  uuryf sdfdsf"
-                src="../../assets/images/angular.png" [style.width.px]="12" [style.height.px]="12">
+            <img
+                joyrideStep="step10"
+                class="big-panel__image"
+                stepPosition="top"
+                title="Img step"
+                text="uuuuu  uuryf sdfdsf"
+                src="../../assets/images/angular.png"
+                [style.width.px]="12"
+                [style.height.px]="12"
+            />
         </div>
     </div>
 
     <div class="scroll">
         <ul>
-            <li *ngFor="let topic of topics; index as i">{{topic.name}}</li>
-            <li joyrideStep="scrollStep" title="Prova Scroll">Last topic</li>
+            <li *ngFor="let topic of topics; index as i">{{ topic.name }}</li>
+            <li joyrideStep="scrollStep" [text]=" 'async text' | joyTranslate" title="Prova Scroll">Last topic</li>
         </ul>
     </div>
 

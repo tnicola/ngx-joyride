@@ -4,12 +4,12 @@
     <div #stepContainer class="joyride-step__container">
         <joy-close-button class="joyride-step__close" (click)="close()"></joy-close-button>
         <div class="joyride-step__header">
-            <div class="joyride-step__title" [style.color]="themeColor">{{ title }}</div>
+            <div class="joyride-step__title" [style.color]="themeColor">{{ title | async }}</div>
         </div>
         <div class="joyride-step__body">
             <ng-container *ngTemplateOutlet="customContent ? customContent : defaultContent; context: ctx"></ng-container>
             <ng-template #defaultContent>
-                {{ text }}
+                {{ text | async }}
             </ng-template>
         </div>
         <div class="joyride-step__footer">

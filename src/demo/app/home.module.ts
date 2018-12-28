@@ -4,6 +4,7 @@ import { HomeRoutingModule, PageAComponent, PageBComponent } from './components/
 import { JoyrideModule } from 'ngx-joyride';
 import { CustomComponent } from './components/custom.component';
 import { CommonModule } from '@angular/common';
+import { JoyrideTranslatePipe } from './pipes/translate.pipe.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { CommonModule } from '@angular/common';
     HomeComponent,
     CustomComponent,
     PageAComponent,
-    PageBComponent
+    PageBComponent,
+    JoyrideTranslatePipe
   ]
 })
 export class HomeModule { }
