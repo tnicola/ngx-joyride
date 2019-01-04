@@ -6,8 +6,8 @@ export class JoyrideStep {
     name: string;
     route: string;
     position: string;
-    title: string | Observable<string>;
-    text: string | Observable<string>;
+    title: Observable<string>;
+    text: Observable<string>;
     stepContent: TemplateRef<any>;
     stepContentParams: Object;
     nextClicked: EventEmitter<any>;

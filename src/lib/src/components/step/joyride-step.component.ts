@@ -46,8 +46,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     arrowPosition: string;
     arrowLeftPosition: number;
     arrowTopPosition: number;
-    title: string | Observable<string>;
-    text: string | Observable<string>;
+    title: Observable<string>;
+    text: Observable<string>;
     counter: string;
     isCounterVisible: boolean;
     isPrevButtonVisible: boolean;
@@ -104,6 +104,9 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isCounterVisible = this.optionsService.isCounterVisible();
         this.isPrevButtonVisible = this.optionsService.isPrevButtonVisible();
         this.themeColor = this.optionsService.getThemeColor();
+
+        this.text.subscribe(val => this.checkRedraw(val));
+        this.title.subscribe(val => this.checkRedraw(val));
     }
 
     ngAfterViewInit() {
@@ -124,6 +127,15 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
             this.renderer.setStyle(this.stepContainer.nativeElement, 'height', this.stepHeight + 'px');
         }
         this.drawStep();
+    }
+
+    private checkRedraw(val) {
+        if (val != null) {
+            // Need to wait that the change is rendered before redrawing
+            setTimeout(() => {
+                this.redrawStep();
+            }, 2);
+        }
     }
 
     private isCustomized() {
@@ -358,9 +370,13 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private subscribeToResizeEvents(): Subscription {
         return this.eventListenerService.resizeEvent.subscribe(() => {
-            this.updateStepDimensions();
-            this.drawStep();
+            this.redrawStep();
         });
+    }
+
+    private redrawStep() {
+        this.updateStepDimensions();
+        this.drawStep();
     }
 
     private getDimensionsByAspectRatio(width: number, height: number, aspectRatio: number) {

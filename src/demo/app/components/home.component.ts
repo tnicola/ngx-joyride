@@ -49,9 +49,9 @@ export class HomeComponent implements AfterViewInit, OnInit {
     startTour() {
         let options = {
             steps: [
+                'myStep@app/routeA',
                 'step11@app',
                 'scrollStep@app',
-                'myStep@app/routeA',
                 'step1@about/you',
                 'myStep2@app/routeB',
                 'home1@app',
@@ -63,7 +63,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
             ],
             stepDefaultPosition: 'top',
             themeColor: '#345632',
-            showPrevButton: true
+            showPrevButton: true,
+            logsEnabled: true
         };
         this.joyrideService.startTour(options).subscribe(
             step => {
