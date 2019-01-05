@@ -525,7 +525,7 @@ describe('JoyrideStepComponent', () => {
         });
     });
 
-    fdescribe('adjust TOP Position', () => {
+    describe('adjust TOP Position', () => {
         it('should prevent to draw the step outside setting topPosition to DEFAULT_DISTANCE_FROM_MARGIN_TOP when the step position is right', () => {
             const targetHeight = 50;
             let elemRef = new FakeElementRef(19, targetHeight);
