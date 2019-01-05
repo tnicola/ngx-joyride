@@ -54,6 +54,7 @@ describe('JoyrideStepComponent', () => {
     let joyrideStepService: JoyrideStepFakeService = new JoyrideStepFakeService();
     let documentService: DocumentServiceFake;
     let templatesService: TemplatesFakeService;
+    let logger: LoggerFake;
     let STEP: JoyrideStep;
     let STEP_CONTAINER: ElementRef;
     let TEMPLATE: TemplateRef<any>;
@@ -82,6 +83,7 @@ describe('JoyrideStepComponent', () => {
         optionsService = TestBed.get(JoyrideOptionsService);
         documentService = TestBed.get(DocumentService);
         templatesService = TestBed.get(TemplatesService);
+        logger = TestBed.get(LoggerService);
     });
 
     describe('ngOnInit', () => {
@@ -602,6 +604,36 @@ describe('JoyrideStepComponent', () => {
             component.ngAfterViewInit();
 
             expect(component.topPosition).toBe(targetAbsoluteLeft + targetHeight + DISTANCE_FROM_TARGET);
+        });
+    });
+
+    describe('autofixTopPosition()', () => {
+        // TODO: Improve these tests since they are calling a private method
+        it(`should NOT log 'No step positions found...' if called once`, () => {
+            component['autofixTopPosition']();
+            expect(logger.warn).not.toHaveBeenCalled();
+        });
+        it(`should log 'No step positions found...' if called twice and the step does not fit the TOP position`, () => {
+            const targetHeight = 50;
+            let elemRef = new FakeElementRef(19, targetHeight);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'top';
+
+            // Set targetAbsoluteLeft
+            const targetAbsoluteHeight = 20;
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteTop.and.returnValue(targetAbsoluteHeight);
+
+            // Set stepHeight
+            const stepHeight = 100;
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: stepHeight });
+
+            component.step = STEP;
+            component.ngAfterViewInit(); // autofixTopPosition called for the first time
+            component['autofixTopPosition']();
+
+            expect(logger.warn).toHaveBeenCalledWith('No step positions found for this step. The step will be centered.');
         });
     });
 });
