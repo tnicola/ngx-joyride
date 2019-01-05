@@ -1,5 +1,5 @@
 import { Component, ViewChild, TemplateRef, ElementRef, ViewContainerRef, Type } from '@angular/core';
-import { TestBed, async, ComponentFixture, } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { JoyrideStepComponent } from './joyride-step.component';
 import { JoyrideStepsContainerService } from '../../services/joyride-steps-container.service';
@@ -21,34 +21,31 @@ import { JoyrideStepFakeService } from '../../test/fake/joyride-step-fake.servic
 import { FakeElementRef, FakeViewContainerRef } from '../../test/fake/dom-elements-fake.class';
 import { TemplatesService } from '../../services/templates.service';
 import { TemplatesFakeService } from '../../test/fake/templates-fake.service';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'host',
     template: `
-    <div #elem>Element</div>
-    <div #customTemplate>Template</div>
-    <joyride-step ></joyride-step>`
+        <div #elem>Element</div>
+        <div #customTemplate>Template</div>
+        <joyride-step></joyride-step>
+    `
 })
 class HostComponent {
-
     @ViewChild('elem') element: TemplateRef<any>;
     @ViewChild('customTemplate') customTemplate: TemplateRef<any>;
 
     color: string;
-    onClick: jasmine.Spy = jasmine.createSpy("onClick");
+    onClick: jasmine.Spy = jasmine.createSpy('onClick');
 
     step: JoyrideStep;
 
     setStep(step: JoyrideStep) {
         this.step = step;
     }
-
 }
 
-
-
-describe("JoyrideStepComponent", () => {
-
+describe('JoyrideStepComponent', () => {
     let hostFixture: ComponentFixture<HostComponent>;
     let component: JoyrideStepComponent;
     let hostComponent: HostComponent;
@@ -61,16 +58,9 @@ describe("JoyrideStepComponent", () => {
     let STEP_CONTAINER: ElementRef;
     let TEMPLATE: TemplateRef<any>;
 
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                HostComponent,
-                JoyrideStepComponent,
-                JoyrideArrowComponent,
-                JoyrideButtonComponent,
-                JoyrideCloseButtonComponent
-            ],
+            declarations: [HostComponent, JoyrideStepComponent, JoyrideArrowComponent, JoyrideButtonComponent, JoyrideCloseButtonComponent],
             providers: [
                 { provide: JoyrideStepsContainerService, useClass: JoyrideStepsContainerServiceFake },
                 { provide: EventListenerService, useClass: EventListenerServiceFake },
@@ -94,11 +84,13 @@ describe("JoyrideStepComponent", () => {
         templatesService = TestBed.get(TemplatesService);
     });
 
-    describe("ngOnInit", () => {
+    describe('ngOnInit', () => {
         beforeEach(() => {
+            let elemRef = new FakeElementRef();
             STEP = new JoyrideStep();
-            STEP.title = "My title";
-            STEP.text = "text-abc";
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.title = of('My title');
+            STEP.text = of('text-abc');
             STEP.stepContent = hostComponent.element;
             STEP.stepContentParams = { param1: 'name', param2: 'surname' };
             component.step = STEP;
@@ -108,61 +100,61 @@ describe("JoyrideStepComponent", () => {
             templatesService.getCounter.and.returnValue(TEMPLATE);
         });
 
-        it("should call documentService", () => {
+        it('should call documentService', () => {
             component.ngOnInit();
 
             expect(documentService.getDocumentHeight).toHaveBeenCalled();
         });
 
-        it("should set the title of the step", () => {
+        it('should set the title of the step', () => {
             component.ngOnInit();
 
             expect(component.title).toBe(STEP.title);
         });
 
-        it("should set the text of the step", () => {
+        it('should set the text of the step', () => {
             component.ngOnInit();
 
             expect(component.text).toBe(STEP.text);
         });
 
-        it("should set the customContent of the step", () => {
+        it('should set the customContent of the step', () => {
             component.ngOnInit();
 
             expect(component.customContent).toBe(STEP.stepContent);
         });
 
-        it("should set the customPrevButton template of the step", () => {
+        it('should set the customPrevButton template of the step', () => {
             component.ngOnInit();
 
             expect(component.customPrevButton).toBe(TEMPLATE);
         });
 
-        it("should set the customNextButton template of the step", () => {
+        it('should set the customNextButton template of the step', () => {
             component.ngOnInit();
 
             expect(component.customNextButton).toBe(TEMPLATE);
         });
 
-        it("should set the customDoneButton template of the step", () => {
+        it('should set the customDoneButton template of the step', () => {
             component.ngOnInit();
 
             expect(component.customDoneButton).toBe(TEMPLATE);
         });
 
-        it("should set the customCounter template of the step", () => {
+        it('should set the customCounter template of the step', () => {
             component.ngOnInit();
 
             expect(component.customCounter).toBe(TEMPLATE);
         });
 
-        it("should set the ctx of the step", () => {
+        it('should set the ctx of the step', () => {
             component.ngOnInit();
 
             expect(component.ctx).toBe(STEP.stepContentParams);
         });
 
-        it("should set the counter as stepPosition on numberOfSteps", () => {
+        it('should set the counter as stepPosition on numberOfSteps', () => {
             stepsContainerService.getStepPosition.and.returnValue(4);
             stepsContainerService.getNumberOfSteps.and.returnValue(10);
 
@@ -171,7 +163,7 @@ describe("JoyrideStepComponent", () => {
             expect(component.counter).toBe('4/10');
         });
 
-        it("should set isCounterVisible to true if optionsService.isCounterVisible returns true", () => {
+        it('should set isCounterVisible to true if optionsService.isCounterVisible returns true', () => {
             optionsService.isCounterVisible.and.returnValue(true);
 
             component.ngOnInit();
@@ -179,7 +171,7 @@ describe("JoyrideStepComponent", () => {
             expect(component.isCounterVisible).toBe(true);
         });
 
-        it("should set isCounterVisible to false if optionsService.isCounterVisible returns false", () => {
+        it('should set isCounterVisible to false if optionsService.isCounterVisible returns false', () => {
             optionsService.isCounterVisible.and.returnValue(false);
 
             component.ngOnInit();
@@ -187,7 +179,7 @@ describe("JoyrideStepComponent", () => {
             expect(component.isCounterVisible).toBe(false);
         });
 
-        it("should set isPrevButtonVisible to true if optionsService.isPrevButtonVisible returns true", () => {
+        it('should set isPrevButtonVisible to true if optionsService.isPrevButtonVisible returns true', () => {
             optionsService.isPrevButtonVisible.and.returnValue(true);
 
             component.ngOnInit();
@@ -195,7 +187,7 @@ describe("JoyrideStepComponent", () => {
             expect(component.isPrevButtonVisible).toBe(true);
         });
 
-        it("should set isPrevButtonVisible to false if optionsService.isPrevButtonVisible returns false", () => {
+        it('should set isPrevButtonVisible to false if optionsService.isPrevButtonVisible returns false', () => {
             optionsService.isPrevButtonVisible.and.returnValue(false);
 
             component.ngOnInit();
@@ -203,7 +195,7 @@ describe("JoyrideStepComponent", () => {
             expect(component.isPrevButtonVisible).toBe(false);
         });
 
-        it("should set themeColor to the value returned by optionsService.getThemeColor", () => {
+        it('should set themeColor to the value returned by optionsService.getThemeColor', () => {
             optionsService.getThemeColor.and.returnValue('#123456');
 
             component.ngOnInit();
@@ -212,7 +204,7 @@ describe("JoyrideStepComponent", () => {
         });
     });
 
-    describe("ngAfterViewInit()", () => {
+    describe('ngAfterViewInit()', () => {
         beforeEach(() => {
             STEP_CONTAINER = new FakeElementRef();
             let elemRef = new FakeElementRef();
@@ -234,7 +226,7 @@ describe("JoyrideStepComponent", () => {
                 expect(stepContainer.nativeElement.style.maxWidth).toBe('90vw');
             });
 
-            it("should set stepWidth equals to the stepContainer clientWidth", () => {
+            it('should set stepWidth equals to the stepContainer clientWidth', () => {
                 component.stepContainer = STEP_CONTAINER;
 
                 component.ngAfterViewInit();
@@ -242,7 +234,7 @@ describe("JoyrideStepComponent", () => {
                 expect(component.stepWidth).toBe(25);
             });
 
-            it("should set stepHeight equals to the stepContainer clienHeight", () => {
+            it('should set stepHeight equals to the stepContainer clienHeight', () => {
                 component.stepContainer = STEP_CONTAINER;
 
                 component.ngAfterViewInit();
@@ -263,14 +255,14 @@ describe("JoyrideStepComponent", () => {
                 expect(stepContainer.nativeElement.style.maxWidth).toBe('400px');
             });
 
-            it("should set dimensions equals to the default ones", () => {
+            it('should set dimensions equals to the default ones', () => {
                 component.ngAfterViewInit();
 
                 expect(component.stepWidth).toBe(200);
                 expect(component.stepHeight).toBe(165.01650165016503);
             });
 
-            it("should set stepContainer dimensions equals to the default ones", () => {
+            it('should set stepContainer dimensions equals to the default ones', () => {
                 component.ngAfterViewInit();
 
                 let stepContainer = hostFixture.debugElement.query(By.css('.joyride-step__container'));
@@ -278,7 +270,7 @@ describe("JoyrideStepComponent", () => {
                 expect(stepContainer.nativeElement.style.height).toBe('165.017px');
             });
 
-            it("should set stepHolder position equals to fixed if step.isElementOrAncestorFixed returns true", () => {
+            it('should set stepHolder position equals to fixed if step.isElementOrAncestorFixed returns true', () => {
                 STEP.isElementOrAncestorFixed = true;
                 component.step = STEP;
                 component.ngAfterViewInit();
@@ -287,7 +279,7 @@ describe("JoyrideStepComponent", () => {
                 expect(stepHolder.nativeElement.style.position).toBe('fixed');
             });
 
-            it("should set stepHolder position equals to absolute if step.isElementOrAncestorFixed returns false", () => {
+            it('should set stepHolder position equals to absolute if step.isElementOrAncestorFixed returns false', () => {
                 STEP.isElementOrAncestorFixed = false;
                 component.step = STEP;
                 component.ngAfterViewInit();
@@ -324,7 +316,6 @@ describe("JoyrideStepComponent", () => {
                 });
             });
 
-
             describe('when the step position is "bottom"', () => {
                 beforeEach(() => {
                     STEP.position = 'bottom';
@@ -344,7 +335,6 @@ describe("JoyrideStepComponent", () => {
                 });
             });
 
-
             describe('when the step position is "right"', () => {
                 beforeEach(() => {
                     STEP.position = 'right';
@@ -363,7 +353,6 @@ describe("JoyrideStepComponent", () => {
                     expect(component.arrowPosition).toBe('left');
                 });
             });
-
 
             describe('when the step position is "left"', () => {
                 beforeEach(() => {
@@ -396,7 +385,6 @@ describe("JoyrideStepComponent", () => {
                     expect(stepHolder.nativeElement.style.top).toBe('50%');
                     expect(stepHolder.nativeElement.style.left).toBe('50%');
                     expect(stepHolder.nativeElement.style.transform).toBe('translate(-100px, -82.5px)');
-
                 });
 
                 it('should hide the arrow', () => {
@@ -457,8 +445,4 @@ describe("JoyrideStepComponent", () => {
             expect(component.isLastStep()).toBe(false);
         });
     });
-
-
-
-
 });

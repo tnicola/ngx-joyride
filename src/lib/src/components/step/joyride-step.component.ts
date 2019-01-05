@@ -105,8 +105,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isPrevButtonVisible = this.optionsService.isPrevButtonVisible();
         this.themeColor = this.optionsService.getThemeColor();
 
-        this.text.subscribe(val => this.checkRedraw(val));
-        this.title.subscribe(val => this.checkRedraw(val));
+        if (this.text) this.text.subscribe(val => this.checkRedraw(val));
+        if (this.title) this.title.subscribe(val => this.checkRedraw(val));
     }
 
     ngAfterViewInit() {
