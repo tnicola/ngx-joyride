@@ -2,12 +2,12 @@ import { ElementRef, ViewContainerRef } from '@angular/core';
 
 export class FakeElementRef implements ElementRef {
     nativeElement: any;
-    constructor() {
+    constructor(width: number = 10, height: number = 15) {
         this.nativeElement = {
             style: { maxWidth: 'none' },
             offsetHeight: 34,
             getBoundingClientRect: () => {
-                return { width: 10, height: 15 };
+                return { width, height };
             }
         };
     }

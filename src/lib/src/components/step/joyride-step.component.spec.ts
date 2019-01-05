@@ -1,7 +1,7 @@
 import { Component, ViewChild, TemplateRef, ElementRef, ViewContainerRef, Type } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { JoyrideStepComponent } from './joyride-step.component';
+import { JoyrideStepComponent, DEFAULT_DISTANCE_FROM_MARGIN_LEFT, DEFAULT_DISTANCE_FROM_MARGIN_TOP } from './joyride-step.component';
 import { JoyrideStepsContainerService } from '../../services/joyride-steps-container.service';
 import { JoyrideStepsContainerServiceFake } from '../../test/fake/joyride-steps-container-fake.service';
 import { EventListenerService } from '../../services/event-listener.service';
@@ -16,7 +16,7 @@ import { JoyrideOptionsService } from '../../services/joyride-options.service';
 import { JoyrideArrowComponent } from '../arrow/arrow.component';
 import { JoyrideButtonComponent } from '../button/button.component';
 import { JoyrideCloseButtonComponent } from '../close-button/close-button.component';
-import { JoyrideStepService } from '../../services/joyride-step.service';
+import { JoyrideStepService, DISTANCE_FROM_TARGET } from '../../services/joyride-step.service';
 import { JoyrideStepFakeService } from '../../test/fake/joyride-step-fake.service';
 import { FakeElementRef, FakeViewContainerRef } from '../../test/fake/dom-elements-fake.class';
 import { TemplatesService } from '../../services/templates.service';
@@ -86,7 +86,7 @@ describe('JoyrideStepComponent', () => {
 
     describe('ngOnInit', () => {
         beforeEach(() => {
-            let elemRef = new FakeElementRef();
+            let elemRef = new FakeElementRef(10, 15);
             STEP = new JoyrideStep();
             STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
             STEP.title = of('My title');
@@ -206,8 +206,8 @@ describe('JoyrideStepComponent', () => {
 
     describe('ngAfterViewInit()', () => {
         beforeEach(() => {
-            STEP_CONTAINER = new FakeElementRef();
-            let elemRef = new FakeElementRef();
+            STEP_CONTAINER = new FakeElementRef(10, 15);
+            let elemRef = new FakeElementRef(10, 15);
             STEP = new JoyrideStep();
             STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
             STEP_CONTAINER.nativeElement.clientWidth = 25;
@@ -443,6 +443,165 @@ describe('JoyrideStepComponent', () => {
             joyrideStepService.isLastStep.and.returnValue(false);
 
             expect(component.isLastStep()).toBe(false);
+        });
+    });
+
+    describe('adjust LEFT Position', () => {
+        it('should prevent to draw the step outside setting leftPosition to DEFAULT_DISTANCE_FROM_MARGIN_LEFT when the step position is top', () => {
+            const targetWidth = 50;
+            let elemRef = new FakeElementRef(targetWidth, 10);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'top';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteLeft.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 30 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.leftPosition).toBe(DEFAULT_DISTANCE_FROM_MARGIN_LEFT);
+        });
+        it('should prevent to draw the step outside setting leftPosition to DEFAULT_DISTANCE_FROM_MARGIN_LEFT when the step position is bottom', () => {
+            const targetWidth = 50;
+            let elemRef = new FakeElementRef(targetWidth, 10);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'bottom';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteLeft.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 30 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.leftPosition).toBe(DEFAULT_DISTANCE_FROM_MARGIN_LEFT);
+        });
+        it('should NOT prevent to draw the step outside setting leftPosition to DEFAULT_DISTANCE_FROM_MARGIN_LEFT when the step position is right', () => {
+            const targetWidth = 50;
+            let elemRef = new FakeElementRef(targetWidth, 10);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'right';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteLeft.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 30 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.leftPosition).toBe(70 + DISTANCE_FROM_TARGET);
+        });
+        it('should prevent to draw the step outside setting leftPosition to DEFAULT_DISTANCE_FROM_MARGIN_LEFT when the step position is left', () => {
+            const targetWidth = 50;
+            let elemRef = new FakeElementRef(targetWidth, 10);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'left';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteLeft.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 30 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.leftPosition).toBe(DEFAULT_DISTANCE_FROM_MARGIN_LEFT);
+        });
+    });
+
+    fdescribe('adjust TOP Position', () => {
+        it('should prevent to draw the step outside setting topPosition to DEFAULT_DISTANCE_FROM_MARGIN_TOP when the step position is right', () => {
+            const targetHeight = 50;
+            let elemRef = new FakeElementRef(19, targetHeight);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'right';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteTop.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 100 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.topPosition).toBe(DEFAULT_DISTANCE_FROM_MARGIN_TOP);
+        });
+        it('should prevent to draw the step outside setting topPosition to DEFAULT_DISTANCE_FROM_MARGIN_TOP when the step position is left', () => {
+            const targetHeight = 50;
+            let elemRef = new FakeElementRef(19, targetHeight);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'left';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteTop.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 100 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.topPosition).toBe(DEFAULT_DISTANCE_FROM_MARGIN_TOP);
+        });
+        it('should prevent to draw the step outside setting topPosition to DEFAULT_DISTANCE_FROM_MARGIN_TOP when the step position is top', () => {
+            const targetHeight = 50;
+            let elemRef = new FakeElementRef(19, targetHeight);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'top';
+
+            // Set targetAbsoluteLeft
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteTop.and.returnValue(20);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 100 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.topPosition).toBe(DEFAULT_DISTANCE_FROM_MARGIN_TOP);
+        });
+        it('should NOT prevent to draw the step outside setting topPosition to DEFAULT_DISTANCE_FROM_MARGIN_TOP when the step position is bottom', () => {
+            const targetHeight = 50;
+            let elemRef = new FakeElementRef(19, targetHeight);
+            let STEP = new JoyrideStep();
+            STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
+            STEP.position = 'bottom';
+
+            // Set
+            const targetAbsoluteLeft = 20;
+            STEP.isElementOrAncestorFixed = false;
+            documentService.getElementAbsoluteTop.and.returnValue(targetAbsoluteLeft);
+
+            // Set stepWidth
+            spyOn(component, 'adjustDimensions').and.returnValue({ width: 100, height: 100 });
+
+            component.step = STEP;
+            component.ngAfterViewInit();
+
+            expect(component.topPosition).toBe(targetAbsoluteLeft + targetHeight + DISTANCE_FROM_TARGET);
         });
     });
 });
