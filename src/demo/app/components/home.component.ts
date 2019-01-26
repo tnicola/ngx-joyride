@@ -49,7 +49,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     startTour() {
         let options = {
             steps: [
-                'myStep@app/routeA',
+                'firstStep@app',
                 'step11@app',
                 'scrollStep@app',
                 'step1@about/you',
