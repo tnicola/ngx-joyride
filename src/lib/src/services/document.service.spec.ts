@@ -8,14 +8,15 @@ import { FakeElementRef } from '../test/fake/dom-elements-fake.class';
 describe('DocumentService', () => {
     let documentService: DocumentService;
     let domRefService: DomRefServiceFake;
-    const getFakeDocument = (compatMode: string) => {
+    const getFakeDocument = (compatMode: string = undefined) => {
         return {
             compatMode,
             documentElement: {
                 scrollTop: 10,
                 scrollLeft: 30
             },
-            body: { scrollTop: 5, scrollLeft: 5 }
+            body: { scrollTop: 5, scrollLeft: 5 },
+            elementsFromPoint: jasmine.createSpy('elementsFromPoint')
         };
     };
 
@@ -433,6 +434,72 @@ describe('DocumentService', () => {
                 };
                 const node = documentService.getFirstScrollableParent(element.nativeElement);
                 expect(node).toEqual(jasmine.objectContaining({ theBody: 2 }));
+            });
+        });
+
+        describe('isElementBeyondOthers', () => {
+            const fakeDoc = getFakeDocument();
+            const element = new FakeElementRef();
+            element.nativeElement.title = 'div1';
+
+            it('should return true if the element when elementsFromPoint does NOT return the element as first (top and bottom of the elment)', () => {
+                fakeDoc.elementsFromPoint.and.returnValue(['html', element.nativeElement, 'div2', 'div3']);
+                domRefService.getNativeDocument.and.returnValue(fakeDoc);
+
+                const result = documentService.isElementBeyondOthers(element, false);
+
+                expect(result).toBe(true);
+            });
+
+            it('should return true if the element when elementsFromPoint does NOT return the element as first (top of the element)', () => {
+                fakeDoc.elementsFromPoint.and.returnValues(
+                    ['html', element.nativeElement, 'div2', 'div3'],
+                    [element.nativeElement, 'div2', 'div3']
+                );
+                domRefService.getNativeDocument.and.returnValue(fakeDoc);
+
+                const result = documentService.isElementBeyondOthers(element, false);
+
+                expect(result).toBe(true);
+            });
+
+            it('should return true if the element when elementsFromPoint does NOT return the element as first (bottom of the element)', () => {
+                fakeDoc.elementsFromPoint.and.returnValues(
+                    [element.nativeElement, 'div2', 'div3'],
+                    ['html', element.nativeElement, 'div2', 'div3']
+                );
+                domRefService.getNativeDocument.and.returnValue(fakeDoc);
+
+                const result = documentService.isElementBeyondOthers(element, false);
+
+                expect(result).toBe(true);
+            });
+
+            it('should return true if the element when elementsFromPoint does NOT return the element as first', () => {
+                fakeDoc.elementsFromPoint.and.returnValue(['html', element.nativeElement, 'div2', 'div3']);
+                domRefService.getNativeDocument.and.returnValue(fakeDoc);
+
+                const result = documentService.isElementBeyondOthers(element, false);
+
+                expect(result).toBe(true);
+            });
+
+            it('should return false if the the element when elementsFromPoint returns []', () => {
+                fakeDoc.elementsFromPoint.and.returnValue([]);
+                domRefService.getNativeDocument.and.returnValue(fakeDoc);
+
+                const result = documentService.isElementBeyondOthers(element, false);
+
+                expect(result).toBe(true);
+            });
+
+            it('should return false if the element when elementsFromPoint returns the element as first', () => {
+                fakeDoc.elementsFromPoint.and.returnValue([element.nativeElement, 'div2', 'div3']);
+                domRefService.getNativeDocument.and.returnValue(fakeDoc);
+
+                const result = documentService.isElementBeyondOthers(element, false);
+
+                expect(result).toBe(false);
             });
         });
     });

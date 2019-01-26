@@ -9,4 +9,5 @@ export class DocumentServiceFake {
     getElementFixedTop: jasmine.Spy = jasmine.createSpy('getElementFixedTop');
     getElementFixedLeft: jasmine.Spy = jasmine.createSpy('getElementFixedLeft');
     getFirstScrollableParent: jasmine.Spy = jasmine.createSpy('getFirstScrollableParent');
+    isElementBeyondOthers: jasmine.Spy = jasmine.createSpy('isElementBeyondOthers');
 }

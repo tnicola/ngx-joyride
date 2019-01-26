@@ -56,6 +56,22 @@ export class DocumentService {
         return scrollparent(node);
     }
 
+    getElementsFromPoint(x: number, y: number) {
+        this.DOMService.getNativeDocument().elementsFromPoint(x, y);
+    }
+
+    isElementBeyondOthers(elementRef: ElementRef, isElementFixed: boolean) {
+        const x1 = isElementFixed ? this.getElementFixedLeft(elementRef) : this.getElementAbsoluteLeft(elementRef);
+        const y1 = isElementFixed ? this.getElementFixedTop(elementRef) : this.getElementAbsoluteTop(elementRef);
+        const x2 = x1 + elementRef.nativeElement.getBoundingClientRect().width - 1;
+        const y2 = y1 + elementRef.nativeElement.getBoundingClientRect().height - 1;
+
+        const elements1 = this.DOMService.getNativeDocument().elementsFromPoint(x1, y1);
+        const elements2 = this.DOMService.getNativeDocument().elementsFromPoint(x2, y2);
+
+        return elements1[0] !== elementRef.nativeElement || elements2[0] !== elementRef.nativeElement;
+    }
+
     private calculateDocumentHeight() {
         const documentRef = this.DOMService.getNativeDocument();
         return Math.max(

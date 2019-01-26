@@ -140,6 +140,7 @@ export class JoyrideStepService implements IJoyrideStepService {
             if (this.isParentScrollable(this.currentStep.targetViewContainer.element.nativeElement)) {
                 this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
             }
+            this.scrollIfElementBeyondOtherElements();
             this.backDropService.draw(this.currentStep);
             this.drawStep(this.currentStep);
             this.scrollIfStepAndTargetAreNotVisible();
@@ -220,6 +221,17 @@ export class JoyrideStepService implements IJoyrideStepService {
                 targetAbsoluteTop,
                 targetAbsoluteTop + this.currentStep.stepInstance.targetHeight / 2 - this.currentStep.stepInstance.stepHeight / 2
             );
+        }
+    }
+
+    private scrollIfElementBeyondOtherElements() {
+        if (
+            this.documentService.isElementBeyondOthers(
+                this.currentStep.targetViewContainer.element,
+                this.currentStep.isElementOrAncestorFixed
+            )
+        ) {
+            this.DOMService.getNativeWindow().scrollTo(0, 0);
         }
     }
 }

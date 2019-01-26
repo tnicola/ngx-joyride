@@ -31,7 +31,7 @@ describe('JoyrideStepService', () => {
     let STEP0: any = new JoyrideStep();
     let STEP1: any = new JoyrideStep();
     let STEP2: any = new JoyrideStep();
-    let FAKE_WINDOW: any;
+    let FAKE_WINDOW: { innerHeight: number; scrollTo: jasmine.Spy };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -168,7 +168,12 @@ describe('JoyrideStepService', () => {
             expect(backdropService.draw).toHaveBeenCalledTimes(1);
             expect(backdropService.draw).toHaveBeenCalledWith(STEP1);
         });
+        it('should call backDropService.draw', () => {
+            expect(backdropService.draw).toHaveBeenCalledTimes(1);
+            expect(backdropService.draw).toHaveBeenCalledWith(STEP1);
+        });
     });
+
     describe('prev()', () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
@@ -208,6 +213,57 @@ describe('JoyrideStepService', () => {
             });
         });
     });
+
+    describe('when documentService.isElementBeyondOthers returns true', () => {
+        beforeEach(fakeAsync(() => {
+            documentService.isElementBeyondOthers.and.returnValue(true);
+            joyrideStepService.startTour();
+            tick(1);
+        }));
+        it('should scroll to 0, 0 when startTour() is called ', () => {
+            expect(FAKE_WINDOW.scrollTo).toHaveBeenCalledWith(0, 0);
+        });
+        it('should scroll to 0, 0 when prev() is called ', fakeAsync(() => {
+            joyrideStepService.next();
+            tick(1);
+            joyrideStepService.prev();
+            tick(1);
+
+            expect(FAKE_WINDOW.scrollTo.calls.mostRecent().args).toEqual([0, 0]);
+        }));
+        it('should scroll to 0, 0 when next() is called ', fakeAsync(() => {
+            joyrideStepService.next();
+            tick(1);
+
+            expect(FAKE_WINDOW.scrollTo.calls.mostRecent().args).toEqual([0, 0]);
+        }));
+    });
+
+    describe('when documentService.isElementBeyondOthers returns false', () => {
+        beforeEach(fakeAsync(() => {
+            documentService.isElementBeyondOthers.and.returnValue(false);
+            joyrideStepService.startTour();
+            tick(1);
+        }));
+        it('should NOT scroll to 0, 0 when startTour() is called ', () => {
+            expect(FAKE_WINDOW.scrollTo).not.toHaveBeenCalled();
+        });
+        it('should NOT scroll to 0, 0 when prev() is called ', fakeAsync(() => {
+            joyrideStepService.next();
+            tick(1);
+            joyrideStepService.prev();
+            tick(1);
+
+            expect(FAKE_WINDOW.scrollTo).not.toHaveBeenCalled();
+        }));
+        it('should NOT scroll to 0, 0 when next() is called ', fakeAsync(() => {
+            joyrideStepService.next();
+            tick(1);
+
+            expect(FAKE_WINDOW.scrollTo).not.toHaveBeenCalled();
+        }));
+    });
+
     describe('isFirstStep', () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
