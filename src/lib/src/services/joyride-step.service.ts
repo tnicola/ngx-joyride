@@ -228,7 +228,8 @@ export class JoyrideStepService implements IJoyrideStepService {
         if (
             this.documentService.isElementBeyondOthers(
                 this.currentStep.targetViewContainer.element,
-                this.currentStep.isElementOrAncestorFixed
+                this.currentStep.isElementOrAncestorFixed,
+                'backdrop'
             )
         ) {
             this.DOMService.getNativeWindow().scrollTo(0, 0);
@@ -237,7 +238,8 @@ export class JoyrideStepService implements IJoyrideStepService {
         if (
             this.documentService.isElementBeyondOthers(
                 this.currentStep.targetViewContainer.element,
-                this.currentStep.isElementOrAncestorFixed
+                this.currentStep.isElementOrAncestorFixed,
+                'backdrop'
             )
         ) {
             this.DOMService.getNativeWindow().scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);

@@ -1,4 +1,5 @@
 import { ElementRef, ViewContainerRef } from '@angular/core';
+import { stringify } from 'querystring';
 
 export class FakeElementRef implements ElementRef {
     nativeElement: any;
@@ -8,7 +9,8 @@ export class FakeElementRef implements ElementRef {
             offsetHeight: 34,
             getBoundingClientRect: () => {
                 return { width, height };
-            }
+            },
+            classList: ''
         };
     }
 }
