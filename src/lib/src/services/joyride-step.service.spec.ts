@@ -32,6 +32,7 @@ describe('JoyrideStepService', () => {
     let STEP1: any = new JoyrideStep();
     let STEP2: any = new JoyrideStep();
     let FAKE_WINDOW: { innerHeight: number; scrollTo: jasmine.Spy };
+    let FAKE_DOCUMENT: { body: { scrollHeight: number } };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -52,7 +53,9 @@ describe('JoyrideStepService', () => {
     beforeEach(() => {
         domRefService = TestBed.get(DomRefService);
         FAKE_WINDOW = { innerHeight: 200, scrollTo: jasmine.createSpy('scrollTo') };
+        FAKE_DOCUMENT = { body: { scrollHeight: 106 } };
         domRefService.getNativeWindow.and.returnValue(FAKE_WINDOW);
+        domRefService.getNativeDocument.and.returnValue(FAKE_DOCUMENT);
 
         joyrideStepService = TestBed.get(JoyrideStepService);
         eventListenerService = TestBed.get(EventListenerService);
@@ -216,7 +219,7 @@ describe('JoyrideStepService', () => {
 
     describe('when documentService.isElementBeyondOthers returns true', () => {
         beforeEach(fakeAsync(() => {
-            documentService.isElementBeyondOthers.and.returnValue(true);
+            documentService.isElementBeyondOthers.and.returnValues(true, false);
             joyrideStepService.startTour();
             tick(1);
         }));
@@ -239,9 +242,37 @@ describe('JoyrideStepService', () => {
         }));
     });
 
-    describe('when documentService.isElementBeyondOthers returns false', () => {
+    describe('when documentService.isElementBeyondOthers returns true twice', () => {
         beforeEach(fakeAsync(() => {
-            documentService.isElementBeyondOthers.and.returnValue(false);
+            documentService.isElementBeyondOthers.and.returnValues(true, true);
+            joyrideStepService.startTour();
+            tick(1);
+        }));
+        it('should scroll to 0, 0 and then to the bottom when startTour() is called ', () => {
+            expect(FAKE_WINDOW.scrollTo.calls.argsFor(0)).toEqual([0, 0]);
+            expect(FAKE_WINDOW.scrollTo.calls.argsFor(1)).toEqual([0, FAKE_DOCUMENT.body.scrollHeight]);
+        });
+        it('should scroll to 0, 0 and then to the bottom when prev() is called ', fakeAsync(() => {
+            joyrideStepService.next();
+            tick(1);
+            joyrideStepService.prev();
+            tick(1);
+
+            expect(FAKE_WINDOW.scrollTo.calls.argsFor(0)).toEqual([0, 0]);
+            expect(FAKE_WINDOW.scrollTo.calls.argsFor(1)).toEqual([0, FAKE_DOCUMENT.body.scrollHeight]);
+        }));
+        it('should scroll to 0, 0 and then to the bottom  when next() is called ', fakeAsync(() => {
+            joyrideStepService.next();
+            tick(1);
+
+            expect(FAKE_WINDOW.scrollTo.calls.argsFor(0)).toEqual([0, 0]);
+            expect(FAKE_WINDOW.scrollTo.calls.argsFor(1)).toEqual([0, FAKE_DOCUMENT.body.scrollHeight]);
+        }));
+    });
+
+    describe('when documentService.isElementBeyondOthers returns false twice', () => {
+        beforeEach(fakeAsync(() => {
+            documentService.isElementBeyondOthers.and.returnValues(false, false);
             joyrideStepService.startTour();
             tick(1);
         }));

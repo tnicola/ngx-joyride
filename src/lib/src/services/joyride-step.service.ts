@@ -233,5 +233,14 @@ export class JoyrideStepService implements IJoyrideStepService {
         ) {
             this.DOMService.getNativeWindow().scrollTo(0, 0);
         }
+
+        if (
+            this.documentService.isElementBeyondOthers(
+                this.currentStep.targetViewContainer.element,
+                this.currentStep.isElementOrAncestorFixed
+            )
+        ) {
+            this.DOMService.getNativeWindow().scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
+        }
     }
 }
