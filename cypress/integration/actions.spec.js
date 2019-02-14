@@ -5,7 +5,7 @@ context('Actions', () => {
         cy.visit('http://localhost:8080');
     });
 
-    it('should find the start button', () => {
+    it.only('should find the start button', () => {
         cy.get('.app__start-button').should('exist');
     });
 
