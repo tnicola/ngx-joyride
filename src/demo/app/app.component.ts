@@ -26,41 +26,4 @@ export class AppComponent {
             TITLE: 'hello Nicola'
         });
     }
-    startTour() {
-        let options = {
-            steps: [
-                'myStep@app/routeA',
-                'step1@about/you',
-                'myStep2@app/routeB',
-                'home1@app',
-                'step11@app',
-                'ciao',
-                'home2@app',
-                'stepHidden@app',
-                'step3@app',
-                'step2@about/you'
-            ],
-            stepDefaultPosition: 'top',
-            themeColor: '#345632',
-            showPrevButton: true
-        };
-        this.joyrideService.startTour(options).subscribe(
-            step => {
-                console.log('Next:', step);
-            },
-            e => {
-                console.log('Error', e);
-            },
-            () => {
-                console.log('Tour finished');
-            }
-        );
-    }
-
-    stepDone() {
-        this.router.navigate(['app']);
-        setTimeout(() => {
-            console.log('Step done!');
-        }, 3000);
-    }
 }
