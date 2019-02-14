@@ -217,28 +217,31 @@ describe('JoyrideStepService', () => {
         });
     });
 
-    describe('when documentService.isElementBeyondOthers returns true', () => {
+    describe('when documentService.isElementBeyondOthers returns true once', () => {
         beforeEach(fakeAsync(() => {
             documentService.isElementBeyondOthers.and.returnValues(true, false);
             joyrideStepService.startTour();
             tick(1);
         }));
-        it('should scroll to 0, 0 when startTour() is called ', () => {
-            expect(FAKE_WINDOW.scrollTo).toHaveBeenCalledWith(0, 0);
+        it('should call documentService.scrollToTheTop when startTour() is called', () => {
+            expect(documentService.scrollToTheTop).toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         });
-        it('should scroll to 0, 0 when prev() is called ', fakeAsync(() => {
+        it('should call documentService.scrollToTheTop when prev() is called ', fakeAsync(() => {
             joyrideStepService.next();
             tick(1);
             joyrideStepService.prev();
             tick(1);
 
-            expect(FAKE_WINDOW.scrollTo.calls.mostRecent().args).toEqual([0, 0]);
+            expect(documentService.scrollToTheTop).toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
-        it('should scroll to 0, 0 when next() is called ', fakeAsync(() => {
+        it('should call documentService.scrollToTheTop when next() is called ', fakeAsync(() => {
             joyrideStepService.next();
             tick(1);
 
-            expect(FAKE_WINDOW.scrollTo.calls.mostRecent().args).toEqual([0, 0]);
+            expect(documentService.scrollToTheTop).toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
     });
 
@@ -248,36 +251,37 @@ describe('JoyrideStepService', () => {
             joyrideStepService.startTour();
             tick(1);
         }));
-        it('should scroll to 0, 0 and then to the bottom when startTour() is called ', () => {
-            expect(FAKE_WINDOW.scrollTo.calls.argsFor(0)).toEqual([0, 0]);
-            expect(FAKE_WINDOW.scrollTo.calls.argsFor(1)).toEqual([0, FAKE_DOCUMENT.body.scrollHeight]);
+        it('should call both documentService.scrollToTheTop and scrollToTheBottom when startTour() is called ', () => {
+            expect(documentService.scrollToTheTop).toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).toHaveBeenCalled();
         });
-        it('should scroll to 0, 0 and then to the bottom when prev() is called ', fakeAsync(() => {
+        it('should scroll both documentService.scrollToTheTop and scrollToTheBottom when prev() is called ', fakeAsync(() => {
             joyrideStepService.next();
             tick(1);
             joyrideStepService.prev();
             tick(1);
 
-            expect(FAKE_WINDOW.scrollTo.calls.argsFor(0)).toEqual([0, 0]);
-            expect(FAKE_WINDOW.scrollTo.calls.argsFor(1)).toEqual([0, FAKE_DOCUMENT.body.scrollHeight]);
+            expect(documentService.scrollToTheTop).toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).toHaveBeenCalled();
         }));
-        it('should scroll to 0, 0 and then to the bottom  when next() is called ', fakeAsync(() => {
+        it('should scroll both documentService.scrollToTheTop and scrollToTheBottom when next() is called ', fakeAsync(() => {
             joyrideStepService.next();
             tick(1);
 
-            expect(FAKE_WINDOW.scrollTo.calls.argsFor(0)).toEqual([0, 0]);
-            expect(FAKE_WINDOW.scrollTo.calls.argsFor(1)).toEqual([0, FAKE_DOCUMENT.body.scrollHeight]);
+            expect(documentService.scrollToTheTop).toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).toHaveBeenCalled();
         }));
     });
 
-    describe('when documentService.isElementBeyondOthers returns false twice', () => {
+    describe('when documentService.isElementBeyondOthers returns false for three times', () => {
         beforeEach(fakeAsync(() => {
-            documentService.isElementBeyondOthers.and.returnValues(false, false);
+            documentService.isElementBeyondOthers.and.returnValues(false, false, false);
             joyrideStepService.startTour();
             tick(1);
         }));
-        it('should NOT scroll to 0, 0 when startTour() is called ', () => {
-            expect(FAKE_WINDOW.scrollTo).not.toHaveBeenCalled();
+        it('should NOT call documentService.scroll top, bottom when startTour() is called', () => {
+            expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         });
         it('should NOT scroll to 0, 0 when prev() is called ', fakeAsync(() => {
             joyrideStepService.next();
@@ -285,13 +289,15 @@ describe('JoyrideStepService', () => {
             joyrideStepService.prev();
             tick(1);
 
-            expect(FAKE_WINDOW.scrollTo).not.toHaveBeenCalled();
+            expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
         it('should NOT scroll to 0, 0 when next() is called ', fakeAsync(() => {
             joyrideStepService.next();
             tick(1);
 
-            expect(FAKE_WINDOW.scrollTo).not.toHaveBeenCalled();
+            expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
+            expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
     });
 

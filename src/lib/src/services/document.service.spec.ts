@@ -8,6 +8,9 @@ import { FakeElementRef } from '../test/fake/dom-elements-fake.class';
 describe('DocumentService', () => {
     let documentService: DocumentService;
     let domRefService: DomRefServiceFake;
+    let FAKE_WINDOW: { innerHeight: number; scrollTo: jasmine.Spy };
+    let FAKE_DOCUMENT: { body: { scrollHeight: number } };
+
     const getFakeDocument = (compatMode: string = undefined) => {
         return {
             compatMode,
@@ -28,6 +31,9 @@ describe('DocumentService', () => {
 
     beforeEach(() => {
         domRefService = TestBed.get(DomRefService);
+        FAKE_DOCUMENT = { body: { scrollHeight: 106 } };
+        FAKE_WINDOW = { innerHeight: 200, scrollTo: jasmine.createSpy('scrollTo') };
+        domRefService.getNativeWindow.and.returnValue(FAKE_WINDOW);
     });
 
     describe('constructor', () => {
@@ -399,7 +405,7 @@ describe('DocumentService', () => {
                 element.nativeElement = {
                     style: { overflow: 'auto' }
                 };
-                const node = documentService.getFirstScrollableParent(element.nativeElement);
+                const node = documentService['getFirstScrollableParent'](element.nativeElement);
                 expect(node).toBe(element.nativeElement);
             });
             it('should return the parent if the parent is the first scrollable', () => {
@@ -408,7 +414,7 @@ describe('DocumentService', () => {
                     style: { height: '12px' },
                     parentNode: { style: { overflow: 'scroll' } }
                 };
-                const node = documentService.getFirstScrollableParent(element.nativeElement);
+                const node = documentService['getFirstScrollableParent'](element.nativeElement);
                 expect(node).toBe(element.nativeElement.parentNode);
             });
             it('should return the 2nd parent if the 2nd parent is the first scrollable', () => {
@@ -420,7 +426,7 @@ describe('DocumentService', () => {
                         parentNode: { style: { overflow: 'auto' } }
                     }
                 };
-                const node = documentService.getFirstScrollableParent(element.nativeElement);
+                const node = documentService['getFirstScrollableParent'](element.nativeElement);
                 expect(node).toBe(element.nativeElement.parentNode.parentNode);
             });
             it('should return the body if none of the', () => {
@@ -432,7 +438,7 @@ describe('DocumentService', () => {
                         parentNode: { style: { display: 'flex' } }
                     }
                 };
-                const node = documentService.getFirstScrollableParent(element.nativeElement);
+                const node = documentService['getFirstScrollableParent'](element.nativeElement);
                 expect(node).toEqual(jasmine.objectContaining({ theBody: 2 }));
             });
         });
@@ -524,6 +530,69 @@ describe('DocumentService', () => {
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
                 expect(result).toBe(false);
+            });
+        });
+
+        describe('isParentScrollable', () => {
+            it(`should return true if getFirstScrollableParent doesn't return the body element`, () => {
+                spyOn(documentService, 'getFirstScrollableParent').and.returnValue(new FakeElementRef());
+
+                expect(documentService.isParentScrollable(new FakeElementRef())).toBe(true);
+            });
+            it(`should return false if getFirstScrollableParent returns the body element`, () => {
+                spyOn(documentService, 'getFirstScrollableParent').and.returnValue(document.body);
+
+                expect(documentService.isParentScrollable(new FakeElementRef())).toBe(false);
+            });
+        });
+
+        describe('scrollToTheTop', () => {
+            let elem: { scrollTo: jasmine.Spy };
+
+            beforeEach(() => {
+                elem = { scrollTo: jasmine.createSpy('scrollTo') };
+                domRefService.getNativeDocument.and.returnValue(FAKE_DOCUMENT);
+            });
+
+            it('should call scrollTo of the element when getFirstScrollableParent return an element', () => {
+                spyOn(documentService, 'getFirstScrollableParent').and.returnValue(elem);
+
+                documentService.scrollToTheTop(new FakeElementRef());
+
+                expect(elem.scrollTo).toHaveBeenCalledWith(0, 0);
+            });
+
+            it('should call scrollTo of the window when getFirstScrollableParent return the body element', () => {
+                spyOn(documentService, 'getFirstScrollableParent').and.returnValue(FAKE_DOCUMENT.body);
+
+                documentService.scrollToTheTop(new FakeElementRef());
+
+                expect(FAKE_WINDOW.scrollTo).toHaveBeenCalledWith(0, 0);
+            });
+        });
+
+        describe('scrollToTheBottom', () => {
+            let elem: { scrollTo: jasmine.Spy };
+
+            beforeEach(() => {
+                elem = { scrollTo: jasmine.createSpy('scrollTo') };
+                domRefService.getNativeDocument.and.returnValue(FAKE_DOCUMENT);
+            });
+
+            it('should call scrollTo of the element when getFirstScrollableParent return an element', () => {
+                spyOn(documentService, 'getFirstScrollableParent').and.returnValue(elem);
+
+                documentService.scrollToTheBottom(new FakeElementRef());
+
+                expect(elem.scrollTo).toHaveBeenCalledWith(0, FAKE_DOCUMENT.body.scrollHeight);
+            });
+
+            it('should call scrollTo of the window when getFirstScrollableParent return the body element', () => {
+                spyOn(documentService, 'getFirstScrollableParent').and.returnValue(FAKE_DOCUMENT.body);
+
+                documentService.scrollToTheBottom(new FakeElementRef());
+
+                expect(FAKE_WINDOW.scrollTo).toHaveBeenCalledWith(0, FAKE_DOCUMENT.body.scrollHeight);
             });
         });
     });
