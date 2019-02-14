@@ -137,9 +137,6 @@ export class JoyrideStepService implements IJoyrideStepService {
             this.stepsContainerService.initSteps();
             this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
             // Scroll the element to get it visible if it's in a scrollable element
-            if (this.isParentScrollable(this.currentStep.targetViewContainer.element.nativeElement)) {
-                this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
-            }
             this.scrollIfElementBeyondOtherElements();
             this.backDropService.draw(this.currentStep);
             this.drawStep(this.currentStep);
@@ -162,11 +159,6 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.currentStep.tourDone.emit();
         this.stepsObserver.complete();
     }
-
-    private isParentScrollable(nativeElement: any) {
-        return this.documentService.getFirstScrollableParent(nativeElement) !== this.DOMService.getNativeDocument().body;
-    }
-
     private removeCurrentStep() {
         this.stepDrawerService.remove(this.currentStep);
     }
@@ -225,24 +217,22 @@ export class JoyrideStepService implements IJoyrideStepService {
     }
 
     private scrollIfElementBeyondOtherElements() {
-        if (
-            this.documentService.isElementBeyondOthers(
-                this.currentStep.targetViewContainer.element,
-                this.currentStep.isElementOrAncestorFixed,
-                'backdrop'
-            )
-        ) {
-            this.DOMService.getNativeWindow().scrollTo(0, 0);
+        if (this.isElementBeyondOthers()) {
+            this.documentService.scrollToTheTop(this.currentStep.targetViewContainer.element);
         }
+        if (this.isElementBeyondOthers()) {
+            this.documentService.scrollToTheBottom(this.currentStep.targetViewContainer.element);
+        }
+        if (this.isElementBeyondOthers() && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
+            this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
+        }
+    }
 
-        if (
-            this.documentService.isElementBeyondOthers(
-                this.currentStep.targetViewContainer.element,
-                this.currentStep.isElementOrAncestorFixed,
-                'backdrop'
-            )
-        ) {
-            this.DOMService.getNativeWindow().scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
-        }
+    private isElementBeyondOthers() {
+        return this.documentService.isElementBeyondOthers(
+            this.currentStep.targetViewContainer.element,
+            this.currentStep.isElementOrAncestorFixed,
+            'backdrop'
+        );
     }
 }

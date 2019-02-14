@@ -1,8 +1,26 @@
 import { Injectable, ElementRef } from '@angular/core';
 import { DomRefService } from './dom.service';
 
+export interface IDocumentService {
+    getElementFixedTop(elementRef: ElementRef): number;
+
+    getElementFixedLeft(elementRef: ElementRef);
+
+    getElementAbsoluteTop(elementRef: ElementRef);
+
+    getElementAbsoluteLeft(elementRef: ElementRef);
+
+    setDocumentHeight();
+
+    getDocumentHeight(): number;
+    isParentScrollable(elementRef: ElementRef): boolean;
+    isElementBeyondOthers(elementRef: ElementRef, isElementFixed: boolean, keywordToDiscard: string): boolean;
+    scrollToTheTop(elementRef: ElementRef): void;
+    scrollToTheBottom(elementRef: ElementRef): void;
+}
+
 @Injectable()
-export class DocumentService {
+export class DocumentService implements IDocumentService {
     private documentHeight: number;
 
     constructor(private readonly DOMService: DomRefService) {
@@ -35,7 +53,44 @@ export class DocumentService {
         return this.documentHeight;
     }
 
-    getFirstScrollableParent(node: any) {
+    isParentScrollable(elementRef: ElementRef): boolean {
+        return this.getFirstScrollableParent(elementRef.nativeElement) !== this.DOMService.getNativeDocument().body;
+    }
+
+    isElementBeyondOthers(elementRef: ElementRef, isElementFixed: boolean, keywordToDiscard: string) {
+        const x1 = isElementFixed ? this.getElementFixedLeft(elementRef) : this.getElementAbsoluteLeft(elementRef);
+        const y1 = isElementFixed ? this.getElementFixedTop(elementRef) : this.getElementAbsoluteTop(elementRef);
+        const x2 = x1 + elementRef.nativeElement.getBoundingClientRect().width - 1;
+        const y2 = y1 + elementRef.nativeElement.getBoundingClientRect().height - 1;
+
+        const elements1 = this.DOMService.getNativeDocument().elementsFromPoint(x1, y1);
+        const elements2 = this.DOMService.getNativeDocument().elementsFromPoint(x2, y2);
+
+        return (
+            this.getFirstElementWithoutKeyword(elements1, keywordToDiscard) !== elementRef.nativeElement ||
+            this.getFirstElementWithoutKeyword(elements2, keywordToDiscard) !== elementRef.nativeElement
+        );
+    }
+
+    scrollToTheTop(elementRef: ElementRef): void {
+        const firstScrollableParent = this.getFirstScrollableParent(elementRef.nativeElement);
+        if (firstScrollableParent !== this.DOMService.getNativeDocument().body) {
+            firstScrollableParent.scrollTo(0, 0);
+        } else {
+            this.DOMService.getNativeWindow().scrollTo(0, 0);
+        }
+    }
+
+    scrollToTheBottom(elementRef: ElementRef): void {
+        const firstScrollableParent = this.getFirstScrollableParent(elementRef.nativeElement);
+        if (firstScrollableParent !== this.DOMService.getNativeDocument().body) {
+            firstScrollableParent.scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
+        } else {
+            this.DOMService.getNativeWindow().scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
+        }
+    }
+
+    private getFirstScrollableParent(node: any) {
         const regex = /(auto|scroll|overlay)/;
 
         const style = (node: any, prop: any) =>
@@ -54,25 +109,6 @@ export class DocumentService {
         };
 
         return scrollparent(node);
-    }
-
-    getElementsFromPoint(x: number, y: number) {
-        this.DOMService.getNativeDocument().elementsFromPoint(x, y);
-    }
-
-    isElementBeyondOthers(elementRef: ElementRef, isElementFixed: boolean, keywordToDiscard: string) {
-        const x1 = isElementFixed ? this.getElementFixedLeft(elementRef) : this.getElementAbsoluteLeft(elementRef);
-        const y1 = isElementFixed ? this.getElementFixedTop(elementRef) : this.getElementAbsoluteTop(elementRef);
-        const x2 = x1 + elementRef.nativeElement.getBoundingClientRect().width - 1;
-        const y2 = y1 + elementRef.nativeElement.getBoundingClientRect().height - 1;
-
-        const elements1 = this.DOMService.getNativeDocument().elementsFromPoint(x1, y1);
-        const elements2 = this.DOMService.getNativeDocument().elementsFromPoint(x2, y2);
-
-        return (
-            this.getFirstElementWithoutKeyword(elements1, keywordToDiscard) !== elementRef.nativeElement ||
-            this.getFirstElementWithoutKeyword(elements2, keywordToDiscard) !== elementRef.nativeElement
-        );
     }
 
     private calculateDocumentHeight() {
