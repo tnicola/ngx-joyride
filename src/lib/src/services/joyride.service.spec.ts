@@ -99,5 +99,23 @@ describe('JoyrideService', () => {
 
             expect(optionsService.setOptions).toHaveBeenCalledWith(options);
         });
+    });
+
+    describe('startTour', () => {
+        it('should call joyrideStepService.close() if the tour is in progress', () => {
+            spyOn(joyrideService, 'isTourInProgress').and.returnValue(true);
+
+            joyrideService.closeTour();
+
+            expect(joyrideStepService.close).toHaveBeenCalled();
+        });
+
+        it('should NOT call joyrideStepService.close() if the tour is NOT in progress', () => {
+            spyOn(joyrideService, 'isTourInProgress').and.returnValue(false);
+
+            joyrideService.closeTour();
+
+            expect(joyrideStepService.close).not.toHaveBeenCalled();
+        });
     })
 });

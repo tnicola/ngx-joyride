@@ -236,5 +236,13 @@ What you should do is adding your steps in this way:
 ```
 **NB**: If you're using lazy modules, you should import the JoyrideModule in your AppModule using `JoyrideModule.forRoot()`. In your lazy loaded feature modules use `JoyrideModule.forChild()` instead. 
 
+### Close programmatically the tour
+In order to close programmatically the tour you'll just need to call the JoyrideService `closeTour()` method:
+```typescript
+...
+    this.joyrideService.closeTour(); 
+...
+```
+
 ## Licence
 MIT

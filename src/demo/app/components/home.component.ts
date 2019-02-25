@@ -1,9 +1,4 @@
-import {
-    Component,
-    OnInit,
-    AfterViewInit,
-    ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { JoyrideService } from 'ngx-joyride';
 
 @Component({
