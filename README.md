@@ -127,7 +127,7 @@ If you'd like to pass params to template, use the `stepContentParams` property. 
 ```html
 <div joyrideStep="step1" [stepContent]="customContent" [stepContentParams]="{'name': 'John'}">I'm the target element.</div>
 <ng-template #customContent let-person="name">
-	Hello {{name}}
+	Hello {{person}}
 </ng-template>
  ```
 
@@ -161,7 +161,7 @@ If you'd like to customize the next, prev and done button or you want to use you
 ### Set the options
 ```typescript
 this.joyrideService.startTour({
-    steps: ['step1', 'my-step@home', 'lastStep@home']
+    steps: ['step1', 'my-step@home', 'lastStep@home'],
     showPrevButton: false,
     stepDefaultPosition: 'top',
     themeColor: '#212f23'
