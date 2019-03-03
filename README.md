@@ -96,6 +96,7 @@ done | No | It fires an event when 'Done' button or 'Close' are clicked and the 
 Name | Required | Purpose | Type | Default value
 ---- | ---- | ---- | ---- | ----
 steps | Yes | Represent the ordered list of steps name to show. e.g `steps: ['step1', 'header', 'interesting-table', 'navbar']`. This option is particularly useful for multi-pages navigation. If your step is not in the root path, you should indicate the route after the step name, with a `@` as separator. E.g. : `steps: ['firstStep', 'image@home', 'step4@about/you', 'user-avatar@user/details']` | string[] | none
+startWith | No | The name of the step (plus the route for multi-page navigation) from which the stour should start. | string | undefined
 stepDefaultPosition | No | Define a step default position. The stepPositon set in the directive override this value. | string | bottom
 themeColor | No | Backdrop, buttons and title color. (Hexadecimal value) | string | #3b5560
 showCounter | No | Show the counter on the bottom-left. | boolean | true
@@ -111,6 +112,7 @@ You can change each element step css overriding the default style.
 * [Set the options](#set-the-options)
 * [Listen for events](#listen-for-events)
 * [Multi Pages navigation](#get-multi-pages-navigation)
+* [Close programmatically the tour](#close-programmatically-the-tour)
 
 
 ### Use Custom Content
