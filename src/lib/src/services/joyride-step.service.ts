@@ -11,6 +11,8 @@ import { JoyrideOptionsService } from './joyride-options.service';
 import { Router } from '@angular/router';
 import { ReplaySubject, Observable } from 'rxjs';
 import { JoyrideStepInfo } from '../models/joyride-step-info.class';
+import { JoyrideStepDoesNotExist, JoyrideStepOutOfRange } from '../models/joyride-error.class';
+import { LoggerService } from './logger.service';
 
 const SCROLLBAR_SIZE = 20;
 export const DISTANCE_FROM_TARGET = 15;
@@ -26,7 +28,6 @@ export interface IJoyrideStepService {
 @Injectable()
 export class JoyrideStepService implements IJoyrideStepService {
     private currentStep: JoyrideStep;
-
     private winTopPosition: number = 0;
     private winBottomPosition: number = 0;
     private stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
@@ -39,7 +40,8 @@ export class JoyrideStepService implements IJoyrideStepService {
         private readonly DOMService: DomRefService,
         private readonly stepDrawerService: StepDrawerService,
         private readonly optionsService: JoyrideOptionsService,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly logger: LoggerService
     ) {
         this.initViewportPositions();
         this.subscribeToScrollEvents();
@@ -56,13 +58,13 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.eventListener.scrollEvent.subscribe(scroll => {
             this.winTopPosition = scroll.scrollY;
             this.winBottomPosition = this.winTopPosition + this.DOMService.getNativeWindow().innerHeight - SCROLLBAR_SIZE;
-            this.backDropService.redraw(this.currentStep, scroll);
+            if (this.currentStep) this.backDropService.redraw(this.currentStep, scroll);
         });
     }
 
     private subscribeToResizeEvents() {
         this.eventListener.resizeEvent.subscribe(() => {
-            this.backDropService.redrawTarget(this.currentStep);
+            if (this.currentStep) this.backDropService.redrawTarget(this.currentStep);
         });
     }
 
@@ -76,8 +78,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.stepsContainerService.init();
         this.documentService.setDocumentHeight();
 
-        this.navigateToStepPage(StepActionType.NEXT);
-        this.showStep(StepActionType.NEXT);
+        this.tryShowStep(StepActionType.NEXT);
         this.eventListener.startListeningResizeEvents();
         this.subscribeToStepsUpdates();
         return this.stepsObserver.asObservable();
@@ -94,15 +95,13 @@ export class JoyrideStepService implements IJoyrideStepService {
     prev() {
         this.removeCurrentStep();
         this.currentStep.prevCliked.emit();
-        this.navigateToStepPage(StepActionType.PREV);
-        this.showStep(StepActionType.PREV);
+        this.tryShowStep(StepActionType.PREV);
     }
 
     next() {
         this.removeCurrentStep();
         this.currentStep.nextClicked.emit();
-        this.navigateToStepPage(StepActionType.NEXT);
-        this.showStep(StepActionType.NEXT);
+        this.tryShowStep(StepActionType.NEXT);
     }
 
     private navigateToStepPage(action: StepActionType) {
@@ -114,22 +113,39 @@ export class JoyrideStepService implements IJoyrideStepService {
 
     private subscribeToStepsUpdates() {
         this.stepsContainerService.stepHasBeenModified.subscribe(updatedStep => {
-            if (this.currentStep.name === updatedStep.name) {
+            if (this.currentStep && this.currentStep.name === updatedStep.name) {
                 this.currentStep = updatedStep;
             }
         });
     }
 
-    private showStep(actionType: StepActionType) {
+    private tryShowStep(actionType: StepActionType) {
+        this.navigateToStepPage(actionType);
         setTimeout(() => {
-            this.currentStep = this.stepsContainerService.get(actionType);
-            // Scroll the element to get it visible if it's in a scrollable element
-            this.scrollIfElementBeyondOtherElements();
-            this.backDropService.draw(this.currentStep);
-            this.drawStep(this.currentStep);
-            this.scrollIfStepAndTargetAreNotVisible();
-            this.notifyStepClicked(actionType);
+            try {
+                this.showStep(actionType);
+            } catch (error) {
+                if (error instanceof JoyrideStepDoesNotExist) {
+                    this.tryShowStep(actionType);
+                }
+                if (error instanceof JoyrideStepOutOfRange) {
+                    this.logger.error('Forcing the tour closure: First or Last step not found in the DOM.');
+                    this.close();
+                }
+            }
         }, 1);
+    }
+
+    private showStep(actionType: StepActionType) {
+        this.currentStep = this.stepsContainerService.get(actionType /*, () => this.close()*/);
+
+        if (this.currentStep == null) throw new JoyrideStepDoesNotExist('');
+        // Scroll the element to get it visible if it's in a scrollable element
+        this.scrollIfElementBeyondOtherElements();
+        this.backDropService.draw(this.currentStep);
+        this.drawStep(this.currentStep);
+        this.scrollIfStepAndTargetAreNotVisible();
+        this.notifyStepClicked(actionType);
     }
 
     private notifyStepClicked(actionType: StepActionType) {
@@ -143,11 +159,11 @@ export class JoyrideStepService implements IJoyrideStepService {
     }
 
     private notifyTourIsFinished() {
-        this.currentStep.tourDone.emit();
+        if (this.currentStep) this.currentStep.tourDone.emit();
         this.stepsObserver.complete();
     }
     private removeCurrentStep() {
-        this.stepDrawerService.remove(this.currentStep);
+        if (this.currentStep) this.stepDrawerService.remove(this.currentStep);
     }
 
     private scrollIfStepAndTargetAreNotVisible() {

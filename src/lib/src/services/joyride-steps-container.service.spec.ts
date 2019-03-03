@@ -120,6 +120,86 @@ describe('JoyrideStepsContainerService', () => {
         });
     });
 
+    describe('get', () => {
+        let step1 = new JoyrideStep();
+        let step2 = new JoyrideStep();
+        let step3 = new JoyrideStep();
+        step1.name = 'firstStep';
+        step2.name = 'secondStep';
+        step3.name = 'thirdStep';
+
+        beforeEach(() => {
+            joyrideOptionsService.getStepsOrder.and.returnValue(['firstStep@route1', 'secondStep@route1', 'thirdStep@route1']);
+            joyrideStepsContainerService['tempSteps'] = [step1, step2, step3];
+        });
+
+        describe('when init has been called', () => {
+            beforeEach(() => {
+                joyrideStepsContainerService.init();
+            });
+
+            it('should retrieve the first step when get is called with StepActionType.NEXT once', () => {
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toEqual(step1);
+            });
+
+            it('should retrieve the steps in the right order', () => {
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toEqual(step1);
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toEqual(step2);
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toEqual(step3);
+            });
+
+            it('should retrieve the steps when StepActionType.PREV is used', () => {
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toEqual(step1);
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toEqual(step2);
+                expect(joyrideStepsContainerService.get(StepActionType.PREV)).toEqual(step1);
+            });
+
+            it('should throw an Error when StepActionType.PREV is used on the first step', () => {
+                expect(() => joyrideStepsContainerService.get(StepActionType.PREV)).toThrowError(
+                    'The first or last step of the tour cannot be found!'
+                );
+            });
+
+            it('should throw an Error when StepActionType.NEXT is used on the last step', () => {
+                joyrideStepsContainerService.get(StepActionType.NEXT);
+                joyrideStepsContainerService.get(StepActionType.NEXT);
+                joyrideStepsContainerService.get(StepActionType.NEXT);
+                
+                expect(() => joyrideStepsContainerService.get(StepActionType.NEXT)).toThrowError(
+                    'The first or last step of the tour cannot be found!'
+                );
+            });
+
+            it('should return undefined if the step is not in the temp steps', () => {
+                joyrideOptionsService.getStepsOrder.and.returnValue(['stepNotInTempList@route1']);
+                joyrideStepsContainerService.init();
+
+                expect(joyrideStepsContainerService.get(StepActionType.NEXT)).toBeUndefined();
+                expect(logger.warn).toHaveBeenCalledWith(
+                    `Step stepNotInTempList@route1 not found in the DOM. Check if it's hidden by *ngIf directive.`
+                );
+            });
+        });
+
+        describe('when init has NOT been called', () => {
+            it('should throw an exception if called with StepActionType.NEXT', () => {
+                expect(() => joyrideStepsContainerService.get(StepActionType.NEXT)).toThrowError(
+                    'The first or last step of the tour cannot be found!'
+                );
+            });
+
+            it('should throw an exception if called with StepActionType.PREV', () => {
+                expect(() => joyrideStepsContainerService.get(StepActionType.PREV)).toThrowError(
+                    'The first or last step of the tour cannot be found!'
+                );
+            });
+        });
+
+        it('', () => {});
+        it('', () => {});
+        it('', () => {});
+    });
+
     describe('addStep', () => {
         it('should not add one step to the temp list if a step with the same name already exist', () => {
             let THIS_STEP_ALREADY_EXIST = new JoyrideStep();

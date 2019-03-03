@@ -3,7 +3,7 @@ import { JoyrideStep } from '../models/joyride-step.class';
 import { Subject } from 'rxjs';
 import { JoyrideOptionsService } from './joyride-options.service';
 import { LoggerService } from './logger.service';
-import { JoyrideError } from '../models/joyride-error.class';
+import { JoyrideError, JoyrideStepOutOfRange } from '../models/joyride-error.class';
 
 const ROUTE_SEPARATOR = '@';
 
@@ -61,10 +61,19 @@ export class JoyrideStepsContainerService {
         if (action === StepActionType.NEXT) this.currentStepIndex++;
         else this.currentStepIndex--;
 
-        const index = this.tempSteps.findIndex(step => step.name === this.getStepName(this.steps[this.currentStepIndex].id));
-        this.steps[this.currentStepIndex].step = this.tempSteps[index];
+        if (this.currentStepIndex < 0 || this.currentStepIndex >= this.steps.length)
+            throw new JoyrideStepOutOfRange('The first or last step of the tour cannot be found!');
 
-        return this.steps[this.currentStepIndex].step;
+        const stepName = this.getStepName(this.steps[this.currentStepIndex].id);
+        const index = this.tempSteps.findIndex(step => step.name === stepName);
+        let stepFound = this.tempSteps[index];
+        this.steps[this.currentStepIndex].step = stepFound;
+
+        if (stepFound == null) {
+            this.logger.warn(`Step ${this.steps[this.currentStepIndex].id} not found in the DOM. Check if it's hidden by *ngIf directive.`);
+        }
+
+        return stepFound;
     }
 
     getStepRoute(action: StepActionType) {

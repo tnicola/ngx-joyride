@@ -18,6 +18,9 @@ import { EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterFake } from '../test/fake/router-fake.service';
 import { JoyrideStepsContainerServiceFake } from '../test/fake/joyride-steps-container-fake.service';
+import { LoggerService } from './logger.service';
+import { LoggerFake } from '../test/fake/logger-fake.service';
+import { JoyrideStepOutOfRange } from '../models/joyride-error.class';
 
 describe('JoyrideStepService', () => {
     let joyrideStepService: JoyrideStepService;
@@ -27,10 +30,13 @@ describe('JoyrideStepService', () => {
     let stepsContainerService: JoyrideStepsContainerServiceFake;
     let domRefService: DomRefServiceFake;
     let stepDrawerService: StepDrawerServiceFake;
+    let logger: LoggerFake;
+    let router: RouterFake;
+
     let FAKE_STEPS = <any>[];
-    let STEP0: any = new JoyrideStep();
-    let STEP1: any = new JoyrideStep();
-    let STEP2: any = new JoyrideStep();
+    let STEP0: JoyrideStep = new JoyrideStep();
+    let STEP1: JoyrideStep = new JoyrideStep();
+    let STEP2: JoyrideStep = new JoyrideStep();
     let FAKE_WINDOW: { innerHeight: number; scrollTo: jasmine.Spy };
     let FAKE_DOCUMENT: { body: { scrollHeight: number } };
 
@@ -45,7 +51,8 @@ describe('JoyrideStepService', () => {
                 { provide: DocumentService, useClass: DocumentServiceFake },
                 { provide: DomRefService, useClass: DomRefServiceFake },
                 { provide: StepDrawerService, useClass: StepDrawerServiceFake },
-                { provide: JoyrideOptionsService, useClass: JoyrideOptionsServiceFake }
+                { provide: JoyrideOptionsService, useClass: JoyrideOptionsServiceFake },
+                { provide: LoggerService, useClass: LoggerFake }
             ]
         });
     });
@@ -63,6 +70,8 @@ describe('JoyrideStepService', () => {
         documentService = TestBed.get(DocumentService);
         stepsContainerService = TestBed.get(JoyrideStepsContainerService);
         stepDrawerService = TestBed.get(StepDrawerService);
+        logger = TestBed.get(LoggerService);
+        router = TestBed.get(Router);
 
         STEP0 = createNewStep('nav');
         STEP1 = createNewStep('credits');
@@ -91,10 +100,18 @@ describe('JoyrideStepService', () => {
     });
 
     describe('when eventListener.scrollEvent publish', () => {
-        it("should call backdropService.redraw with the right 'scroll' parameter", () => {
+        it("should call backdropService.redraw with the right 'scroll' parameter", fakeAsync(() => {
+            joyrideStepService.startTour();
+            tick(1);
             eventListenerService.scrollEvent.next(240);
 
-            expect(backdropService.redraw).toHaveBeenCalledWith(undefined, 240);
+            expect(backdropService.redraw).toHaveBeenCalledWith(jasmine.objectContaining(STEP0), 240);
+        }));
+
+        it('should NOT call backdropService.redraw if the tour is not started yet', () => {
+            eventListenerService.scrollEvent.next(240);
+
+            expect(backdropService.redraw).not.toHaveBeenCalled();
         });
     });
 
@@ -142,6 +159,88 @@ describe('JoyrideStepService', () => {
         });
         it('should call stepsContainerService.get with StepActionType.NEXT', () => {
             expect(stepsContainerService.get).toHaveBeenCalledWith(StepActionType.NEXT);
+        });
+
+        it('should navigate to the step route if the step has a route', fakeAsync(() => {
+            stepsContainerService.getStepRoute.and.returnValue('route1');
+            joyrideStepService.startTour();
+            tick(1);
+
+            expect(router.navigate).toHaveBeenCalledWith(['route1']);
+        }));
+
+        it('should NOT navigate to the step route if the step does not have a route', fakeAsync(() => {
+            stepsContainerService.getStepRoute.and.returnValue(null);
+            joyrideStepService.startTour();
+            tick(1);
+
+            expect(router.navigate).not.toHaveBeenCalled();
+        }));
+
+        describe('if stepsContainerService.get returns a null step', () => {
+            let tryShowSpy: jasmine.Spy;
+            beforeEach(() => {
+                tryShowSpy = spyOn(joyrideStepService, 'tryShowStep').and.callThrough();
+            });
+
+            it('should call tryShowStep twice if the first step is NOT null', fakeAsync(() => {
+                stepsContainerService.get.and.returnValues(STEP0);
+                joyrideStepService.startTour();
+                tick(3);
+
+                expect(tryShowSpy).toHaveBeenCalledTimes(1);
+            }));
+
+            it('should call tryShowStep twice if the first step is null', fakeAsync(() => {
+                stepsContainerService.get.and.returnValues(null, STEP0);
+                joyrideStepService.startTour();
+                tick(3);
+
+                expect(tryShowSpy).toHaveBeenCalledTimes(2);
+            }));
+        });
+
+        describe('if stepsContainerService.get returns an undefined step', () => {
+            let tryShowSpy: jasmine.Spy;
+            beforeEach(() => {
+                tryShowSpy = spyOn(joyrideStepService, 'tryShowStep').and.callThrough();
+            });
+
+            it('should call tryShowStep twice if the first step is NOT undefined', fakeAsync(() => {
+                stepsContainerService.get.and.returnValues(STEP0);
+                joyrideStepService.startTour();
+                tick(3);
+
+                expect(tryShowSpy).toHaveBeenCalledTimes(1);
+            }));
+
+            it('should call tryShowStep twice if the first step is null', fakeAsync(() => {
+                stepsContainerService.get.and.returnValues(undefined, STEP0);
+                joyrideStepService.startTour();
+                tick(3);
+
+                expect(tryShowSpy).toHaveBeenCalledTimes(2);
+            }));
+        });
+
+        describe('if stepsContainerService.get throw a JoyrideStepOutOfRange error', () => {
+            let closeSpy: jasmine.Spy;
+            beforeEach(fakeAsync(() => {
+                closeSpy = spyOn(joyrideStepService, 'close');
+                stepsContainerService.get.and.callFake(() => {
+                    throw new JoyrideStepOutOfRange('fake error');
+                });
+                joyrideStepService.startTour();
+                tick(1);
+            }));
+
+            it('should log an error', () => {
+                expect(logger.error).toHaveBeenCalledWith('Forcing the tour closure: First or Last step not found in the DOM.');
+            });
+
+            it('should close the tour', () => {
+                expect(closeSpy).toHaveBeenCalled();
+            });
         });
     });
 
