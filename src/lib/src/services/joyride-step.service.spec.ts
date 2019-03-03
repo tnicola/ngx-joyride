@@ -6,7 +6,7 @@ import { EventListenerService } from './event-listener.service';
 import { DocumentServiceFake } from '../test/fake/document-fake.service';
 import { DomRefServiceFake } from '../test/fake/dom-fake.service';
 import { StepDrawerServiceFake } from '../test/fake/step-drawer-fake.service';
-import { JoyrideStepsContainerService } from './joyride-steps-container.service';
+import { JoyrideStepsContainerService, StepActionType } from './joyride-steps-container.service';
 import { DocumentService } from './document.service';
 import { DomRefService } from './dom.service';
 import { StepDrawerService } from './step-drawer.service';
@@ -66,12 +66,10 @@ describe('JoyrideStepService', () => {
 
         STEP0 = createNewStep('nav');
         STEP1 = createNewStep('credits');
-        STEP2 = createNewStep('');
+        STEP2 = createNewStep('side-panel');
 
         FAKE_STEPS = [STEP0, STEP1, STEP2];
-        stepsContainerService.get.and.callFake((index: any) => {
-            return FAKE_STEPS[index];
-        });
+        stepsContainerService.get.and.returnValues(...FAKE_STEPS);
     });
 
     function createNewStep(nextStepName: string = '') {
@@ -140,10 +138,10 @@ describe('JoyrideStepService', () => {
             expect(documentService.setDocumentHeight).toHaveBeenCalled();
         });
         it('should call stepsContainerService.initSteps', () => {
-            expect(stepsContainerService.initSteps).toHaveBeenCalled();
+            expect(stepsContainerService.init).toHaveBeenCalled();
         });
-        it('should call stepsContainerService.get with 0, the first step index', () => {
-            expect(stepsContainerService.get).toHaveBeenCalledWith(0);
+        it('should call stepsContainerService.get with StepActionType.NEXT', () => {
+            expect(stepsContainerService.get).toHaveBeenCalledWith(StepActionType.NEXT);
         });
     });
 
@@ -159,18 +157,17 @@ describe('JoyrideStepService', () => {
             expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
             expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP0);
         });
-        it('should call stepsContainerService.get with index of the current step + 1', () => {
-            expect(stepsContainerService.get).toHaveBeenCalledWith(1);
+        it('should call stepsContainerService.get with StepActionType.NEXT twice', () => {
+            expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
+            expect(stepsContainerService.get.calls.argsFor(1)).toEqual([StepActionType.NEXT]);
         });
-        it('should call stepsContainerService.get with index of the current step + 2, the second time', fakeAsync(() => {
+        it('should call stepsContainerService.get with StepActionType.NEXT three times', fakeAsync(() => {
             joyrideStepService.next();
             tick(1);
-            expect(stepsContainerService.get).toHaveBeenCalledWith(2);
+            expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
+            expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
+            expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
         }));
-        it('should call backDropService.draw', () => {
-            expect(backdropService.draw).toHaveBeenCalledTimes(1);
-            expect(backdropService.draw).toHaveBeenCalledWith(STEP1);
-        });
         it('should call backDropService.draw', () => {
             expect(backdropService.draw).toHaveBeenCalledTimes(1);
             expect(backdropService.draw).toHaveBeenCalledWith(STEP1);
@@ -202,17 +199,12 @@ describe('JoyrideStepService', () => {
                 expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
                 expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP1);
             });
-            it('should call stepsContainerService.get with index of the current step - 1', () => {
-                expect(stepsContainerService.get).toHaveBeenCalledWith(0);
+            it('should call stepsContainerService.get with StepActionType.PREV', () => {
+                expect(stepsContainerService.get).toHaveBeenCalledWith(StepActionType.PREV);
             });
-            xit('should call stepsContainerService.get with index of the current step - 2, the second time', fakeAsync(() => {
-                joyrideStepService.prev();
-                tick(1);
-                expect(stepsContainerService.get).toHaveBeenCalledWith(-1);
-            }));
             it('should call backDropService.draw', () => {
                 expect(backdropService.draw).toHaveBeenCalledTimes(1);
-                expect(backdropService.draw).toHaveBeenCalledWith(STEP0);
+                expect(backdropService.draw).toHaveBeenCalledWith(STEP2);
             });
         });
     });
@@ -298,45 +290,6 @@ describe('JoyrideStepService', () => {
 
             expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
-        }));
-    });
-
-    describe('isFirstStep', () => {
-        beforeEach(fakeAsync(() => {
-            joyrideStepService.startTour();
-            tick(1);
-        }));
-        it("should return true if it's the first step", () => {
-            expect(joyrideStepService.isFirstStep()).toBe(true);
-        });
-        it("should return false if it's the second step", () => {
-            joyrideStepService.next();
-            expect(joyrideStepService.isFirstStep()).toBe(false);
-        });
-        it("should return false if it's the last step", () => {
-            joyrideStepService.next();
-            joyrideStepService.next();
-            expect(joyrideStepService.isFirstStep()).toBe(false);
-        });
-    });
-    describe('isLastStep', () => {
-        beforeEach(fakeAsync(() => {
-            joyrideStepService.startTour();
-            tick(1);
-        }));
-        it("should return false if it's the first step", () => {
-            expect(joyrideStepService.isLastStep()).toBe(false);
-        });
-        it("should not return true if it's the second step", () => {
-            joyrideStepService.next();
-            expect(joyrideStepService.isLastStep()).toBe(false);
-        });
-        it("should return true if it's the last step", fakeAsync(() => {
-            stepsContainerService.getNumberOfSteps.and.returnValue(3);
-            joyrideStepService.next();
-            joyrideStepService.next();
-            tick(2);
-            expect(joyrideStepService.isLastStep()).toBe(true);
         }));
     });
 });

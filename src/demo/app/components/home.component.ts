@@ -56,6 +56,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
                 'step3@app',
                 'step2@about/you'
             ],
+            // startWith: 'step3@app',
             stepDefaultPosition: 'top',
             themeColor: '#345632',
             showPrevButton: true,

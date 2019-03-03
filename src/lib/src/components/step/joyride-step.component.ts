@@ -166,8 +166,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getCounter(): string {
-        let stepPosition = this.stepsContainerService.getStepPosition(this.step);
-        let numberOfSteps = this.stepsContainerService.getNumberOfSteps();
+        let stepPosition = this.stepsContainerService.getStepNumber(this.step.name);
+        let numberOfSteps = this.stepsContainerService.getStepsCount();
         this.counterData = { step: stepPosition, total: numberOfSteps };
         return stepPosition + '/' + numberOfSteps;
     }
@@ -194,11 +194,11 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     isFirstStep() {
-        return this.joyrideStepService.isFirstStep();
+        return this.stepsContainerService.getStepNumber(this.step.name) === 1;
     }
 
     isLastStep() {
-        return this.joyrideStepService.isLastStep();
+        return this.stepsContainerService.getStepNumber(this.step.name) === this.stepsContainerService.getStepsCount();
     }
 
     private setStepStyle() {
@@ -230,7 +230,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleTop() {
-        this.stepsContainerService.setPosition(this.step, 'top');
+        this.stepsContainerService.updatePosition(this.step.name, 'top');
         this.topPosition = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.stepAbsoluteTop = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.arrowTopPosition = this.stepHeight;
@@ -245,7 +245,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleRight() {
-        this.stepsContainerService.setPosition(this.step, 'right');
+        this.stepsContainerService.updatePosition(this.step.name, 'right');
         this.topPosition = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;
@@ -260,7 +260,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleBottom() {
-        this.stepsContainerService.setPosition(this.step, 'bottom');
+        this.stepsContainerService.updatePosition(this.step.name, 'bottom');
         this.topPosition = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.arrowTopPosition = -this.arrowSize;
@@ -275,7 +275,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setStyleLeft() {
-        this.stepsContainerService.setPosition(this.step, 'left');
+        this.stepsContainerService.updatePosition(this.step.name, 'left');
         this.topPosition = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.arrowTopPosition = this.stepHeight / 2 - this.arrowSize;

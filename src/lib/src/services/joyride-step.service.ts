@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { JoyrideStep } from '../models/joyride-step.class';
 import { JoyrideBackdropService } from './joyride-backdrop.service';
 import { EventListenerService } from './event-listener.service';
-import { JoyrideStepsContainerService } from './joyride-steps-container.service';
+import { JoyrideStepsContainerService, StepActionType } from './joyride-steps-container.service';
 import { DocumentService } from './document.service';
 import { StepDrawerService } from './step-drawer.service';
 import { DomRefService } from './dom.service';
@@ -21,13 +21,10 @@ export interface IJoyrideStepService {
     close(): any;
     prev(): any;
     next(): any;
-    isFirstStep(): boolean;
-    isLastStep(): boolean;
 }
 
 @Injectable()
 export class JoyrideStepService implements IJoyrideStepService {
-    private currentStepIndex: number;
     private currentStep: JoyrideStep;
 
     private winTopPosition: number = 0;
@@ -76,10 +73,11 @@ export class JoyrideStepService implements IJoyrideStepService {
 
     startTour(): Observable<JoyrideStepInfo> {
         this.stepsObserver = new ReplaySubject<JoyrideStepInfo>();
-        this.currentStepIndex = 0;
+        this.stepsContainerService.init();
         this.documentService.setDocumentHeight();
-        this.navigateToStepPage();
-        this.showStep('NEXT');
+
+        this.navigateToStepPage(StepActionType.NEXT);
+        this.showStep(StepActionType.NEXT);
         this.eventListener.startListeningResizeEvents();
         this.subscribeToStepsUpdates();
         return this.stepsObserver.asObservable();
@@ -95,30 +93,20 @@ export class JoyrideStepService implements IJoyrideStepService {
 
     prev() {
         this.removeCurrentStep();
-        this.currentStepIndex -= 1;
         this.currentStep.prevCliked.emit();
-        this.navigateToStepPage();
-        this.showStep('PREV');
+        this.navigateToStepPage(StepActionType.PREV);
+        this.showStep(StepActionType.PREV);
     }
 
     next() {
         this.removeCurrentStep();
-        this.currentStepIndex += 1;
         this.currentStep.nextClicked.emit();
-        this.navigateToStepPage();
-        this.showStep('NEXT');
+        this.navigateToStepPage(StepActionType.NEXT);
+        this.showStep(StepActionType.NEXT);
     }
 
-    isFirstStep() {
-        return this.currentStepIndex === 0;
-    }
-
-    isLastStep() {
-        return this.currentStepIndex === this.stepsContainerService.getNumberOfSteps() - 1;
-    }
-
-    private navigateToStepPage() {
-        let stepRoute = this.stepsContainerService.getStepRoute(this.currentStepIndex);
+    private navigateToStepPage(action: StepActionType) {
+        let stepRoute = this.stepsContainerService.getStepRoute(action);
         if (stepRoute) {
             this.router.navigate([stepRoute]);
         }
@@ -132,25 +120,24 @@ export class JoyrideStepService implements IJoyrideStepService {
         });
     }
 
-    private showStep(action: 'PREV' | 'NEXT') {
+    private showStep(actionType: StepActionType) {
         setTimeout(() => {
-            this.stepsContainerService.initSteps();
-            this.currentStep = this.stepsContainerService.get(this.currentStepIndex);
+            this.currentStep = this.stepsContainerService.get(actionType);
             // Scroll the element to get it visible if it's in a scrollable element
             this.scrollIfElementBeyondOtherElements();
             this.backDropService.draw(this.currentStep);
             this.drawStep(this.currentStep);
             this.scrollIfStepAndTargetAreNotVisible();
-            this.notifyStepClicked(action);
+            this.notifyStepClicked(actionType);
         }, 1);
     }
 
-    private notifyStepClicked(action: 'PREV' | 'NEXT') {
+    private notifyStepClicked(actionType: StepActionType) {
         let stepInfo: JoyrideStepInfo = {
-            number: this.currentStepIndex,
+            number: this.stepsContainerService.getStepNumber(this.currentStep.name),
             name: this.currentStep.name,
             route: this.currentStep.route,
-            actionType: action
+            actionType
         };
         this.stepsObserver.next(stepInfo);
     }

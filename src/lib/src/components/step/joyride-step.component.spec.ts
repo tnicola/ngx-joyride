@@ -95,6 +95,7 @@ describe('JoyrideStepComponent', () => {
             STEP.text = of('text-abc');
             STEP.stepContent = hostComponent.element;
             STEP.stepContentParams = { param1: 'name', param2: 'surname' };
+            STEP.name = 'myStepName';
             component.step = STEP;
             templatesService.getPrevButton.and.returnValue(TEMPLATE);
             templatesService.getNextButton.and.returnValue(TEMPLATE);
@@ -157,8 +158,8 @@ describe('JoyrideStepComponent', () => {
         });
 
         it('should set the counter as stepPosition on numberOfSteps', () => {
-            stepsContainerService.getStepPosition.and.returnValue(4);
-            stepsContainerService.getNumberOfSteps.and.returnValue(10);
+            stepsContainerService.getStepNumber.and.returnValue(4);
+            stepsContainerService.getStepsCount.and.returnValue(10);
 
             component.ngOnInit();
 
@@ -306,8 +307,8 @@ describe('JoyrideStepComponent', () => {
                     component.ngAfterViewInit();
                 });
 
-                it('should call stepsContainerService.setPosition("top") if the step position is "top"', () => {
-                    expect(stepsContainerService.setPosition).toHaveBeenCalledWith(STEP, 'top');
+                it('should call stepsContainerService.updatePosition("top") if the step position is "top"', () => {
+                    expect(stepsContainerService.updatePosition).toHaveBeenCalledWith(STEP.name, 'top');
                 });
 
                 it('should show the arrow with position "top"', () => {
@@ -325,8 +326,8 @@ describe('JoyrideStepComponent', () => {
                     component.ngAfterViewInit();
                 });
 
-                it('should call stepsContainerService.setPosition("bottom") if the step position is "bottom"', () => {
-                    expect(stepsContainerService.setPosition).toHaveBeenCalledWith(STEP, 'bottom');
+                it('should call stepsContainerService.updatePosition("bottom") if the step position is "bottom"', () => {
+                    expect(stepsContainerService.updatePosition).toHaveBeenCalledWith(STEP.name, 'bottom');
                 });
 
                 it('should show the arrow with position "bottom"', () => {
@@ -344,8 +345,8 @@ describe('JoyrideStepComponent', () => {
                     component.ngAfterViewInit();
                 });
 
-                it('should call stepsContainerService.setPosition("right") if the step position is "right"', () => {
-                    expect(stepsContainerService.setPosition).toHaveBeenCalledWith(STEP, 'right');
+                it('should call stepsContainerService.updatePosition("right") if the step position is "right"', () => {
+                    expect(stepsContainerService.updatePosition).toHaveBeenCalledWith(STEP.name, 'right');
                 });
 
                 it('should show the arrow with position "right"', () => {
@@ -363,8 +364,8 @@ describe('JoyrideStepComponent', () => {
                     component.ngAfterViewInit();
                 });
 
-                it('should call stepsContainerService.setPosition("left") if the step position is "left"', () => {
-                    expect(stepsContainerService.setPosition).toHaveBeenCalledWith(STEP, 'left');
+                it('should call stepsContainerService.updatePosition("left") if the step position is "left"', () => {
+                    expect(stepsContainerService.updatePosition).toHaveBeenCalledWith(STEP.name, 'left');
                 });
 
                 it('should show the arrow with position "left"', () => {
@@ -423,26 +424,34 @@ describe('JoyrideStepComponent', () => {
     });
 
     describe('isFirstStep', () => {
-        it('should return true if joyrideStepService.isFirstStep() returns true', () => {
-            joyrideStepService.isFirstStep.and.returnValue(true);
+        it('should return true if stepsContainerService.getStepNumber() returns 1', () => {
+            component.step = <JoyrideStep>{ name: 'step1' };
+            stepsContainerService.getStepNumber.and.returnValue(1);
 
             expect(component.isFirstStep()).toBe(true);
         });
-        it('should return false if joyrideStepService.isFirstStep() returns false', () => {
-            joyrideStepService.isFirstStep.and.returnValue(false);
+
+        it('should return false if stepsContainerService.getStepNumber() does not return 1', () => {
+            component.step = <JoyrideStep>{ name: 'step1' };
+            stepsContainerService.getStepNumber.and.returnValue(0);
 
             expect(component.isFirstStep()).toBe(false);
         });
     });
 
     describe('isLastStep', () => {
-        it('should return true if joyrideStepService.isLastStep() returns true', () => {
-            joyrideStepService.isLastStep.and.returnValue(true);
+        it('should return true if the step number is equals to the numbers of steps', () => {
+            component.step = <JoyrideStep>{ name: 'step1' };
+            stepsContainerService.getStepNumber.and.returnValue(5);
+            stepsContainerService.getStepsCount.and.returnValue(5);
 
             expect(component.isLastStep()).toBe(true);
         });
-        it('should return false if joyrideStepService.isLastStep() returns false', () => {
-            joyrideStepService.isLastStep.and.returnValue(false);
+
+        it('should return false if the step number is NOT equals to the numbers of steps', () => {
+            component.step = <JoyrideStep>{ name: 'step1' };
+            stepsContainerService.getStepNumber.and.returnValue(5);
+            stepsContainerService.getStepsCount.and.returnValue(6);
 
             expect(component.isLastStep()).toBe(false);
         });

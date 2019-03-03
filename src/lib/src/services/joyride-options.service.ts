@@ -13,6 +13,7 @@ export class JoyrideOptionsService {
     private showCounter: boolean = true;
     private showPrevButton: boolean = true;
     private stepsOrder: string[] = [];
+    private firstStep: string; 
     setOptions(options: JoyrideOptions) {
         this.stepsOrder = options.steps;
         this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
@@ -20,6 +21,7 @@ export class JoyrideOptionsService {
         this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
         this.showPrevButton = typeof options.showPrevButton !== 'undefined' ? options.showPrevButton : this.showPrevButton;
         this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
+        this.firstStep = options.startWith;
     }
 
     getBackdropColor() {
@@ -36,6 +38,10 @@ export class JoyrideOptionsService {
 
     getStepsOrder() {
         return this.stepsOrder;
+    }
+
+    getFirstStep() {
+        return this.firstStep;
     }
 
     areLogsEnabled() {

@@ -1,78 +1,110 @@
-import { Injectable } from "@angular/core";
-import { JoyrideStep } from "../models/joyride-step.class";
-import { Subject } from "rxjs";
-import { JoyrideOptionsService } from "./joyride-options.service";
+import { Injectable } from '@angular/core';
+import { JoyrideStep } from '../models/joyride-step.class';
+import { Subject } from 'rxjs';
+import { JoyrideOptionsService } from './joyride-options.service';
+import { LoggerService } from './logger.service';
+import { JoyrideError } from '../models/joyride-error.class';
 
 const ROUTE_SEPARATOR = '@';
 
+class Step {
+    id: string;
+    step: JoyrideStep;
+}
+
+export enum StepActionType {
+    NEXT = 'NEXT',
+    PREV = 'PREV'
+}
+
 @Injectable()
 export class JoyrideStepsContainerService {
-    private steps: JoyrideStep[];
-    private stepsOriginal: JoyrideStep[];
+    private steps: Step[];
+    private tempSteps: JoyrideStep[] = [];
+    private currentStepIndex: number = -2;
     stepHasBeenModified: Subject<JoyrideStep> = new Subject<JoyrideStep>();
 
-    constructor(
-        private readonly stepOptions: JoyrideOptionsService
-    ) {
-        this.stepsOriginal = [];
+    constructor(private readonly stepOptions: JoyrideOptionsService, private readonly logger: LoggerService) {}
+
+    private getFirstStepIndex(): number {
+        let firstStep = this.stepOptions.getFirstStep();
+        let stepIds = this.stepOptions.getStepsOrder();
+
+        let index = stepIds.indexOf(firstStep);
+        if (index < 0) {
+            index = 0;
+            if (firstStep !== undefined) this.logger.warn(`The step ${firstStep} does not exist. Check in your step list if it's present.`);
+        }
+
+        return index;
+    }
+
+    init() {
+        this.logger.info('Initializing the steps array.');
         this.steps = [];
-    }
-
-    get(index: number): JoyrideStep {
-        return this.steps[index];
-    }
-
-    getStepRoute(index: number) {
-        let stepsOrder = this.stepOptions.getStepsOrder();
-        let stepID = stepsOrder[index];
-        let stepRoute = stepID && stepID.includes(ROUTE_SEPARATOR) ? stepID.split(ROUTE_SEPARATOR)[1] : "";
-        return stepRoute;
-    }
-
-    getStepPosition(step: JoyrideStep): number {
-        return this.getStepIndex(step) + 1;
+        this.currentStepIndex = this.getFirstStepIndex() - 1;
+        let stepIds = this.stepOptions.getStepsOrder();
+        stepIds.forEach(stepId => this.steps.push({ id: stepId, step: null }));
     }
 
     addStep(stepToAdd: JoyrideStep) {
-        let stepExist = this.stepsOriginal.filter(step => step.name === stepToAdd.name).length > 0;
-        if (!stepExist) this.stepsOriginal.push(stepToAdd);
-        else {
-            let stepIndexToReplace = this.stepsOriginal.findIndex(step => step.name === stepToAdd.name);
-            this.stepsOriginal[stepIndexToReplace] = stepToAdd;
+        let stepExist = this.tempSteps.filter(step => step.name === stepToAdd.name).length > 0;
+        if (!stepExist) {
+            this.logger.info(`Adding step ${stepToAdd.name} to the steps list.`);
+            this.tempSteps.push(stepToAdd);
+        } else {
+            let stepIndexToReplace = this.tempSteps.findIndex(step => step.name === stepToAdd.name);
+            this.tempSteps[stepIndexToReplace] = stepToAdd;
         }
     }
+    get(action: StepActionType): JoyrideStep {
+        if (action === StepActionType.NEXT) this.currentStepIndex++;
+        else this.currentStepIndex--;
 
-    getNumberOfSteps() {
+        const index = this.tempSteps.findIndex(step => step.name === this.getStepName(this.steps[this.currentStepIndex].id));
+        this.steps[this.currentStepIndex].step = this.tempSteps[index];
+
+        return this.steps[this.currentStepIndex].step;
+    }
+
+    getStepRoute(action: StepActionType) {
+        let stepID: string;
+        if (action === StepActionType.NEXT) {
+            stepID = this.steps[this.currentStepIndex + 1] ? this.steps[this.currentStepIndex + 1].id : null;
+        } else {
+            stepID = this.steps[this.currentStepIndex - 1] ? this.steps[this.currentStepIndex - 1].id : null;
+        }
+        let stepRoute = stepID && stepID.includes(ROUTE_SEPARATOR) ? stepID.split(ROUTE_SEPARATOR)[1] : '';
+
+        return stepRoute;
+    }
+
+    updatePosition(stepName: string, position: string) {
+        let index = this.getStepIndex(stepName);
+        if (this.steps[index].step) {
+            this.steps[index].step.position = position;
+            this.stepHasBeenModified.next(this.steps[index].step);
+        } else {
+            this.logger.warn(
+                `Trying to modify the position of ${stepName} to ${position}. Step not found!Is this step located in a different route?`
+            );
+        }
+    }
+    getStepNumber(stepName: string): number {
+        return this.getStepIndex(stepName) - this.getFirstStepIndex() + 1;
+    }
+
+    getStepsCount() {
         let stepsOrder = this.stepOptions.getStepsOrder();
-        return stepsOrder.length;
+        return stepsOrder.length - this.getFirstStepIndex();
     }
 
-    setPosition(step: JoyrideStep, position: string) {
-        let index = this.getStepIndex(step);
-        this.steps[index].position = position;
-        this.stepHasBeenModified.next(this.steps[index]);
-    }
-
-    initSteps() {
-        this.steps = [];
-        this.stepsOriginal.forEach((step) => this.steps.push({ ...step }));
-        this.sortSteps();
-    }
-
-    private sortSteps() {
-        let orderedSteps: JoyrideStep[] = [];
-        let stepsOrder = this.stepOptions.getStepsOrder();
-
-        stepsOrder.forEach((stepID) => {
-            let step = this.steps.find((step) => step.name === this.getStepName(stepID));
-            if (step) orderedSteps.push(step);
-        });
-
-        this.steps = [...orderedSteps];
-    }
-
-    private getStepIndex(step: JoyrideStep) {
-        return this.steps.findIndex((s) => step.name + step.route === s.name + s.route);
+    private getStepIndex(stepName: string): number {
+        const index = this.steps
+            .map(step => (step.id.includes(ROUTE_SEPARATOR) ? step.id.split(ROUTE_SEPARATOR)[0] : step.id))
+            .findIndex(name => stepName === name);
+        if (index === -1) throw new JoyrideError(`The step with name: ${stepName} does not exist in the step list.`);
+        return index;
     }
 
     private getStepName(stepID: string): string {
