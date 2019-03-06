@@ -59,6 +59,13 @@ describe('JoyrideStepsContainerService', () => {
 
             expect(joyrideStepsContainerService.getStepsCount()).toBe(3);
         });
+
+        it('should return the number of steps passed by optionService even if the tour start with another step', () => {
+            joyrideOptionsService.getStepsOrder.and.returnValue(['one', 'two', 'three']);
+            joyrideOptionsService.getFirstStep.and.returnValue('two');
+
+            expect(joyrideStepsContainerService.getStepsCount()).toBe(3);
+        });
     });
 
     describe('updatePosition', () => {
@@ -164,7 +171,7 @@ describe('JoyrideStepsContainerService', () => {
                 joyrideStepsContainerService.get(StepActionType.NEXT);
                 joyrideStepsContainerService.get(StepActionType.NEXT);
                 joyrideStepsContainerService.get(StepActionType.NEXT);
-                
+
                 expect(() => joyrideStepsContainerService.get(StepActionType.NEXT)).toThrowError(
                     'The first or last step of the tour cannot be found!'
                 );
@@ -194,10 +201,6 @@ describe('JoyrideStepsContainerService', () => {
                 );
             });
         });
-
-        it('', () => {});
-        it('', () => {});
-        it('', () => {});
     });
 
     describe('addStep', () => {
@@ -230,15 +233,15 @@ describe('JoyrideStepsContainerService', () => {
             expect(joyrideStepsContainerService.getStepNumber(STEP3.name)).toBe(3);
         });
 
-        it('should return 1 for the stepPosition of the first step selected in the options', () => {
+        it('should return 3 for the stepPosition of the first step selected in the options', () => {
             joyrideOptionsService.getFirstStep.and.returnValue('third');
             setSteps(['firstStep', 'second', 'third', 'fourth']);
 
-            expect(joyrideStepsContainerService.getStepNumber(STEP3.name)).toBe(1);
+            expect(joyrideStepsContainerService.getStepNumber(STEP3.name)).toBe(3);
         });
     });
 
-    describe('getStepRoute()', () => {
+    describe('getStepRoute', () => {
         beforeEach(() => {
             joyrideOptionsService.getStepsOrder.and.returnValue(['step1@url1', 'step2@url2', 'step3@url3']);
         });

@@ -100,12 +100,12 @@ export class JoyrideStepsContainerService {
         }
     }
     getStepNumber(stepName: string): number {
-        return this.getStepIndex(stepName) - this.getFirstStepIndex() + 1;
+        return this.getStepIndex(stepName) + 1;
     }
 
     getStepsCount() {
         let stepsOrder = this.stepOptions.getStepsOrder();
-        return stepsOrder.length - this.getFirstStepIndex();
+        return stepsOrder.length;
     }
 
     private getStepIndex(stepName: string): number {
