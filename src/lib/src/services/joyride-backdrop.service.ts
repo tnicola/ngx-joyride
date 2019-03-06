@@ -48,7 +48,7 @@ export class JoyrideBackdropService {
         this.renderer.setStyle(this.currentBackdropContainer, 'width', '100%');
         this.renderer.setStyle(this.currentBackdropContainer, 'height', '100%');
         this.renderer.setStyle(this.currentBackdropContainer, 'z-index', '1000');
-        this.renderer.addClass(this.currentBackdropContainer, 'backdrop-' + step.name);
+        this.renderer.setAttribute(this.currentBackdropContainer, 'id', 'backdrop-' + step.name);
 
         this.backdropContent = this.renderer.createElement('div');
         this.renderer.addClass(this.backdropContent, 'backdrop-content');

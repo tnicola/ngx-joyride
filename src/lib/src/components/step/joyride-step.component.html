@@ -1,4 +1,4 @@
-<div #stepHolder class="joyride-step__holder {{'joyride-step-' + step.name}}" [style.top.px]="topPosition" [style.left.px]="leftPosition">
+<div #stepHolder class="joyride-step__holder" [id]="'joyride-step-' + step.name" [style.top.px]="topPosition" [style.left.px]="leftPosition">
     <joyride-arrow *ngIf="showArrow" class="joyride-step__arrow" [position]="arrowPosition" [style.top.px]="arrowTopPosition"
         [style.left.px]="arrowLeftPosition"></joyride-arrow>
     <div #stepContainer class="joyride-step__container">

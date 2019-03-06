@@ -300,6 +300,17 @@ describe('JoyrideStepComponent', () => {
                 expect(stepHolder.nativeElement.style.transform).toBe('translateX(-50px)');
             });
 
+            it('should have id with step name on step holder div', () => {
+                STEP.name = "myStep";
+                component.step = STEP;
+                component.ngAfterViewInit();
+
+                hostFixture.detectChanges();
+
+                let stepHolder = hostFixture.debugElement.query(By.css('.joyride-step__holder'));
+                expect(stepHolder.nativeElement.id).toBe('joyride-step-myStep');
+            });
+
             describe('when the step position is "top"', () => {
                 beforeEach(() => {
                     STEP.position = 'top';

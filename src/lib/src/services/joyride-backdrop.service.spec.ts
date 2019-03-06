@@ -84,6 +84,14 @@ describe('JoyrideBackdropService', () => {
             expect(styles.height).toBe('34px');
             expect(styles.getPropertyValue('flex-shrink')).toBe('0');
         });
+
+        it('should set id to contain step name', () => {
+            STEP.name = 'myStep';
+            backdropService.draw(STEP);
+
+            let backdropMiddleContainer = document.getElementsByClassName('backdrop-container')[0];
+            expect(backdropMiddleContainer.id).toBe('backdrop-myStep');
+        });
     });
 
     describe('redraw() and redrawTarget()', () => {
