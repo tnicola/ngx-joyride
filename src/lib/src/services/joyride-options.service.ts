@@ -1,19 +1,20 @@
-import { Injectable } from "@angular/core";
-import { JoyrideOptions } from "../models/joyride-options.class";
+import { Injectable } from '@angular/core';
+import { JoyrideOptions } from '../models/joyride-options.class';
 
-export const DEFAULT_THEME_COLOR = "#3b5560";
-export const STEP_DEFAULT_POSITION = "bottom";
+export const DEFAULT_THEME_COLOR = '#3b5560';
+export const STEP_DEFAULT_POSITION = 'bottom';
+export const DEFAULT_TIMEOUT_BETWEEN_STEPS = 1;
 
 @Injectable()
 export class JoyrideOptionsService {
-
     private themeColor: string = DEFAULT_THEME_COLOR;
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
     private logsEnabled: boolean = true;
     private showCounter: boolean = true;
     private showPrevButton: boolean = true;
     private stepsOrder: string[] = [];
-    private firstStep: string; 
+    private firstStep: string;
+    private waitingTime: number;
     setOptions(options: JoyrideOptions) {
         this.stepsOrder = options.steps;
         this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
@@ -22,6 +23,7 @@ export class JoyrideOptionsService {
         this.showPrevButton = typeof options.showPrevButton !== 'undefined' ? options.showPrevButton : this.showPrevButton;
         this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
         this.firstStep = options.startWith;
+        this.waitingTime = typeof options.waitingTime !== 'undefined' ? options.waitingTime : DEFAULT_TIMEOUT_BETWEEN_STEPS;
     }
 
     getBackdropColor() {
@@ -44,6 +46,10 @@ export class JoyrideOptionsService {
         return this.firstStep;
     }
 
+    getWaitingTime() {
+        return this.waitingTime;
+    }
+
     areLogsEnabled() {
         return this.logsEnabled;
     }
@@ -63,7 +69,6 @@ export class JoyrideOptionsService {
         });
 
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ?
-            `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
+        return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
     }
 }

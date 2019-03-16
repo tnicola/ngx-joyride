@@ -15,6 +15,7 @@ import { JoyrideStepDoesNotExist, JoyrideStepOutOfRange } from '../models/joyrid
 import { LoggerService } from './logger.service';
 
 const SCROLLBAR_SIZE = 20;
+
 export const DISTANCE_FROM_TARGET = 15;
 export const ARROW_SIZE = 10;
 
@@ -121,6 +122,8 @@ export class JoyrideStepService implements IJoyrideStepService {
 
     private tryShowStep(actionType: StepActionType) {
         this.navigateToStepPage(actionType);
+        const timeout = this.optionsService.getWaitingTime();
+        if (timeout > 100) this.backDropService.remove();
         setTimeout(() => {
             try {
                 this.showStep(actionType);
@@ -128,16 +131,19 @@ export class JoyrideStepService implements IJoyrideStepService {
                 if (error instanceof JoyrideStepDoesNotExist) {
                     this.tryShowStep(actionType);
                 }
-                if (error instanceof JoyrideStepOutOfRange) {
+                else if (error instanceof JoyrideStepOutOfRange) {
                     this.logger.error('Forcing the tour closure: First or Last step not found in the DOM.');
                     this.close();
                 }
+                else {
+                    throw new Error(error);
+                }
             }
-        }, 1);
+        }, timeout);
     }
 
     private showStep(actionType: StepActionType) {
-        this.currentStep = this.stepsContainerService.get(actionType /*, () => this.close()*/);
+        this.currentStep = this.stepsContainerService.get(actionType);
 
         if (this.currentStep == null) throw new JoyrideStepDoesNotExist('');
         // Scroll the element to get it visible if it's in a scrollable element

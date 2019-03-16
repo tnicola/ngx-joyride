@@ -97,6 +97,7 @@ Name | Required | Purpose | Type | Default value
 ---- | ---- | ---- | ---- | ----
 steps | Yes | Represent the ordered list of steps name to show. e.g `steps: ['step1', 'header', 'interesting-table', 'navbar']`. This option is particularly useful for multi-pages navigation. If your step is not in the root path, you should indicate the route after the step name, with a `@` as separator. E.g. : `steps: ['firstStep', 'image@home', 'step4@about/you', 'user-avatar@user/details']` | string[] | none
 startWith | No | The name of the step (plus the route for multi-page navigation) from which the stour should start. | string | undefined
+waitingTime | No | The time (in milliseconds) to wait before showing the next/prev step. | number | 1
 stepDefaultPosition | No | Define a step default position. The stepPositon set in the directive override this value. | string | bottom
 themeColor | No | Backdrop, buttons and title color. (Hexadecimal value) | string | #3b5560
 showCounter | No | Show the counter on the bottom-left. | boolean | true

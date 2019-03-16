@@ -12,4 +12,5 @@ export class JoyrideOptionsServiceFake {
     getFirstStepRoute: jasmine.Spy = jasmine.createSpy('getFirstStepRoute');
     getStepsOrder: jasmine.Spy = jasmine.createSpy('getStepsOrder');
     getFirstStep: jasmine.Spy = jasmine.createSpy('getFirstStep');
+    getWaitingTime: jasmine.Spy = jasmine.createSpy('getWaitingTime');
 }

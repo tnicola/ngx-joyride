@@ -10,7 +10,7 @@ import { JoyrideStepsContainerService, StepActionType } from './joyride-steps-co
 import { DocumentService } from './document.service';
 import { DomRefService } from './dom.service';
 import { StepDrawerService } from './step-drawer.service';
-import { JoyrideOptionsService } from './joyride-options.service';
+import { JoyrideOptionsService, DEFAULT_TIMEOUT_BETWEEN_STEPS } from './joyride-options.service';
 import { JoyrideOptionsServiceFake } from '../test/fake/joyride-options-fake.service';
 import { JoyrideBackdropServiceFake } from '../test/fake/joyride-backdrop-fake.service';
 import { JoyrideStep } from '../models/joyride-step.class';
@@ -32,6 +32,7 @@ describe('JoyrideStepService', () => {
     let stepDrawerService: StepDrawerServiceFake;
     let logger: LoggerFake;
     let router: RouterFake;
+    let optionsService: JoyrideOptionsServiceFake;
 
     let FAKE_STEPS = <any>[];
     let STEP0: JoyrideStep = new JoyrideStep();
@@ -72,6 +73,7 @@ describe('JoyrideStepService', () => {
         stepDrawerService = TestBed.get(StepDrawerService);
         logger = TestBed.get(LoggerService);
         router = TestBed.get(Router);
+        optionsService = TestBed.get(JoyrideOptionsService);
 
         STEP0 = createNewStep('nav');
         STEP1 = createNewStep('credits');
@@ -79,6 +81,7 @@ describe('JoyrideStepService', () => {
 
         FAKE_STEPS = [STEP0, STEP1, STEP2];
         stepsContainerService.get.and.returnValues(...FAKE_STEPS);
+        optionsService.getWaitingTime.and.returnValue(DEFAULT_TIMEOUT_BETWEEN_STEPS);
     });
 
     function createNewStep(nextStepName: string = '') {
@@ -102,7 +105,7 @@ describe('JoyrideStepService', () => {
     describe('when eventListener.scrollEvent publish', () => {
         it("should call backdropService.redraw with the right 'scroll' parameter", fakeAsync(() => {
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             eventListenerService.scrollEvent.next(240);
 
             expect(backdropService.redraw).toHaveBeenCalledWith(jasmine.objectContaining(STEP0), 240);
@@ -118,7 +121,7 @@ describe('JoyrideStepService', () => {
     describe('when eventListener.resizeEvent publish', () => {
         it('should call backdropService.redrawTarget', fakeAsync(() => {
             joyrideStepService.startTour();
-            tick(1); //wait for the first step
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS); //wait for the first step
             eventListenerService.resizeEvent.next();
 
             expect(backdropService.redrawTarget).toHaveBeenCalled();
@@ -128,28 +131,28 @@ describe('JoyrideStepService', () => {
     describe('close()', () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             joyrideStepService.close();
         }));
         it('should call backDropService.remove', () => {
             expect(backdropService.remove).toHaveBeenCalled();
         });
         it('should remove the step calling stepDrawerService.remove', () => {
-            expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
+            expect(stepDrawerService.remove).toHaveBeenCalledTimes(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             expect(stepDrawerService.remove).toHaveBeenCalledWith(STEP0);
         });
         it('should scroll to 0, 0', () => {
             expect(FAKE_WINDOW.scrollTo).toHaveBeenCalledWith(0, 0);
         });
         it('should call eventListener.stopListeningResizeEvents', () => {
-            expect(eventListenerService.stopListeningResizeEvents).toHaveBeenCalledTimes(1);
+            expect(eventListenerService.stopListeningResizeEvents).toHaveBeenCalledTimes(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         });
     });
 
     describe('startTour()', () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
         it('should call documentService.setDocumentHeight', () => {
             expect(documentService.setDocumentHeight).toHaveBeenCalled();
@@ -164,7 +167,7 @@ describe('JoyrideStepService', () => {
         it('should navigate to the step route if the step has a route', fakeAsync(() => {
             stepsContainerService.getStepRoute.and.returnValue('route1');
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(router.navigate).toHaveBeenCalledWith(['route1']);
         }));
@@ -172,7 +175,7 @@ describe('JoyrideStepService', () => {
         it('should NOT navigate to the step route if the step does not have a route', fakeAsync(() => {
             stepsContainerService.getStepRoute.and.returnValue(null);
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(router.navigate).not.toHaveBeenCalled();
         }));
@@ -186,7 +189,7 @@ describe('JoyrideStepService', () => {
             it('should call tryShowStep twice if the first step is NOT null', fakeAsync(() => {
                 stepsContainerService.get.and.returnValues(STEP0);
                 joyrideStepService.startTour();
-                tick(3);
+                tick(DEFAULT_TIMEOUT_BETWEEN_STEPS * 3);
 
                 expect(tryShowSpy).toHaveBeenCalledTimes(1);
             }));
@@ -209,7 +212,7 @@ describe('JoyrideStepService', () => {
             it('should call tryShowStep twice if the first step is NOT undefined', fakeAsync(() => {
                 stepsContainerService.get.and.returnValues(STEP0);
                 joyrideStepService.startTour();
-                tick(3);
+                tick(DEFAULT_TIMEOUT_BETWEEN_STEPS * 3);
 
                 expect(tryShowSpy).toHaveBeenCalledTimes(1);
             }));
@@ -217,7 +220,7 @@ describe('JoyrideStepService', () => {
             it('should call tryShowStep twice if the first step is null', fakeAsync(() => {
                 stepsContainerService.get.and.returnValues(undefined, STEP0);
                 joyrideStepService.startTour();
-                tick(3);
+                tick(DEFAULT_TIMEOUT_BETWEEN_STEPS * 3);
 
                 expect(tryShowSpy).toHaveBeenCalledTimes(2);
             }));
@@ -231,7 +234,7 @@ describe('JoyrideStepService', () => {
                     throw new JoyrideStepOutOfRange('fake error');
                 });
                 joyrideStepService.startTour();
-                tick(1);
+                tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             }));
 
             it('should log an error', () => {
@@ -247,10 +250,10 @@ describe('JoyrideStepService', () => {
     describe('next', () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             backdropService.draw.calls.reset();
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
         it('should remove the step calling stepDrawerService.remove', () => {
             expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
@@ -262,13 +265,13 @@ describe('JoyrideStepService', () => {
         });
         it('should call stepsContainerService.get with StepActionType.NEXT three times', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
             expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
             expect(stepsContainerService.get.calls.argsFor(0)).toEqual([StepActionType.NEXT]);
         }));
         it('should call backDropService.draw', () => {
-            expect(backdropService.draw).toHaveBeenCalledTimes(1);
+            expect(backdropService.draw).toHaveBeenCalledTimes(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             expect(backdropService.draw).toHaveBeenCalledWith(STEP1);
         });
     });
@@ -276,7 +279,7 @@ describe('JoyrideStepService', () => {
     describe('prev()', () => {
         beforeEach(fakeAsync(() => {
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
         describe('on the first step', () => {
             beforeEach(() => {
@@ -287,12 +290,12 @@ describe('JoyrideStepService', () => {
         describe('after at least one next() call', () => {
             beforeEach(fakeAsync(() => {
                 joyrideStepService.next();
-                tick(1);
+                tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
                 backdropService.draw.calls.reset();
                 stepsContainerService.get.calls.reset();
                 stepDrawerService.remove.calls.reset();
                 joyrideStepService.prev();
-                tick(1);
+                tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             }));
             it('should remove the step calling stepDrawerService.remove', () => {
                 expect(stepDrawerService.remove).toHaveBeenCalledTimes(1);
@@ -312,7 +315,7 @@ describe('JoyrideStepService', () => {
         beforeEach(fakeAsync(() => {
             documentService.isElementBeyondOthers.and.returnValues(true, false);
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
         it('should call documentService.scrollToTheTop when startTour() is called', () => {
             expect(documentService.scrollToTheTop).toHaveBeenCalled();
@@ -320,16 +323,16 @@ describe('JoyrideStepService', () => {
         });
         it('should call documentService.scrollToTheTop when prev() is called ', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             joyrideStepService.prev();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(documentService.scrollToTheTop).toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
         it('should call documentService.scrollToTheTop when next() is called ', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(documentService.scrollToTheTop).toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
@@ -340,7 +343,7 @@ describe('JoyrideStepService', () => {
         beforeEach(fakeAsync(() => {
             documentService.isElementBeyondOthers.and.returnValues(true, true);
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
         it('should call both documentService.scrollToTheTop and scrollToTheBottom when startTour() is called ', () => {
             expect(documentService.scrollToTheTop).toHaveBeenCalled();
@@ -348,16 +351,16 @@ describe('JoyrideStepService', () => {
         });
         it('should scroll both documentService.scrollToTheTop and scrollToTheBottom when prev() is called ', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             joyrideStepService.prev();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(documentService.scrollToTheTop).toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).toHaveBeenCalled();
         }));
         it('should scroll both documentService.scrollToTheTop and scrollToTheBottom when next() is called ', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(documentService.scrollToTheTop).toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).toHaveBeenCalled();
@@ -368,7 +371,7 @@ describe('JoyrideStepService', () => {
         beforeEach(fakeAsync(() => {
             documentService.isElementBeyondOthers.and.returnValues(false, false, false);
             joyrideStepService.startTour();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
         it('should NOT call documentService.scroll top, bottom when startTour() is called', () => {
             expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
@@ -376,19 +379,58 @@ describe('JoyrideStepService', () => {
         });
         it('should NOT scroll to 0, 0 when prev() is called ', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
             joyrideStepService.prev();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
         it('should NOT scroll to 0, 0 when next() is called ', fakeAsync(() => {
             joyrideStepService.next();
-            tick(1);
+            tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
 
             expect(documentService.scrollToTheTop).not.toHaveBeenCalled();
             expect(documentService.scrollToTheBottom).not.toHaveBeenCalled();
         }));
+    });
+
+    describe('when getWaitingTime returns a timeout different from the default one', () => {
+        beforeEach(() => {
+            optionsService.getWaitingTime.and.returnValue(200);
+        });
+
+        it('should get the step after the timeout milliseconds', fakeAsync(() => {
+            joyrideStepService.startTour();
+            tick(200);
+
+            expect(stepsContainerService.get).toHaveBeenCalledTimes(1);
+        }));
+
+        it('should not get the step before the timeout milliseconds', fakeAsync(() => {
+            joyrideStepService.startTour();
+            tick(199);
+
+            expect(stepsContainerService.get).not.toHaveBeenCalledTimes(1);
+            tick(1);
+        }));
+
+        it('should NOT call backdrop.remove if timeout is < 100 millisecons', fakeAsync(() => {
+            optionsService.getWaitingTime.and.returnValue(99);
+            joyrideStepService.startTour();
+            tick(99);
+
+            expect(backdropService.remove).not.toHaveBeenCalledTimes(1);
+        }));
+
+
+        it('should call backdrop.remove if timeout is > 100 millisecons', fakeAsync(() => {
+            optionsService.getWaitingTime.and.returnValue(150);
+            joyrideStepService.startTour();
+            tick(150);
+
+            expect(backdropService.remove).toHaveBeenCalledTimes(1);
+        }));
+
     });
 });
