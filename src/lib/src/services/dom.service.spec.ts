@@ -22,7 +22,7 @@ describe('DomRefService', () => {
         });
         it(`should return the fake window if this.platformId is 'server'`, () => {
             domService = new DomRefService('server');
-            expect(domService.getNativeWindow()).toEqual(<Window>{ document: { body: {}, documentElement: {} } });
+            expect(domService.getNativeWindow()).toEqual(<Window>{ document: { body: {}, documentElement: {} }, navigator: {} });
         });
     });
     describe('getNativeDocument()', () => {

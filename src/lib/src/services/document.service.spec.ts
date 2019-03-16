@@ -55,7 +55,25 @@ describe('DocumentService', () => {
 
             expect(documentService.getDocumentHeight()).toBe(50);
         });
+
+        // These two tests work only in IE 11 - Edge
+        xit(`should bind elementsFromPoint to document elementsFromPoint if it doesn't exist`, () => {
+            document.elementsFromPoint.prototype = undefined;
+            expect(document.elementsFromPoint).not.toBeDefined();
+            
+            documentService = TestBed.get(DocumentService);
+
+            expect(document.elementsFromPoint).toBeDefined();
+            expect(document.elementsFromPoint.toString()).toEqual(documentService['elementsFromPoint'].toString());
+        });
+
+        xit(`should NOT bind elementsFromPoint to document elementsFromPoint if it already exists`, () => {
+            documentService = TestBed.get(DocumentService);
+
+            expect(document.elementsFromPoint).toBeDefined();
+        });
     });
+
     describe('after service initialization', () => {
         beforeEach(() => {
             documentService = TestBed.get(DocumentService);

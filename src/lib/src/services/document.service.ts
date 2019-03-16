@@ -25,6 +25,10 @@ export class DocumentService implements IDocumentService {
 
     constructor(private readonly DOMService: DomRefService) {
         this.setDocumentHeight();
+        if (!document.elementsFromPoint) {
+            // IE 11 - Edge browsers
+            document.elementsFromPoint = this.elementsFromPoint.bind(this);
+        }
     }
 
     getElementFixedTop(elementRef: ElementRef) {
@@ -75,7 +79,12 @@ export class DocumentService implements IDocumentService {
     scrollToTheTop(elementRef: ElementRef): void {
         const firstScrollableParent = this.getFirstScrollableParent(elementRef.nativeElement);
         if (firstScrollableParent !== this.DOMService.getNativeDocument().body) {
-            firstScrollableParent.scrollTo(0, 0);
+            if (firstScrollableParent.scrollTo) {
+                firstScrollableParent.scrollTo(0, 0);
+            } else {
+                // IE 11 - Edge browsers
+                firstScrollableParent.scrollTop = 0;
+            }
         } else {
             this.DOMService.getNativeWindow().scrollTo(0, 0);
         }
@@ -84,7 +93,12 @@ export class DocumentService implements IDocumentService {
     scrollToTheBottom(elementRef: ElementRef): void {
         const firstScrollableParent = this.getFirstScrollableParent(elementRef.nativeElement);
         if (firstScrollableParent !== this.DOMService.getNativeDocument().body) {
-            firstScrollableParent.scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
+            if (firstScrollableParent.scrollTo) {
+                firstScrollableParent.scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
+            } else {
+                // IE 11 - Edge browsers
+                firstScrollableParent.scrollTop = firstScrollableParent.scrollHeight - firstScrollableParent.clientHeight;
+            }
         } else {
             this.DOMService.getNativeWindow().scrollTo(0, this.DOMService.getNativeDocument().body.scrollHeight);
         }
@@ -139,6 +153,25 @@ export class DocumentService implements IDocumentService {
 
         // For browsers in Quirks mode
         return { x: docReference.body.scrollLeft, y: docReference.body.scrollTop };
+    }
+
+    private elementsFromPoint(x, y) {
+        var parents = [];
+        var parent = void 0;
+        do {
+            const elem = this.DOMService.getNativeDocument().elementFromPoint(x, y);
+            if (elem && parent !== elem) {
+                parent = elem;
+                parents.push(parent);
+                parent.style.pointerEvents = 'none';
+            } else {
+                parent = false;
+            }
+        } while (parent);
+        parents.forEach(function(parent) {
+            return (parent.style.pointerEvents = 'all');
+        });
+        return parents;
     }
 
     private getFirstElementWithoutKeyword(elements: Element[], keyword: string): Element {
