@@ -14,7 +14,7 @@
         box-sizing: border-box;
         position: relative;
         color: #000000;
-        background-color: #FFFFFF;
+        background-color: #ffffff;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -50,9 +50,16 @@
         padding-left: 8px;
     }
     &__buttons-container {
-        display: grid;
-        grid-gap: 5px;
-        grid-template-columns: auto auto;
+        display: flex;
+        flex-direction: row;
+    }
+    &__button{
+        &:first-child {
+            margin-right: 2.5px;
+        }
+        &:last-child {
+            margin-left: 2.5px;
+        }
     }
     &__counter {
         font-weight: bold;
