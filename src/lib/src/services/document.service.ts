@@ -14,7 +14,7 @@ export interface IDocumentService {
 
     getDocumentHeight(): number;
     isParentScrollable(elementRef: ElementRef): boolean;
-    isElementBeyondOthers(elementRef: ElementRef, isElementFixed: boolean, keywordToDiscard: string): boolean;
+    isElementBeyondOthers(elementRef: ElementRef, isElementFixed: boolean, keywordToDiscard: string): number;
     scrollToTheTop(elementRef: ElementRef): void;
     scrollToTheBottom(elementRef: ElementRef): void;
 }
@@ -70,10 +70,29 @@ export class DocumentService implements IDocumentService {
         const elements1 = this.DOMService.getNativeDocument().elementsFromPoint(x1, y1);
         const elements2 = this.DOMService.getNativeDocument().elementsFromPoint(x2, y2);
 
-        return (
+        if (elements1.length === 0 && elements2.length === 0) return 1;
+        if (
             this.getFirstElementWithoutKeyword(elements1, keywordToDiscard) !== elementRef.nativeElement ||
             this.getFirstElementWithoutKeyword(elements2, keywordToDiscard) !== elementRef.nativeElement
-        );
+        ) {
+            return 2;
+        }
+        return 3;
+    }
+
+    scrollIntoView(elementRef: ElementRef, isElementFixed: boolean): void {
+        const firstScrollableParent = this.getFirstScrollableParent(elementRef.nativeElement);
+        const top = isElementFixed ? this.getElementFixedTop(elementRef) : this.getElementAbsoluteTop(elementRef);
+        if (firstScrollableParent !== this.DOMService.getNativeDocument().body) {
+            if (firstScrollableParent.scrollTo) {
+                firstScrollableParent.scrollTo(0, top - 150);
+            } else {
+                // IE 11 - Edge browsers
+                firstScrollableParent.scrollTop = top - 150;
+            }
+        } else {
+            this.DOMService.getNativeWindow().scrollTo(0, top - 150);
+        }
     }
 
     scrollToTheTop(elementRef: ElementRef): void {

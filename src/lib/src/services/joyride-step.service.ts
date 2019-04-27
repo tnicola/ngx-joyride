@@ -130,12 +130,10 @@ export class JoyrideStepService implements IJoyrideStepService {
             } catch (error) {
                 if (error instanceof JoyrideStepDoesNotExist) {
                     this.tryShowStep(actionType);
-                }
-                else if (error instanceof JoyrideStepOutOfRange) {
+                } else if (error instanceof JoyrideStepOutOfRange) {
                     this.logger.error('Forcing the tour closure: First or Last step not found in the DOM.');
                     this.close();
-                }
-                else {
+                } else {
                     throw new Error(error);
                 }
             }
@@ -226,13 +224,16 @@ export class JoyrideStepService implements IJoyrideStepService {
     }
 
     private scrollIfElementBeyondOtherElements() {
-        if (this.isElementBeyondOthers()) {
+        if (this.isElementBeyondOthers() === 2) {
             this.documentService.scrollToTheTop(this.currentStep.targetViewContainer.element);
         }
-        if (this.isElementBeyondOthers()) {
+        if (this.isElementBeyondOthers() === 2) {
             this.documentService.scrollToTheBottom(this.currentStep.targetViewContainer.element);
         }
-        if (this.isElementBeyondOthers() && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
+        if (this.isElementBeyondOthers() === 1 && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
+            this.documentService.scrollIntoView(this.currentStep.targetViewContainer.element, this.currentStep.isElementOrAncestorFixed);
+        }
+        if (this.isElementBeyondOthers() === 1 && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
             this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
         }
     }
