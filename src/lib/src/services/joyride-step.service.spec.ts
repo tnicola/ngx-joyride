@@ -313,7 +313,7 @@ describe('JoyrideStepService', () => {
 
     describe('when documentService.isElementBeyondOthers returns true once', () => {
         beforeEach(fakeAsync(() => {
-            documentService.isElementBeyondOthers.and.returnValues(true, false);
+            documentService.isElementBeyondOthers.and.returnValues(2, 3);
             joyrideStepService.startTour();
             tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
@@ -341,7 +341,7 @@ describe('JoyrideStepService', () => {
 
     describe('when documentService.isElementBeyondOthers returns true twice', () => {
         beforeEach(fakeAsync(() => {
-            documentService.isElementBeyondOthers.and.returnValues(true, true);
+            documentService.isElementBeyondOthers.and.returnValues(2, 2);
             joyrideStepService.startTour();
             tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));
@@ -369,7 +369,7 @@ describe('JoyrideStepService', () => {
 
     describe('when documentService.isElementBeyondOthers returns false for three times', () => {
         beforeEach(fakeAsync(() => {
-            documentService.isElementBeyondOthers.and.returnValues(false, false, false);
+            documentService.isElementBeyondOthers.and.returnValues(3, 3, 3);
             joyrideStepService.startTour();
             tick(DEFAULT_TIMEOUT_BETWEEN_STEPS);
         }));

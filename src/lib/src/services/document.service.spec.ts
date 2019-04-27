@@ -482,7 +482,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(true);
+                expect(result).toBe(2);
             });
 
             it('should return true if the element when elementsFromPoint does NOT return the element as first (top of the element)', () => {
@@ -494,7 +494,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(true);
+                expect(result).toBe(2);
             });
 
             it('should return true if the element when elementsFromPoint does NOT return the element as first (bottom of the element)', () => {
@@ -506,7 +506,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(true);
+                expect(result).toBe(2);
             });
 
             it('should return true if the element when elementsFromPoint does NOT return the element as first', () => {
@@ -515,7 +515,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(true);
+                expect(result).toBe(2);
             });
 
             it('should return false if the the element when elementsFromPoint returns []', () => {
@@ -524,7 +524,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(true);
+                expect(result).toBe(1);
             });
 
             it('should return false if the element when elementsFromPoint returns the element as first', () => {
@@ -533,7 +533,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(false);
+                expect(result).toBe(3);
             });
 
             it('should return false if the element when elementsFromPoint returns the backdrop as first and then the target element', () => {
@@ -547,7 +547,7 @@ describe('DocumentService', () => {
 
                 const result = documentService.isElementBeyondOthers(target, false, 'backdrop');
 
-                expect(result).toBe(false);
+                expect(result).toBe(3);
             });
         });
 
