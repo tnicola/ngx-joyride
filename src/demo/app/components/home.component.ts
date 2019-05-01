@@ -5,7 +5,6 @@ import { JoyrideService } from 'ngx-joyride';
     selector: 'home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.sass'],
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements AfterViewInit, OnInit {
     stepVisible: boolean = false;
@@ -13,6 +12,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
     topics = <any>[];
 
     title: string = 'ngx-joyride library demo';
+
+    dynamicTitle: string = 'Title';
     constructor(private readonly joyrideService: JoyrideService) {}
 
     ngAfterViewInit(): void {}
@@ -24,6 +25,9 @@ export class HomeComponent implements AfterViewInit, OnInit {
                 description: 'Element in a scrollable list.'
             });
         }
+        setTimeout(() => {
+            this.dynamicTitle = 'Title Changed';
+        }, 10000);
     }
 
     toggleAction() {

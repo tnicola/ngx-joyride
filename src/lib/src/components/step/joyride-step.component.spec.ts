@@ -91,8 +91,8 @@ describe('JoyrideStepComponent', () => {
             let elemRef = new FakeElementRef(10, 15);
             STEP = new JoyrideStep();
             STEP.targetViewContainer = new FakeViewContainerRef(elemRef);
-            STEP.title = of('My title');
-            STEP.text = of('text-abc');
+            STEP.title.next('My title');
+            STEP.text.next('text-abc');
             STEP.stepContent = hostComponent.element;
             STEP.stepContentParams = { param1: 'name', param2: 'surname' };
             STEP.name = 'myStepName';
@@ -112,13 +112,13 @@ describe('JoyrideStepComponent', () => {
         it('should set the title of the step', () => {
             component.ngOnInit();
 
-            expect(component.title).toBe(STEP.title);
+            expect(component.title).toEqual(STEP.title.asObservable());
         });
 
         it('should set the text of the step', () => {
             component.ngOnInit();
 
-            expect(component.text).toBe(STEP.text);
+            expect(component.text).toEqual(STEP.text.asObservable());
         });
 
         it('should set the customContent of the step', () => {

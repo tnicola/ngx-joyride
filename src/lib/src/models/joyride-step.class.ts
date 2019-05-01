@@ -1,13 +1,17 @@
-import { ViewContainerRef, TemplateRef, EventEmitter } from "@angular/core";
-import { JoyrideStepComponent } from "../components/step/joyride-step.component";
-import { Observable } from "rxjs";
+import { ViewContainerRef, TemplateRef, EventEmitter } from '@angular/core';
+import { JoyrideStepComponent } from '../components/step/joyride-step.component';
+import { ReplaySubject } from 'rxjs';
 
 export class JoyrideStep {
+    constructor() {
+        this.title = new ReplaySubject<string>();
+        this.text = new ReplaySubject<string>();
+    }
     name: string;
     route: string;
     position: string;
-    title: Observable<string>;
-    text: Observable<string>;
+    title: ReplaySubject<string>;
+    text: ReplaySubject<string>;
     stepContent: TemplateRef<any>;
     stepContentParams: Object;
     nextClicked: EventEmitter<any>;

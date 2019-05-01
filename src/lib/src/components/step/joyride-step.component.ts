@@ -95,8 +95,8 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.documentHeight = this.documentService.getDocumentHeight();
         this.subscriptions.push(this.subscribeToResizeEvents());
-        this.title = this.step.title;
-        this.text = this.step.text;
+        this.title = this.step.title.asObservable();
+        this.text = this.step.text.asObservable();
 
         this.setCustomTemplates();
 

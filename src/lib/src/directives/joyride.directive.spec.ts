@@ -2,7 +2,14 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { JoyrideDirective } from './joyride.directive';
 import { JoyrideStepsContainerService } from '../services/joyride-steps-container.service';
 import { JoyrideStepsContainerServiceFake } from '../test/fake/joyride-steps-container-fake.service';
-import { Component, DebugElement, PLATFORM_ID, TemplateRef, ViewContainerRef, ElementRef } from '@angular/core';
+import {
+    Component,
+    DebugElement,
+    TemplateRef,
+    ViewContainerRef,
+    SimpleChange,
+    SimpleChanges
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterFake } from '../test/fake/router-fake.service';
@@ -296,6 +303,45 @@ describe('JorideDirective', () => {
             joyDirective.ngAfterViewInit();
 
             expect(stepContainerService.addStep.calls.first().args[0].isElementOrAncestorFixed).toBe(false);
+        });
+    });
+
+    describe('ngOnChanges', () => {
+        it('should emit with current changes when title changes', () => {
+            const emitTitleSpy = spyOn(joyDirective['step']['title'], 'next');
+            const emitTextSpy = spyOn(joyDirective['step']['text'], 'next');
+            const changes = <SimpleChanges>{ title: <SimpleChange>{ previousValue: 'old', currentValue: 'new' } };
+
+            joyDirective.title = 'NewTitle';
+            joyDirective.ngOnChanges(changes);
+
+            expect(emitTitleSpy).toHaveBeenCalledWith('NewTitle');
+            expect(emitTextSpy).toHaveBeenCalledWith(undefined);
+        });
+
+        it('should emit with current changes when text changes', () => {
+            const emitTitleSpy = spyOn(joyDirective['step']['title'], 'next');
+            const emitTextSpy = spyOn(joyDirective['step']['text'], 'next');
+            const changes = <SimpleChanges>{ text: <SimpleChange>{ previousValue: 'old', currentValue: 'new' } };
+
+            joyDirective.text = 'NewText';
+            joyDirective.ngOnChanges(changes);
+
+            expect(emitTextSpy).toHaveBeenCalledWith('NewText');
+            expect(emitTitleSpy).toHaveBeenCalledWith(undefined);
+        });
+
+        it('should NOT emit when neither text nor title changes', () => {
+            const emitTitleSpy = spyOn(joyDirective['step']['title'], 'next');
+            const emitTextSpy = spyOn(joyDirective['step']['text'], 'next');
+            const changes = <SimpleChanges>{};
+
+            joyDirective.title = 'NewTitle';
+            joyDirective.text = 'NewText';
+            joyDirective.ngOnChanges(changes);
+
+            expect(emitTextSpy).not.toHaveBeenCalled();
+            expect(emitTitleSpy).not.toHaveBeenCalled();
         });
     });
 });
