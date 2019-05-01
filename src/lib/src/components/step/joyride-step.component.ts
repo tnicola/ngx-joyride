@@ -74,6 +74,10 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     private positionAlreadyFixed: boolean;
     private documentHeight: number;
 
+    prevText: Observable<string>;
+    nextText: Observable<string>;
+    doneText: Observable<string>;
+
     @Input() step?: JoyrideStep;
     @ViewChild('stepHolder') stepHolder: ElementRef;
     @ViewChild('stepContainer') stepContainer: ElementRef;
@@ -99,6 +103,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.text = this.step.text.asObservable();
 
         this.setCustomTemplates();
+        this.setCustomTexts();
 
         this.counter = this.getCounter();
         this.isCounterVisible = this.optionsService.isCounterVisible();
@@ -146,6 +151,13 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
             this.templateService.getNextButton() ||
             this.templateService.getDoneButton()
         );
+    }
+
+    private setCustomTexts() {
+        const customeTexts = this.optionsService.getCustomTexts();
+        this.prevText = customeTexts.prev;
+        this.nextText = customeTexts.next;
+        this.doneText = customeTexts.done;
     }
 
     private drawStep() {

@@ -4,7 +4,7 @@ import { JoyrideService } from 'ngx-joyride';
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.sass'],
+    styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements AfterViewInit, OnInit {
     stepVisible: boolean = false;
@@ -65,7 +65,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
             stepDefaultPosition: 'top',
             themeColor: '#345632',
             showPrevButton: true,
-            logsEnabled: true
+            logsEnabled: true,
+            //customTexts: { prev: of('<<').pipe(delay(2000)), next: '>>'}
         };
         this.joyrideService.startTour(options).subscribe(
             step => {

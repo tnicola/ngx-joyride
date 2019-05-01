@@ -1,6 +1,12 @@
-import { JoyrideOptionsService, STEP_DEFAULT_POSITION, DEFAULT_THEME_COLOR, DEFAULT_TIMEOUT_BETWEEN_STEPS } from './joyride-options.service';
+import {
+    JoyrideOptionsService,
+    STEP_DEFAULT_POSITION,
+    DEFAULT_THEME_COLOR,
+    DEFAULT_TIMEOUT_BETWEEN_STEPS
+} from './joyride-options.service';
 import { TestBed } from '@angular/core/testing';
 import { JoyrideOptions } from '../models/joyride-options.class';
+import { of } from 'rxjs';
 
 describe('JoyrideOptionsService', () => {
     let optionsService: JoyrideOptionsService;
@@ -131,6 +137,33 @@ describe('JoyrideOptionsService', () => {
             optionsService.setOptions(stepOption);
 
             expect(optionsService.getWaitingTime()).toBe(DEFAULT_TIMEOUT_BETWEEN_STEPS);
+        });
+    });
+
+    describe('getCustomTexts()', () => {
+        it('should return the default texts by default', () => {
+            let stepOption = new JoyrideOptions();
+            optionsService.setOptions(stepOption);
+           
+            const customTexts = optionsService.getCustomTexts();
+
+            expect(customTexts.prev).toEqual(jasmine.objectContaining({ value: 'prev' }));
+            expect(customTexts.next).toEqual(jasmine.objectContaining({ value: 'next' }));
+            expect(customTexts.done).toEqual(jasmine.objectContaining({ value: 'done' }));
+            expect(customTexts.close).toEqual(jasmine.objectContaining({ value: null }));
+        });
+
+        it('should return the custom texts when they have been set', () => {
+            let stepOption = new JoyrideOptions();
+            stepOption.customTexts = { prev: 'myPrev', done: of('myDone') };
+            optionsService.setOptions(stepOption);
+
+            const customTexts = optionsService.getCustomTexts();
+
+            expect(customTexts.prev).toEqual(jasmine.objectContaining({ value: 'myPrev' }));
+            expect(customTexts.next).toEqual(jasmine.objectContaining({ value: 'next' }));
+            expect(customTexts.done).toEqual(jasmine.objectContaining({ value: 'myDone' }));
+            expect(customTexts.close).toEqual(jasmine.objectContaining({ value: null }));
         });
     });
 });

@@ -1,12 +1,40 @@
 import { Injectable } from '@angular/core';
-import { JoyrideOptions } from '../models/joyride-options.class';
+import { JoyrideOptions, CustomTexts, ICustomTexts } from '../models/joyride-options.class';
+import { of, Observable } from 'rxjs';
 
 export const DEFAULT_THEME_COLOR = '#3b5560';
 export const STEP_DEFAULT_POSITION = 'bottom';
 export const DEFAULT_TIMEOUT_BETWEEN_STEPS = 1;
 
+export class ObservableCustomTexts implements ICustomTexts {
+    prev: Observable<string>;
+    next: Observable<string>;
+    done: Observable<string>;
+    close: Observable<string>;
+}
+export const DEFAULT_TEXTS: ObservableCustomTexts = {
+    prev: of('prev'),
+    next: of('next'),
+    done: of('done'),
+    close: of(null)
+};
+
+export interface IJoyrideOptionsService {
+    setOptions(options: JoyrideOptions): void;
+    getBackdropColor(): string;
+    getThemeColor(): string;
+    getStepDefaultPosition();
+    getStepsOrder(): string[];
+    getFirstStep(): string;
+    getWaitingTime(): number;
+    areLogsEnabled(): boolean;
+    isCounterVisible(): boolean;
+    isPrevButtonVisible(): boolean;
+    getCustomTexts(): ObservableCustomTexts;
+}
+
 @Injectable()
-export class JoyrideOptionsService {
+export class JoyrideOptionsService implements IJoyrideOptionsService {
     private themeColor: string = DEFAULT_THEME_COLOR;
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
     private logsEnabled: boolean = true;
@@ -15,6 +43,8 @@ export class JoyrideOptionsService {
     private stepsOrder: string[] = [];
     private firstStep: string;
     private waitingTime: number;
+    private customTexts: ObservableCustomTexts;
+
     setOptions(options: JoyrideOptions) {
         this.stepsOrder = options.steps;
         this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
@@ -24,6 +54,7 @@ export class JoyrideOptionsService {
         this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
         this.firstStep = options.startWith;
         this.waitingTime = typeof options.waitingTime !== 'undefined' ? options.waitingTime : DEFAULT_TIMEOUT_BETWEEN_STEPS;
+        typeof options.customTexts !== 'undefined' ? this.setCustomText(options.customTexts) : this.setCustomText(DEFAULT_TEXTS);
     }
 
     getBackdropColor() {
@@ -60,6 +91,28 @@ export class JoyrideOptionsService {
 
     isPrevButtonVisible() {
         return this.showPrevButton;
+    }
+
+    getCustomTexts(): ObservableCustomTexts {
+        return this.customTexts;
+    }
+
+    private setCustomText(texts: CustomTexts) {
+        let prev, next, done, close: string | Observable<string>;
+        prev = texts.prev ? texts.prev : DEFAULT_TEXTS.prev;
+        next = texts.next ? texts.next : DEFAULT_TEXTS.next;
+        done = texts.done ? texts.done : DEFAULT_TEXTS.done;
+        close = texts.close ? texts.close : DEFAULT_TEXTS.close;
+        this.customTexts = <ObservableCustomTexts>{
+            prev: this.toObservable(prev),
+            next: this.toObservable(next),
+            done: this.toObservable(done),
+            close: this.toObservable(close)
+        };
+    }
+
+    private toObservable(value: string | Observable<string>) {
+        return value instanceof Observable ? value : of(value);
     }
 
     private hexToRgb(hex: any): string {
