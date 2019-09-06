@@ -7,8 +7,7 @@ import { JoyrideStep } from '../models/joyride-step.class';
 @Injectable()
 export class JoyrideBackdropService {
     private renderer: Renderer2;
-    private currentBackdropContainer: any;
-    private lastBackdropContainer: any;
+    private backdropContainer: any;
     private backdropContent: any;
     private backdropTop: any;
     private backdropBottom: any;
@@ -40,15 +39,26 @@ export class JoyrideBackdropService {
         this.targetAbsoluteTop = this.getTargetTotalTop(step);
         this.targetAbsoluteLeft = this.getTargetTotalLeft(step);
 
-        this.currentBackdropContainer = this.renderer.createElement('div');
-        this.renderer.addClass(this.currentBackdropContainer, 'backdrop-container');
-        this.renderer.setStyle(this.currentBackdropContainer, 'position', 'fixed');
-        this.renderer.setStyle(this.currentBackdropContainer, 'top', '0px');
-        this.renderer.setStyle(this.currentBackdropContainer, 'left', '0px');
-        this.renderer.setStyle(this.currentBackdropContainer, 'width', '100%');
-        this.renderer.setStyle(this.currentBackdropContainer, 'height', '100%');
-        this.renderer.setStyle(this.currentBackdropContainer, 'z-index', '1000');
-        this.renderer.setAttribute(this.currentBackdropContainer, 'id', 'backdrop-' + step.name);
+        if (!this.backdropContainer) {
+            this.createBackdrop();
+        }
+
+        this.renderer.setAttribute(this.backdropContainer, 'id', 'backdrop-' + step.name);
+        this.renderer.setStyle(this.backdropTop, 'height', this.targetAbsoluteTop - this.lastYScroll + 'px');
+        this.renderer.setStyle(this.backdropMiddleContainer, 'height', this.elementRef.element.nativeElement.offsetHeight + 'px');
+        this.renderer.setStyle(this.leftBackdrop, 'width', this.targetAbsoluteLeft - this.lastXScroll + 'px');
+        this.renderer.setStyle(this.targetBackdrop, 'width', this.elementRef.element.nativeElement.offsetWidth + 'px');
+    }
+
+    private createBackdrop(): void {
+        this.backdropContainer = this.renderer.createElement('div');
+        this.renderer.addClass(this.backdropContainer, 'backdrop-container');
+        this.renderer.setStyle(this.backdropContainer, 'position', 'fixed');
+        this.renderer.setStyle(this.backdropContainer, 'top', '0px');
+        this.renderer.setStyle(this.backdropContainer, 'left', '0px');
+        this.renderer.setStyle(this.backdropContainer, 'width', '100%');
+        this.renderer.setStyle(this.backdropContainer, 'height', '100%');
+        this.renderer.setStyle(this.backdropContainer, 'z-index', '1000');
 
         this.backdropContent = this.renderer.createElement('div');
         this.renderer.addClass(this.backdropContent, 'backdrop-content');
@@ -56,20 +66,19 @@ export class JoyrideBackdropService {
         this.renderer.setStyle(this.backdropContent, 'height', '100%');
         this.renderer.setStyle(this.backdropContent, 'display', 'flex');
         this.renderer.setStyle(this.backdropContent, 'flex-direction', 'column');
-        this.renderer.appendChild(this.currentBackdropContainer, this.backdropContent);
+        this.renderer.appendChild(this.backdropContainer, this.backdropContent);
 
         this.backdropTop = this.renderer.createElement('div');
         this.renderer.addClass(this.backdropTop, 'joyride-backdrop');
         this.renderer.addClass(this.backdropTop, 'backdrop-top');
         this.renderer.setStyle(this.backdropTop, 'width', '100%');
-        this.renderer.setStyle(this.backdropTop, 'height', this.targetAbsoluteTop - this.lastYScroll + 'px');
         this.renderer.setStyle(this.backdropTop, 'flex-shrink', '0');
         this.renderer.setStyle(this.backdropTop, 'background-color', `rgba(${this.optionsService.getBackdropColor()}, 0.7)`);
         this.renderer.appendChild(this.backdropContent, this.backdropTop);
 
         this.backdropMiddleContainer = this.renderer.createElement('div');
         this.renderer.addClass(this.backdropMiddleContainer, 'backdrop-middle-container');
-        this.renderer.setStyle(this.backdropMiddleContainer, 'height', this.elementRef.element.nativeElement.offsetHeight + 'px');
+
         this.renderer.setStyle(this.backdropMiddleContainer, 'width', '100%');
         this.renderer.setStyle(this.backdropMiddleContainer, 'flex-shrink', '0');
         this.renderer.appendChild(this.backdropContent, this.backdropMiddleContainer);
@@ -85,14 +94,14 @@ export class JoyrideBackdropService {
         this.renderer.addClass(this.leftBackdrop, 'joyride-backdrop');
         this.renderer.addClass(this.leftBackdrop, 'backdrop-left');
         this.renderer.setStyle(this.leftBackdrop, 'flex-shrink', '0');
-        this.renderer.setStyle(this.leftBackdrop, 'width', this.targetAbsoluteLeft - this.lastXScroll + 'px');
+
         this.renderer.setStyle(this.leftBackdrop, 'background-color', `rgba(${this.optionsService.getBackdropColor()}, 0.7)`);
         this.renderer.appendChild(this.backdropMiddleContent, this.leftBackdrop);
 
         this.targetBackdrop = this.renderer.createElement('div');
         this.renderer.addClass(this.targetBackdrop, 'backdrop-target');
         this.renderer.setStyle(this.targetBackdrop, 'flex-shrink', '0');
-        this.renderer.setStyle(this.targetBackdrop, 'width', this.elementRef.element.nativeElement.offsetWidth + 'px');
+
         this.renderer.appendChild(this.backdropMiddleContent, this.targetBackdrop);
 
         this.rightBackdrop = this.renderer.createElement('div');
@@ -110,13 +119,12 @@ export class JoyrideBackdropService {
         this.renderer.setStyle(this.backdropBottom, 'background-color', `rgba(${this.optionsService.getBackdropColor()}, 0.7)`);
         this.renderer.appendChild(this.backdropContent, this.backdropBottom);
 
-        this.removeLastBackdrop();
-        this.drawCurrentBackdrop();
-        this.lastBackdropContainer = this.currentBackdropContainer;
+
+        this.renderer.appendChild(document.body, this.backdropContainer);
     }
 
     remove() {
-        this.removeLastBackdrop();
+        this.removeBackdrop();
     }
 
     redrawTarget(step: JoyrideStep) {
@@ -197,14 +205,10 @@ export class JoyrideBackdropService {
         }
     }
 
-    private removeLastBackdrop() {
-        if (this.lastBackdropContainer) {
-            this.renderer.removeChild(document.body, this.lastBackdropContainer);
-            this.lastBackdropContainer = undefined;
+    private removeBackdrop() {
+        if (this.backdropContainer) {
+            this.renderer.removeChild(document.body, this.backdropContainer);
+            this.backdropContainer = undefined;
         }
-    }
-
-    private drawCurrentBackdrop() {
-        this.renderer.appendChild(document.body, this.currentBackdropContainer);
     }
 }
