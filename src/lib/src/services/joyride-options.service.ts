@@ -41,6 +41,7 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
     private showCounter: boolean = true;
     private showPrevButton: boolean = true;
     private stepsOrder: string[] = [];
+    private backdropColor: string = this.themeColor;
     private firstStep: string;
     private waitingTime: number;
     private customTexts: ObservableCustomTexts;
@@ -52,13 +53,14 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
         this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
         this.showPrevButton = typeof options.showPrevButton !== 'undefined' ? options.showPrevButton : this.showPrevButton;
         this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
+        this.backdropColor = options.backdropColor ? options.backdropColor : this.backdropColor;
         this.firstStep = options.startWith;
         this.waitingTime = typeof options.waitingTime !== 'undefined' ? options.waitingTime : DEFAULT_TIMEOUT_BETWEEN_STEPS;
         typeof options.customTexts !== 'undefined' ? this.setCustomText(options.customTexts) : this.setCustomText(DEFAULT_TEXTS);
     }
 
     getBackdropColor() {
-        return this.hexToRgb(this.themeColor);
+        return this.hexToRgb(this.backdropColor);
     }
 
     getThemeColor() {

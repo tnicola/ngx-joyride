@@ -6,6 +6,7 @@ export class JoyrideOptions {
     waitingTime?: number;
     stepDefaultPosition?: string;
     themeColor?: string;
+    backdropColor?: string;
     showCounter?: boolean;
     showPrevButton?: boolean;
     customTexts?: CustomTexts;

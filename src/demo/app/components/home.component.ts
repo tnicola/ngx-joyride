@@ -14,9 +14,9 @@ export class HomeComponent implements AfterViewInit, OnInit {
     title: string = 'ngx-joyride library demo';
 
     dynamicTitle: string = 'Title';
-    constructor(private readonly joyrideService: JoyrideService) {}
+    constructor(private readonly joyrideService: JoyrideService) { }
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void { }
 
     ngOnInit(): void {
         for (let i = 0; i < 100; i++) {
@@ -63,7 +63,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
             // startWith: 'step3@app',
             // waitingTime: 3000,
             stepDefaultPosition: 'top',
-            themeColor: '#345632',
+            themeColor: '#7c6a9a',
+            backdropColor: '#ff3d3d',
             showPrevButton: true,
             logsEnabled: true,
             //customTexts: { prev: of('<<').pipe(delay(2000)), next: '>>'}
