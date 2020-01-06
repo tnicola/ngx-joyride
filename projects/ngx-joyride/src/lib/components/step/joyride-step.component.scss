@@ -1,0 +1,71 @@
+.joyride-step {
+    &__holder {
+        position: absolute;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        z-index: 1001;
+    }
+    &__arrow {
+        position: absolute;
+        left: 40px;
+        z-index: 1002;
+    }
+    &__container {
+        box-sizing: border-box;
+        position: relative;
+        color: #000000;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        box-shadow: 0px 0px 30px 1px #000000;
+    }
+    &__header {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+    }
+    &__title {
+        font-weight: bold;
+        font-size: 20px;
+    }
+    &__close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
+    &__body {
+        text-align: left;
+        padding: 10px 8px;
+    }
+    &__footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 8px;
+    }
+    &__buttons-container {
+        display: flex;
+        flex-direction: row;
+    }
+    &__button {
+        &:first-child {
+            margin-right: 2.5px;
+        }
+        &:last-child {
+            margin-left: 2.5px;
+        }
+    }
+    &__counter {
+        font-weight: bold;
+        font-size: 14px;
+    }
+    &__counter-container {
+        margin-right: 10px;
+    }
+}

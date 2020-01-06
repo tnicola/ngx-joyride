@@ -1,0 +1,15 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../../out-tsc/app",
+        "types": [],
+        // Hack for Hot reloading
+        "paths": {
+            "ngx-joyride": ["projects/ngx-joyride/src/public-api"],
+            "ngx-joyride/*": ["projects/ngx-joyride/src/public-api"]
+        }
+    },
+    "files": ["src/main.ts", "src/polyfills.ts"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/test.ts", "src/**/*.spec.ts"]
+}
