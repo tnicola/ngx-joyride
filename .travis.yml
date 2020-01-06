@@ -19,8 +19,9 @@ install:
     - npm install
 
 script:
-    - npm run test:ci
     - npm run build
+    - npm run test:unit
+    - npm run test:cypress
 
 after_success:
     - npm run codecov
