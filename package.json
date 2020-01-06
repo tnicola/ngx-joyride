@@ -6,7 +6,7 @@
         "start": "ng serve --port 4500",
         "build": "ng build",
         "test": "ng test",
-        "test:ci": "ng test ngx-joyride --browsers=ChromeHeadless --watch=false",
+        "test:ci": "ng test ngx-joyride --browsers=ChromeHeadless --watch=false ",
         "lint": "ng lint",
         "e2e": "ng e2e"
     },
