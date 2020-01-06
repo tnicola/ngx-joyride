@@ -19,7 +19,7 @@ install:
     - npm install
 
 script:
-    - npm run test
+    - npm run test:ci
     - npm run build
 
 after_success:
