@@ -35,7 +35,7 @@ export const routerModuleForChild: ModuleWithProviders = RouterModule.forChild([
     ]
 })
 export class JoyrideModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<JoyrideModule> {
         return {
             ngModule: JoyrideModule,
             providers: [
@@ -53,7 +53,7 @@ export class JoyrideModule {
             ]
         }
     }
-    static forChild(): ModuleWithProviders {
+    static forChild(): ModuleWithProviders<JoyrideModule> {
         return {
             ngModule: JoyrideModule,
             providers: []
