@@ -15,7 +15,12 @@
                         "tsConfig": "projects/ngx-joyride/tsconfig.lib.json",
                         "project": "projects/ngx-joyride/ng-package.json"
                     },
-                    "showCircularDependencies": false
+                    "showCircularDependencies": false,
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/ngx-joyride/tsconfig.lib.prod.json"
+                        }
+                    }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -52,7 +57,7 @@
                         "main": "projects/demo/src/main.ts",
                         "polyfills": "projects/demo/src/polyfills.ts",
                         "tsConfig": "projects/demo/tsconfig.app.json",
-                        "aot": false,
+                        "aot": true,
                         "assets": [
                             "projects/demo/src/favicon.ico",
                             "projects/demo/src/assets"
@@ -74,7 +79,6 @@
                             "sourceMap": false,
                             "extractCss": true,
                             "namedChunks": false,
-                            "aot": true,
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
