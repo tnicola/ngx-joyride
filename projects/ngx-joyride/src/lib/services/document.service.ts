@@ -111,24 +111,46 @@ export class DocumentService implements IDocumentService {
         return 3;
     }
 
-    scrollIntoView(elementRef: ElementRef, isElementFixed: boolean): void {
+    // scrollIntoView(elementRef: ElementRef, isElementFixed: boolean, fixedHeaderHeight?: number): void {
+    //     const firstScrollableParent = this.getFirstScrollableParent(
+    //         elementRef.nativeElement
+    //     );
+    //     const top = isElementFixed
+    //         ? this.getElementFixedTop(elementRef)
+    //         : this.getElementAbsoluteTop(elementRef);
+    //     if (
+    //         firstScrollableParent !== this.DOMService.getNativeDocument().body
+    //     ) {
+    //         if (firstScrollableParent.scrollTo) {
+    //             firstScrollableParent.scrollTo(0, top - fixedHeaderHeight);
+    //         } else {
+    //             // IE 11 - Edge browsers
+    //             firstScrollableParent.scrollTop = top - fixedHeaderHeight;
+    //         }
+    //     } else {
+    //         this.DOMService.getNativeWindow().scrollTo(0, top - fixedHeaderHeight);
+    //     }
+    // }
+
+    scrollIntoView(elementRef: ElementRef, isElementFixed: boolean, fixedHeaderHeight?: number): void {
         const firstScrollableParent = this.getFirstScrollableParent(
             elementRef.nativeElement
         );
         const top = isElementFixed
             ? this.getElementFixedTop(elementRef)
-            : this.getElementAbsoluteTop(elementRef);
+            : this.firstScrollableParentScrollOffset(elementRef).y +  elementRef.nativeElement.getBoundingClientRect().top;
+            // : this.getElementAbsoluteTop(elementRef); // Returns incorrect values if body elem doesnt have scroll and some custom child elem of body has scrollbar
         if (
             firstScrollableParent !== this.DOMService.getNativeDocument().body
         ) {
             if (firstScrollableParent.scrollTo) {
-                firstScrollableParent.scrollTo(0, top - 150);
+                firstScrollableParent.scrollTo(0, top - fixedHeaderHeight);
             } else {
                 // IE 11 - Edge browsers
-                firstScrollableParent.scrollTop = top - 150;
+                firstScrollableParent.scrollTop = top - fixedHeaderHeight;
             }
         } else {
-            this.DOMService.getNativeWindow().scrollTo(0, top - 150);
+            this.DOMService.getNativeWindow().scrollTo(0, top - fixedHeaderHeight);
         }
     }
 
@@ -212,6 +234,20 @@ export class DocumentService implements IDocumentService {
             documentRef.body.clientHeight,
             documentRef.documentElement.clientHeight
         );
+    }
+
+    private firstScrollableParentScrollOffset(elementRef?: ElementRef) {
+        if(elementRef) {
+            const firstScrollableParent = this.getFirstScrollableParent(
+                elementRef.nativeElement
+            );
+            if(firstScrollableParent) {
+                return {
+                    x: firstScrollableParent.scrollLeft,
+                    y: firstScrollableParent.scrollTop
+                }
+            }
+        }
     }
 
     private getScrollOffsets() {
