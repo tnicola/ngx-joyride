@@ -1,0 +1,60 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #fafafa;
+    .content-container {
+        display: flex;
+        flex: 1 1 auto;
+        min-height: 1px;
+        .content-area {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            .header {
+                height: 50px;
+                z-index: 100;
+                position: fixed;
+                width: 100%;
+                background-color: #314351;
+                color: #fff;
+                text-align: center;
+                flex: 0 0 2.5rem;
+            }
+            .section-container {
+                display: block;
+                margin: 0 auto 60px;
+                max-width: 767px;
+                padding-left: 25px;
+                position: relative;
+                top: 60px;
+                min-height: 90%;
+                .sections {
+                    display: flex;
+                    .section1 {
+                        flex: 0 0 30%;
+                        height: 500px;
+                        background-color: #faebd7;
+                        z-index: 101; // Uncomment this to undestand how it hides behind fixed elements
+                    }
+                    .section2 {
+                        flex: 0 0 70%;
+                        height: 500px;
+                        background-color: #f0f8ff;
+                    }
+                }
+            }
+            .footer {
+                background-color: #314351;
+                color: #fff;
+                text-align: center;
+                position: relative;
+                height: 100px;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                margin-top: 100px;
+            }
+        }
+    }
+}

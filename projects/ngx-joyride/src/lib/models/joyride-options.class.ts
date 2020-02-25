@@ -10,6 +10,7 @@ export class JoyrideOptions {
     showPrevButton?: boolean;
     customTexts?: CustomTexts;
     logsEnabled?: boolean;
+    fixedHeader?: string;
 }
 
 export class ICustomTexts {
