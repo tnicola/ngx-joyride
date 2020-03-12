@@ -51,10 +51,10 @@ describe('JoyrideOptionsService', () => {
 
             expect(optionsService.areLogsEnabled()).toBe(false);
         });
-        it('should set logsEnabled to true if none is passed by parameter', () => {
+        it('should set logsEnabled to false if none is passed by parameter', () => {
             optionsService.setOptions({ steps: [] });
 
-            expect(optionsService.areLogsEnabled()).toBe(true);
+            expect(optionsService.areLogsEnabled()).toBe(false);
         });
         it('should set the showCounter to false if false is passed by parameter', () => {
             optionsService.setOptions({ steps: [], showCounter: false });
