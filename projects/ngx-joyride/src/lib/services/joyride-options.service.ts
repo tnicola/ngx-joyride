@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { JoyrideOptions, CustomTexts, ICustomTexts } from '../models/joyride-options.class';
+import {
+    JoyrideOptions,
+    CustomTexts,
+    ICustomTexts
+} from '../models/joyride-options.class';
 import { of, Observable } from 'rxjs';
 
 export const DEFAULT_THEME_COLOR = '#3b5560';
@@ -37,7 +41,7 @@ export interface IJoyrideOptionsService {
 export class JoyrideOptionsService implements IJoyrideOptionsService {
     private themeColor: string = DEFAULT_THEME_COLOR;
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
-    private logsEnabled: boolean = true;
+    private logsEnabled: boolean = false;
     private showCounter: boolean = true;
     private showPrevButton: boolean = true;
     private stepsOrder: string[] = [];
@@ -47,14 +51,32 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
 
     setOptions(options: JoyrideOptions) {
         this.stepsOrder = options.steps;
-        this.stepDefaultPosition = options.stepDefaultPosition ? options.stepDefaultPosition : this.stepDefaultPosition;
-        this.logsEnabled = typeof options.logsEnabled !== 'undefined' ? options.logsEnabled : this.logsEnabled;
-        this.showCounter = typeof options.showCounter !== 'undefined' ? options.showCounter : this.showCounter;
-        this.showPrevButton = typeof options.showPrevButton !== 'undefined' ? options.showPrevButton : this.showPrevButton;
-        this.themeColor = options.themeColor ? options.themeColor : this.themeColor;
+        this.stepDefaultPosition = options.stepDefaultPosition
+            ? options.stepDefaultPosition
+            : this.stepDefaultPosition;
+        this.logsEnabled =
+            typeof options.logsEnabled !== 'undefined'
+                ? options.logsEnabled
+                : this.logsEnabled;
+        this.showCounter =
+            typeof options.showCounter !== 'undefined'
+                ? options.showCounter
+                : this.showCounter;
+        this.showPrevButton =
+            typeof options.showPrevButton !== 'undefined'
+                ? options.showPrevButton
+                : this.showPrevButton;
+        this.themeColor = options.themeColor
+            ? options.themeColor
+            : this.themeColor;
         this.firstStep = options.startWith;
-        this.waitingTime = typeof options.waitingTime !== 'undefined' ? options.waitingTime : DEFAULT_TIMEOUT_BETWEEN_STEPS;
-        typeof options.customTexts !== 'undefined' ? this.setCustomText(options.customTexts) : this.setCustomText(DEFAULT_TEXTS);
+        this.waitingTime =
+            typeof options.waitingTime !== 'undefined'
+                ? options.waitingTime
+                : DEFAULT_TIMEOUT_BETWEEN_STEPS;
+        typeof options.customTexts !== 'undefined'
+            ? this.setCustomText(options.customTexts)
+            : this.setCustomText(DEFAULT_TEXTS);
     }
 
     getBackdropColor() {
@@ -122,6 +144,11 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
         });
 
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
+        return result
+            ? `${parseInt(result[1], 16)}, ${parseInt(
+                  result[2],
+                  16
+              )}, ${parseInt(result[3], 16)}`
+            : null;
     }
 }
