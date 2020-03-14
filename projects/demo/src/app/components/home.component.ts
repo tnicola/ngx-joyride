@@ -1,9 +1,4 @@
-import {
-    Component,
-    OnInit,
-    AfterViewInit,
-    ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { JoyrideService } from 'ngx-joyride';
 
 @Component({
@@ -14,11 +9,11 @@ import { JoyrideService } from 'ngx-joyride';
 export class HomeComponent implements AfterViewInit, OnInit {
     stepVisible = false;
 
-    topics = <any>[];
+    topics = [] as any;
 
-    title: string = 'ngx-joyride library demo';
+    title = 'ngx-joyride library demo';
 
-    dynamicTitle: string = 'Title';
+    dynamicTitle = 'Title';
     constructor(private readonly joyrideService: JoyrideService) {}
 
     ngAfterViewInit(): void {}
@@ -51,7 +46,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     }
 
     startTour() {
-        let options = {
+        const options = {
             steps: [
                 'firstStep@app',
                 'step11@app',
@@ -70,8 +65,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
             stepDefaultPosition: 'top',
             themeColor: '#345632',
             showPrevButton: true,
-            logsEnabled: true
-            //customTexts: { prev: of('<<').pipe(delay(2000)), next: '>>'}
+            logsEnabled: false
+            // customTexts: { prev: of('<<').pipe(delay(2000)), next: '>>'}
         };
         this.joyrideService.startTour(options).subscribe(
             step => {

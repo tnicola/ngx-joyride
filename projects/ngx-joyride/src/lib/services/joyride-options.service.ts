@@ -41,9 +41,9 @@ export interface IJoyrideOptionsService {
 export class JoyrideOptionsService implements IJoyrideOptionsService {
     private themeColor: string = DEFAULT_THEME_COLOR;
     private stepDefaultPosition: string = STEP_DEFAULT_POSITION;
-    private logsEnabled: boolean = false;
-    private showCounter: boolean = true;
-    private showPrevButton: boolean = true;
+    private logsEnabled = false;
+    private showCounter = true;
+    private showPrevButton = true;
     private stepsOrder: string[] = [];
     private firstStep: string;
     private waitingTime: number;
@@ -120,17 +120,20 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
     }
 
     private setCustomText(texts: CustomTexts) {
-        let prev, next, done, close: string | Observable<string>;
+        let prev: string | Observable<string>;
+        let next: string | Observable<string>;
+        let done;
+        let close;
         prev = texts.prev ? texts.prev : DEFAULT_TEXTS.prev;
         next = texts.next ? texts.next : DEFAULT_TEXTS.next;
         done = texts.done ? texts.done : DEFAULT_TEXTS.done;
         close = texts.close ? texts.close : DEFAULT_TEXTS.close;
-        this.customTexts = <ObservableCustomTexts>{
+        this.customTexts = {
             prev: this.toObservable(prev),
             next: this.toObservable(next),
             done: this.toObservable(done),
             close: this.toObservable(close)
-        };
+        } as ObservableCustomTexts;
     }
 
     private toObservable(value: string | Observable<string>) {
@@ -138,12 +141,12 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
     }
 
     private hexToRgb(hex: any): string {
-        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
         hex = hex.replace(shorthandRegex, (m: any, r: any, g: any, b: any) => {
             return r + r + g + g + b + b;
         });
 
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result
             ? `${parseInt(result[1], 16)}, ${parseInt(
                   result[2],
