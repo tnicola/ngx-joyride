@@ -51,6 +51,6 @@
         "tsickle": "^0.37.0",
         "tslint": "~5.15.0",
         "typescript": "~3.5.3",
-        "wait-on": "^3.3.0"
+        "wait-on": "^4.0.1"
     }
 }
