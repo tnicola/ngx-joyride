@@ -29,9 +29,10 @@ export class DocumentService implements IDocumentService {
 
     constructor(private readonly DOMService: DomRefService) {
         this.setDocumentHeight();
-        if (!document.elementsFromPoint) {
+        var doc = DOMService.getNativeDocument();
+        if (doc && !doc.elementsFromPoint) {
             // IE 11 - Edge browsers
-            document.elementsFromPoint = this.elementsFromPoint.bind(this);
+            doc.elementsFromPoint = this.elementsFromPoint.bind(this);
         }
     }
 
@@ -226,13 +227,13 @@ export class DocumentService implements IDocumentService {
         if (docReference.compatMode == 'CSS1Compat')
             return {
                 x: docReference.documentElement.scrollLeft,
-                y: docReference.documentElement.scrollTop
+                y: docReference.documentElement.scrollTop,
             };
 
         // For browsers in Quirks mode
         return {
             x: docReference.body.scrollLeft,
-            y: docReference.body.scrollTop
+            y: docReference.body.scrollTop,
         };
     }
 
@@ -252,7 +253,7 @@ export class DocumentService implements IDocumentService {
                 parent = false;
             }
         } while (parent);
-        parents.forEach(function(parent) {
+        parents.forEach(function (parent) {
             return (parent.style.pointerEvents = 'all');
         });
         return parents;
