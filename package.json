@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4500",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "test:unit": "ng test ngx-joyride --browsers=ChromeHeadless --watch=false",
     "test:cypress": "node_modules/.bin/run-p -r \"start\" \"cy:run\" ",

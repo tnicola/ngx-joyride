@@ -8,7 +8,7 @@
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
 
-For Angular 2+ (2, 4, 5, 6, 7)
+For Angular 2+ (2 - 9)
 
 <p align="center">
 	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyride-tour.gif" />
