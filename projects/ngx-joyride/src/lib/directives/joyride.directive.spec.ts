@@ -215,6 +215,7 @@ describe('JorideDirective', () => {
             });
 
             it('should throw a JoyrideError if the step name is not defined', () => {
+                joyDirective.name = undefined;
                 expect(() => joyDirective.ngAfterViewInit()).toThrowError(
                     "All the steps should have the 'joyrideStep' property set with a custom name."
                 );
@@ -313,6 +314,7 @@ describe('JorideDirective', () => {
             const changes = <SimpleChanges>{ title: <SimpleChange>{ previousValue: 'old', currentValue: 'new' } };
 
             joyDirective.title = 'NewTitle';
+            joyDirective.text = undefined;
             joyDirective.ngOnChanges(changes);
 
             expect(emitTitleSpy).toHaveBeenCalledWith('NewTitle');
@@ -325,6 +327,7 @@ describe('JorideDirective', () => {
             const changes = <SimpleChanges>{ text: <SimpleChange>{ previousValue: 'old', currentValue: 'new' } };
 
             joyDirective.text = 'NewText';
+            joyDirective.title = undefined;
             joyDirective.ngOnChanges(changes);
 
             expect(emitTextSpy).toHaveBeenCalledWith('NewText');
