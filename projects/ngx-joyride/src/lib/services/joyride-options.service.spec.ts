@@ -156,18 +156,10 @@ describe('JoyrideOptionsService', () => {
 
             const customTexts = optionsService.getCustomTexts();
 
-            expect(customTexts.prev).toEqual(
-                jasmine.objectContaining<any>({ value: 'prev' })
-            );
-            expect(customTexts.next).toEqual(
-                jasmine.objectContaining<any>({ value: 'next' })
-            );
-            expect(customTexts.done).toEqual(
-                jasmine.objectContaining<any>({ value: 'done' })
-            );
-            expect(customTexts.close).toEqual(
-                jasmine.objectContaining<any>({ value: null })
-            );
+            customTexts.prev.subscribe(prev => expect(prev).toEqual('prev'));
+            customTexts.next.subscribe(next => expect(next).toEqual('next'));
+            customTexts.done.subscribe(done => expect(done).toEqual('done'));
+            customTexts.close.subscribe(close => expect(close).toBeNull());
         });
 
         it('should return the custom texts when they have been set', () => {
@@ -177,18 +169,10 @@ describe('JoyrideOptionsService', () => {
 
             const customTexts = optionsService.getCustomTexts();
 
-            expect(customTexts.prev).toEqual(
-                jasmine.objectContaining<any>({ value: 'myPrev' })
-            );
-            expect(customTexts.next).toEqual(
-                jasmine.objectContaining<any>({ value: 'next' })
-            );
-            expect(customTexts.done).toEqual(
-                jasmine.objectContaining<any>({ value: 'myDone' })
-            );
-            expect(customTexts.close).toEqual(
-                jasmine.objectContaining<any>({ value: null })
-            );
+            customTexts.prev.subscribe(prev => expect(prev).toEqual('myPrev'));
+            customTexts.next.subscribe(next => expect(next).toEqual('next'));
+            customTexts.done.subscribe(done => expect(done).toEqual('myDone'));
+            customTexts.close.subscribe(close => expect(close).toBeNull());
         });
     });
 });

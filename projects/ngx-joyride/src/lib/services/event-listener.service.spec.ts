@@ -28,8 +28,7 @@ describe('EventListenerService', () => {
             });
 
             eventListenerService.startListeningScrollEvents();
-            let resEvt = window.document.createEvent('UIEvents');
-            resEvt.initUIEvent('scroll', true, false, window, 0);
+            let resEvt = new UIEvent("scroll", {bubbles: true, cancelable: false, view: window, detail: 0});
             document.body.dispatchEvent(resEvt);
 
             expect(scrollEvent).toEqual({ scrollX: 0, scrollY: 0 });
@@ -41,8 +40,7 @@ describe('EventListenerService', () => {
                 scrollEvent = scrollEvt;
             });
 
-            let resEvt = window.document.createEvent('UIEvents');
-            resEvt.initUIEvent('scroll', true, false, window, 0);
+            let resEvt = new UIEvent("scroll", {bubbles: true, cancelable: false, view: window, detail: 0});
             document.body.dispatchEvent(resEvt);
 
             expect(scrollEvent).toEqual(null);
@@ -57,8 +55,7 @@ describe('EventListenerService', () => {
 
             eventListenerService.startListeningResizeEvents();
 
-            let resEvt = window.document.createEvent('UIEvents');
-            resEvt.initUIEvent('resize', true, false, window, 0);
+            let resEvt = new UIEvent("resize", {bubbles: true, cancelable: false, view: window, detail: 0});
             window.dispatchEvent(resEvt);
 
             expect(resizeEvent).toEqual(resEvt);
@@ -70,8 +67,7 @@ describe('EventListenerService', () => {
                 resizeEvent = resizeEvt;
             });
 
-            let resEvt = window.document.createEvent('UIEvents');
-            resEvt.initUIEvent('resize', true, false, window, 0);
+            let resEvt = new UIEvent("resize", {bubbles: true, cancelable: false, view: window, detail: 0});
             window.dispatchEvent(resEvt);
 
             expect(resizeEvent).toEqual(null);
@@ -86,8 +82,7 @@ describe('EventListenerService', () => {
             });
 
             eventListenerService.startListeningScrollEvents();
-            let resEvt = window.document.createEvent('UIEvents');
-            resEvt.initUIEvent('scroll', true, false, window, 0);
+            let resEvt = new UIEvent("scroll", {bubbles: true, cancelable: false, view: window, detail: 0});
 
             document.body.dispatchEvent(resEvt);
             document.body.dispatchEvent(resEvt);
@@ -108,9 +103,7 @@ describe('EventListenerService', () => {
             });
 
             eventListenerService.startListeningResizeEvents();
-
-            let resEvt = window.document.createEvent('UIEvents');
-            resEvt.initUIEvent('resize', true, false, window, 0);
+            let resEvt = new UIEvent("resize", {bubbles: true, cancelable: false, view: window, detail: 0});
 
             window.dispatchEvent(resEvt);
             window.dispatchEvent(resEvt);
