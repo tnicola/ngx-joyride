@@ -18,7 +18,7 @@ import { LoggerService } from './services/logger.service';
 import { RouterModule } from "@angular/router";
 import { TemplatesService } from "./services/templates.service";
 
-export const routerModuleForChild: ModuleWithProviders = RouterModule.forChild([]);
+export const routerModuleForChild: ModuleWithProviders<any> = RouterModule.forChild([]);
 
 @NgModule({
     imports: [CommonModule, routerModuleForChild],
