@@ -29,9 +29,10 @@ export class DocumentService implements IDocumentService {
 
     constructor(private readonly DOMService: DomRefService) {
         this.setDocumentHeight();
-        if (!document.elementsFromPoint) {
+        var doc = DOMService.getNativeDocument();
+        if (doc && !doc.elementsFromPoint) {
             // IE 11 - Edge browsers
-            document.elementsFromPoint = this.elementsFromPoint.bind(this);
+            doc.elementsFromPoint = this.elementsFromPoint.bind(this);
         }
     }
 
