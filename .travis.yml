@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-    - '12'
+    - '12.3.1'
 
 sudo: required
 addons:
@@ -12,11 +12,12 @@ env:
         - CODECOV_TOKEN="38702dcb-0848-4a8a-a1d3-f97f0197a193"
 
 before_install:
+    - npm cache clean --force
     - npm i -g npm@6.9.0
-    - npm install codecov -g
+    - npm i -g codecov
 
 install:
-    - npm install
+    - npm ci
 
 script:
     - npm run build
