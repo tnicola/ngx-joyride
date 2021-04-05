@@ -18,7 +18,9 @@ import { LoggerService } from './services/logger.service';
 import { RouterModule } from '@angular/router';
 import { TemplatesService } from './services/templates.service';
 
-export const routerModuleForChild: ModuleWithProviders<any> = RouterModule.forChild([]);
+export const routerModuleForChild: ModuleWithProviders<any> = RouterModule.forChild(
+    []
+);
 
 @NgModule({
     imports: [CommonModule, routerModuleForChild],
@@ -27,12 +29,9 @@ export const routerModuleForChild: ModuleWithProviders<any> = RouterModule.forCh
         JoyrideStepComponent,
         JoyrideArrowComponent,
         JoyrideButtonComponent,
-        JoyrideCloseButtonComponent
+        JoyrideCloseButtonComponent,
     ],
-    entryComponents: [JoyrideStepComponent],
-    exports: [
-        JoyrideDirective
-    ]
+    exports: [JoyrideDirective],
 })
 export class JoyrideModule {
     static forRoot(): ModuleWithProviders<JoyrideModule> {
@@ -49,14 +48,14 @@ export class JoyrideModule {
                 StepDrawerService,
                 DomRefService,
                 LoggerService,
-                TemplatesService
-            ]
+                TemplatesService,
+            ],
         };
     }
     static forChild(): ModuleWithProviders<JoyrideModule> {
         return {
             ngModule: JoyrideModule,
-            providers: []
+            providers: [],
         };
     }
 }
