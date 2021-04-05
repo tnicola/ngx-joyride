@@ -8,7 +8,7 @@
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
 
-For Angular 2+ (2 - 9)
+For Angular 2+ (2 - 11)
 
 <p align="center">
 	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyride-tour.gif" />
@@ -42,7 +42,7 @@ or
     declarations: [AppComponent],
     imports: [JoyrideModule.forRoot(), RouterModule.forRoot([]), BrowserModule],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -52,7 +52,7 @@ export class AppModule {}
 ```typescript
 @Component({
     selector: 'app-component',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
 })
 export class AppComponent {
     constructor(private readonly joyrideService: JoyrideService) {}
@@ -143,9 +143,7 @@ If you'd like to pass params to template, use the `stepContentParams` property. 
 >
     I'm the target element.
 </div>
-<ng-template #customContent let-person="name">
-    Hello {{person}}
-</ng-template>
+<ng-template #customContent let-person="name"> Hello {{person}} </ng-template>
 ```
 
 ### Use custom buttons and/or counter
@@ -204,7 +202,7 @@ this.joyrideService.startTour({
     steps: ['step1', 'my-step@home', 'lastStep@home'],
     showPrevButton: false,
     stepDefaultPosition: 'top',
-    themeColor: '#212f23'
+    themeColor: '#212f23',
 });
 ```
 
@@ -225,7 +223,7 @@ this.joyrideService.startTour({
             Hello!
         </div>
         <div joyrideStep="joy2" title="title2" (done)="onDone()">Hello!</div>
-    `
+    `,
 })
 export class AppComponent {
     constructor(private readonly joyrideService: JoyrideService) {}
@@ -265,17 +263,17 @@ export class AppComponent {
             Hello!
         </div>
         <div joyrideStep="joy2" title="title2" (done)="onDone()">Hello!</div>
-    `
+    `,
 })
 export class AppComponent {
     constructor(private readonly joyrideService: JoyrideService) {}
 
     onClick() {
         this.joyrideService.startTour({ steps: ['joy1', 'joy2'] }).subscribe(
-            step => {
+            (step) => {
                 /*Do something*/
             },
-            error => {
+            (error) => {
                 /*handle error*/
             },
             () => {
