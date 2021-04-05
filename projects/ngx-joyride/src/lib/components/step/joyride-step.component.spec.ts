@@ -6,7 +6,7 @@ import {
     ViewContainerRef,
     Type
 } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
     JoyrideStepComponent,
@@ -85,7 +85,7 @@ describe('JoyrideStepComponent', () => {
     let STEP_CONTAINER: ElementRef;
     let TEMPLATE: TemplateRef<any>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 HostComponent,

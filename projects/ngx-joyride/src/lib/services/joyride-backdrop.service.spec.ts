@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { JoyrideBackdropService } from './joyride-backdrop.service';
 import { DocumentServiceFake } from '../test/fake/document-fake.service';
 import { DocumentService } from './document.service';
@@ -15,7 +15,7 @@ describe('JoyrideBackdropService', () => {
     let STEP: JoyrideStep;
     let ELEM_REF: FakeElementRef;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             providers: [
                 JoyrideBackdropService,

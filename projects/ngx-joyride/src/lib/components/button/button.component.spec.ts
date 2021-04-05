@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { JoyrideButtonComponent } from './button.component';
 
@@ -19,7 +19,7 @@ describe('ButtonComponent', () => {
     let button: DebugElement;
     let hostComponent: HostComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [HostComponent, JoyrideButtonComponent]
         }).compileComponents();
@@ -63,7 +63,7 @@ describe('ButtonComponent', () => {
         expect(component.hover).toBe(false);
     });
 
-    it('should emit when onClick is called', async(() => {
+    it('should emit when onClick is called', waitForAsync(() => {
         let called = false;
         component.clicked.subscribe(() => {
             called = true;

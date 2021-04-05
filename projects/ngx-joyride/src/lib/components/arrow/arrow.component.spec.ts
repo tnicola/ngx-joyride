@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed, async, ComponentFixture, } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { JoyrideArrowComponent } from './arrow.component';
 import { By } from '@angular/platform-browser';
 
@@ -18,7 +18,7 @@ describe("ArrowComponent", () => {
     let component: JoyrideArrowComponent;
     let hostComponent: HostComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [HostComponent, JoyrideArrowComponent]
         }).compileComponents();
