@@ -9,7 +9,8 @@ import {
     ViewChild,
     Renderer2,
     Injector,
-    TemplateRef
+    TemplateRef,
+    HostListener
 } from '@angular/core';
 import { JoyrideStep } from '../../models/joyride-step.class';
 import {
@@ -35,6 +36,11 @@ export const DEFAULT_DISTANCE_FROM_MARGIN_TOP = 2;
 export const DEFAULT_DISTANCE_FROM_MARGIN_LEFT = 2;
 const DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM = 5;
 const DEFAULT_DISTANCE_FROM_MARGIN_RIGHT = 5;
+export enum KEY_CODE {
+  RIGHT_ARROW = 39,
+  LEFT_ARROW = 37,
+  ESCAPE_KEY= 27
+}
 
 @Component({
     selector: 'joyride-step',
@@ -236,6 +242,24 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.customDoneButton = this.templateService.getDoneButton();
         this.customCounter = this.templateService.getCounter();
     }
+
+
+    @HostListener('window:keyup', ['$event'])
+    keyEvent(event: KeyboardEvent) {
+    console.log(event);
+
+    if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
+      if (this.isLastStep()) {
+        this.close();
+      } else {
+        this.next();
+      }
+    } else if (event.keyCode === KEY_CODE.LEFT_ARROW) {
+      this.prev();
+    } else if (event.keyCode === KEY_CODE.ESCAPE_KEY) {
+      this.close();
+    }
+  }
 
     prev() {
         this.joyrideStepService.prev();
