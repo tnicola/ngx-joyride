@@ -1,5 +1,6 @@
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { DomRefService } from './dom.service';
+import { isPlatformBrowser } from "@angular/common";
 
 export interface IDocumentService {
     getElementFixedTop(elementRef: ElementRef): number;
@@ -27,7 +28,10 @@ export interface IDocumentService {
 export class DocumentService implements IDocumentService {
     private documentHeight: number;
 
-    constructor(private readonly DOMService: DomRefService) {
+    constructor(private readonly DOMService: DomRefService, @Inject(PLATFORM_ID) platformId: Object) {
+        if (!isPlatformBrowser(platformId)) {
+            return;
+        }
         this.setDocumentHeight();
         var doc = DOMService.getNativeDocument();
         if (doc && !doc.elementsFromPoint) {
