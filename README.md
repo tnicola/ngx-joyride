@@ -300,7 +300,7 @@ What you should do is adding your steps in this way:
 
 ```typescript
 ...
-    this.joyrideService.startTour({steps: ["navbar", "user-avatar@user/details", "info@about"]);
+    this.joyrideService.startTour({steps: ["navbar", "user-avatar@user/details", "info@about"]});
 ...
 ```
 
