@@ -4,7 +4,7 @@
     "description": "An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery. From now on you can easily guide your users through your site showing them all the sections and features.",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/tnicola/ngx-joyride.git"
+        "url": "git+https://github.com/CodeMagic/ngx-joyride.git"
     },
     "keywords": [
         "tour",
@@ -14,12 +14,12 @@
         "onboarding",
         "directive"
     ],
-    "author": "Nicola Tommasi",
+    "author": "Jonathan Rowan",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/tnicola/ngx-joyride/issues"
+        "url": "https://github.com/CodeMagic/ngx-joyride/issues"
     },
-    "homepage": "https://github.com/tnicola/ngx-joyride#readme",
+    "homepage": "https://github.com/CodeMagic/ngx-joyride#readme",
     "dependencies": {
         "tslib": "^2.0.0"
     },
