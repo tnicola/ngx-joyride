@@ -1,6 +1,11 @@
 {
-  "name": "workspace",
+  "name": "ngx-joyride-codemagic",
   "version": "0.0.0",
+  "files": [
+      "dist/ngx-joyride/*"
+  ],
+  "repository": "https://github.com/CodeMagic/ngx-joyride.git",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4500",
@@ -9,7 +14,8 @@
     "test:unit": "ng test ngx-joyride --browsers=ChromeHeadless --watch=false",
     "test:cypress": "node_modules/.bin/run-p -r \"start\" \"cy:run\" ",
     "cy:run": "./node_modules/.bin/wait-on http-get://localhost:4500/ && cypress run",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prepare": "npm run build"
   },
   "private": true,
   "dependencies": {
