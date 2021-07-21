@@ -15,7 +15,8 @@
     "test:cypress": "node_modules/.bin/run-p -r \"start\" \"cy:run\" ",
     "cy:run": "./node_modules/.bin/wait-on http-get://localhost:4500/ && cypress run",
     "lint": "ng lint",
-    "prepare": "npm run build && shx rm -r ./node_modules"
+    "prepare": "npm run build",
+    "postprepare": "shx rm -r ./node_modules"
   },
   "private": true,
   "dependencies": {
