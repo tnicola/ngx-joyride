@@ -2,7 +2,7 @@
   "name": "ngx-joyride-codemagic",
   "version": "0.0.0",
   "files": [
-      "dist/ngx-joyride/*"
+    "dist/ngx-joyride/*"
   ],
   "repository": "https://github.com/CodeMagic/ngx-joyride.git",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "test:cypress": "node_modules/.bin/run-p -r \"start\" \"cy:run\" ",
     "cy:run": "./node_modules/.bin/wait-on http-get://localhost:4500/ && cypress run",
     "lint": "ng lint",
-    "prepare": "npm run build"
+    "prepare": "npm run build && shx rm -r ./node_modules"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +53,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "ng-packagr": "^11.2.4",
     "npm-run-all": "^4.1.5",
+    "shx": "^0.3.3",
     "ts-node": "9.1.1",
     "tslint": "~6.1.0",
     "typescript": "~4.1.5",
