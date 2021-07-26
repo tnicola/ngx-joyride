@@ -490,4 +490,26 @@ describe('JoyrideStepService', () => {
             expect(backdropService.remove).toHaveBeenCalledTimes(1);
         }));
     });
+
+    describe('when getWaitingTimeAfterNavigation returns a timeout different from the default one', () => {
+        beforeEach(() => {
+            stepsContainerService.getStepRoute.and.returnValue('route1');
+            optionsService.getWaitingTimeAfterNavigation.and.returnValue(200);
+        });
+
+        it('should get the step after the timeout milliseconds', fakeAsync(() => {
+            joyrideStepService.startTour();
+            tick(200);
+
+            expect(stepsContainerService.get).toHaveBeenCalledTimes(1);
+        }));
+
+        it('should not get the step before the timeout milliseconds', fakeAsync(() => {
+            joyrideStepService.startTour();
+            tick(199);
+
+            expect(stepsContainerService.get).not.toHaveBeenCalledTimes(1);
+            tick(1);
+        }));
+    });
 });

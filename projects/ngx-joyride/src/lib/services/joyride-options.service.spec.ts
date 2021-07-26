@@ -2,7 +2,7 @@ import {
     JoyrideOptionsService,
     STEP_DEFAULT_POSITION,
     DEFAULT_THEME_COLOR,
-    DEFAULT_TIMEOUT_BETWEEN_STEPS
+    DEFAULT_TIMEOUT_BETWEEN_STEPS, DEFAULT_TIMEOUT_AFTER_NAVIGATION
 } from './joyride-options.service';
 import { TestBed } from '@angular/core/testing';
 import { JoyrideOptions } from '../models/joyride-options.class';
@@ -145,6 +145,25 @@ describe('JoyrideOptionsService', () => {
 
             expect(optionsService.getWaitingTime()).toBe(
                 DEFAULT_TIMEOUT_BETWEEN_STEPS
+            );
+        });
+    });
+
+    describe('getWaitingTimeAfterNavigation()', () => {
+        it('should return waiting timeout if it has been set into the options', () => {
+            const stepOption = new JoyrideOptions();
+            stepOption.waitingTimeAfterNavigation = 124;
+            optionsService.setOptions(stepOption);
+
+            expect(optionsService.getWaitingTimeAfterNavigation()).toBe(124);
+        });
+
+        it('should return the default waiting time no parameter has been set', () => {
+            const stepOption = new JoyrideOptions();
+            optionsService.setOptions(stepOption);
+
+            expect(optionsService.getWaitingTimeAfterNavigation()).toBe(
+                DEFAULT_TIMEOUT_AFTER_NAVIGATION
             );
         });
     });
