@@ -4,6 +4,7 @@ export class JoyrideOptions {
     steps: string[];
     startWith?: string;
     waitingTime?: number;
+    waitingTimeAfterNavigation?: number;
     stepDefaultPosition?: string;
     themeColor?: string;
     showCounter?: boolean;

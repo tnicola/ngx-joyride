@@ -9,6 +9,7 @@ import { of, Observable } from 'rxjs';
 export const DEFAULT_THEME_COLOR = '#3b5560';
 export const STEP_DEFAULT_POSITION = 'bottom';
 export const DEFAULT_TIMEOUT_BETWEEN_STEPS = 1;
+export const DEFAULT_TIMEOUT_AFTER_NAVIGATION = 0;
 
 export class ObservableCustomTexts implements ICustomTexts {
     prev: Observable<string>;
@@ -31,6 +32,7 @@ export interface IJoyrideOptionsService {
     getStepsOrder(): string[];
     getFirstStep(): string;
     getWaitingTime(): number;
+    getWaitingTimeAfterNavigation(): number;
     areLogsEnabled(): boolean;
     isCounterVisible(): boolean;
     isPrevButtonVisible(): boolean;
@@ -47,6 +49,7 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
     private stepsOrder: string[] = [];
     private firstStep: string;
     private waitingTime: number;
+    private waitingTimeAfterNavigation: number;
     private customTexts: ObservableCustomTexts;
 
     setOptions(options: JoyrideOptions) {
@@ -74,6 +77,10 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
             typeof options.waitingTime !== 'undefined'
                 ? options.waitingTime
                 : DEFAULT_TIMEOUT_BETWEEN_STEPS;
+        this.waitingTimeAfterNavigation =
+            typeof options.waitingTimeAfterNavigation !== 'undefined'
+                ? options.waitingTimeAfterNavigation
+                : DEFAULT_TIMEOUT_AFTER_NAVIGATION;
         typeof options.customTexts !== 'undefined'
             ? this.setCustomText(options.customTexts)
             : this.setCustomText(DEFAULT_TEXTS);
@@ -101,6 +108,10 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
 
     getWaitingTime() {
         return this.waitingTime;
+    }
+
+    getWaitingTimeAfterNavigation() {
+        return this.waitingTimeAfterNavigation;
     }
 
     areLogsEnabled() {
@@ -149,9 +160,9 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result
             ? `${parseInt(result[1], 16)}, ${parseInt(
-                  result[2],
-                  16
-              )}, ${parseInt(result[3], 16)}`
+                result[2],
+                16
+            )}, ${parseInt(result[3], 16)}`
             : null;
     }
 }
