@@ -144,12 +144,12 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.currentStep = this.stepsContainerService.get(actionType);
 
         if (this.currentStep == null) throw new JoyrideStepDoesNotExist('');
+        this.notifyStepClicked(actionType);
         // Scroll the element to get it visible if it's in a scrollable element
         this.scrollIfElementBeyondOtherElements();
         this.backDropService.draw(this.currentStep);
         this.drawStep(this.currentStep);
         this.scrollIfStepAndTargetAreNotVisible();
-        this.notifyStepClicked(actionType);
     }
 
     private notifyStepClicked(actionType: StepActionType) {
