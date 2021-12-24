@@ -29,16 +29,6 @@
                         "tsConfig": "projects/ngx-joyride/tsconfig.spec.json",
                         "karmaConfig": "projects/ngx-joyride/karma.conf.js"
                     }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/ngx-joyride/tsconfig.lib.json",
-                            "projects/ngx-joyride/tsconfig.spec.json"
-                        ],
-                        "exclude": ["**/node_modules/**"]
-                    }
                 }
             }
         },
@@ -132,17 +122,6 @@
                         ],
                         "styles": ["projects/demo/src/styles.css"],
                         "scripts": []
-                    }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/demo/tsconfig.app.json",
-                            "projects/demo/tsconfig.spec.json",
-                            "projects/demo/e2e/tsconfig.json"
-                        ],
-                        "exclude": ["**/node_modules/**"]
                     }
                 }
             }
