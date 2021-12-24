@@ -32,6 +32,6 @@ workflows:
     jobs:
       - pippo
       - node/run:
-          npm-run: test:unit
+          npm-run: test:unit:ci
           requires:
             - pippo  
