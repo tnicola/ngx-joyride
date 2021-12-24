@@ -10,6 +10,9 @@ jobs:
   pippo:
     docker:
       - image: 'cimg/node:13.12-browser'
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - browser-tools/install-browser-tools
 # Invoke jobs via workflows
