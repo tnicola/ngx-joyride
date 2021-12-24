@@ -9,7 +9,7 @@ orbs:
 jobs:
   pippo:
     docker:
-      - image: 'cimg/node:13.12-browser'
+      - image: 'cimg/node:latest'
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
