@@ -1,0 +1,32 @@
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+version: 2.1
+
+# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
+# See: https://circleci.com/docs/2.0/orb-intro/
+orbs:
+  codecov: codecov/codecov@3.2.2
+jobs:
+  ci-pipeline:
+    docker:
+      - image: circleci/node:16-browsers
+        environment:
+          CHROME_BIN: /usr/bin/google-chrome 
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: npm ci
+      - run:
+          name: test
+          command: npm run test:unit:ci
+      - run:
+          name: build
+          command: npm run build
+      - run:
+          name: integration tests
+          command: npm run test:cypress
+      - codecov/upload
+workflows:
+  ci-build:
+    jobs:
+      - ci-pipeline
