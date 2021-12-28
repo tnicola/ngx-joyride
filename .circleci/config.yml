@@ -12,7 +12,7 @@ jobs:
     steps:
       - run:
           name: npm-test
-          command: npm test:unit:ci
+          command: npm run test:unit:ci
 workflows:
   ci-build:
     jobs:
