@@ -12,6 +12,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: npm-install
+          command: npm ci
+      - run:
           name: npm-test
           command: npm run test:unit:ci
 workflows:
