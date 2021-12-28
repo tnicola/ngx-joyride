@@ -1,0 +1,87 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.39
+    - 14.14.41
+    - 15.0.0
+  - dependency-name: "@angular/language-service"
+    versions:
+    - 11.2.10
+    - 11.2.11
+    - 11.2.8
+    - 11.2.9
+  - dependency-name: "@angular-devkit/schematics"
+    versions:
+    - 11.2.10
+    - 11.2.8
+    - 11.2.9
+  - dependency-name: "@angular/cli"
+    versions:
+    - 11.2.10
+    - 11.2.8
+    - 11.2.9
+  - dependency-name: "@angular-devkit/build-angular"
+    versions:
+    - 0.1102.10
+    - 0.1102.8
+    - 0.1102.9
+  - dependency-name: "@angular-devkit/core"
+    versions:
+    - 11.2.10
+    - 11.2.8
+    - 11.2.9
+  - dependency-name: cypress
+    versions:
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.1
+    - 6.8.0
+    - 7.0.0
+    - 7.1.0
+  - dependency-name: ts-node
+    versions:
+    - 9.1.1
+  - dependency-name: protractor
+    versions:
+    - 7.0.0
+  - dependency-name: karma-jasmine-html-reporter
+    versions:
+    - 1.5.4
+  - dependency-name: karma
+    versions:
+    - 6.0.3
+    - 6.0.4
+    - 6.1.0
+    - 6.1.1
+    - 6.1.2
+    - 6.2.0
+    - 6.3.0
+    - 6.3.1
+    - 6.3.2
+  - dependency-name: "@types/jasmine"
+    versions:
+    - 3.6.3
+    - 3.6.4
+    - 3.6.6
+    - 3.6.7
+    - 3.6.8
+  - dependency-name: handlebars
+    versions:
+    - 4.7.6
+    - 4.7.7
+  - dependency-name: wait-on
+    versions:
+    - 5.2.1
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
