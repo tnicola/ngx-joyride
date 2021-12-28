@@ -6,7 +6,7 @@ version: 2.1
 jobs:
   pippo:
     docker:
-      - image: circleci/node:latest-browsers
+      - image: circleci/node:16-browsers
         environment:
           CHROME_BIN: /usr/bin/google-chrome 
     steps:
