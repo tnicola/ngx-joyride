@@ -7,7 +7,7 @@
     "build": "ng build --prod",
     "test": "ng test",
     "test:unit": "ng test ngx-joyride --browsers=ChromeHeadless --watch=false",
-    "test:unit:ci": "CHROME_BIN=/usr/local/bin/google-chrome ng test ngx-joyride --browsers=ChromeHeadless --watch=false",
+    "test:unit:ci": "CHROME_BIN=/usr/bin/google-chrome ng test ngx-joyride --browsers=ChromeHeadless --watch=false",
     "test:cypress": "node_modules/.bin/run-p -r \"start\" \"cy:run\" ",
     "cy:run": "./node_modules/.bin/wait-on http-get://localhost:4500/ && cypress run",
     "lint": "ng lint"
