@@ -12,11 +12,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: npm-install
+          name: install
           command: npm ci
       - run:
-          name: npm-test
+          name: test
           command: npm run test:unit:ci
+      - run:
+          name: build
+          command: npm run build
+      - run:
+          name: integration tests
+          command: npm run test:cypress
 workflows:
   ci-build:
     jobs:
