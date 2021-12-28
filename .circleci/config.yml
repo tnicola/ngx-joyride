@@ -10,6 +10,7 @@ jobs:
         environment:
           CHROME_BIN: /usr/bin/google-chrome 
     steps:
+      - checkout
       - run:
           name: npm-test
           command: npm run test:unit:ci
