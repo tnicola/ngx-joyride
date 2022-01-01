@@ -1,6 +1,6 @@
 {
     "name": "ngx-joyride",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "description": "An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery. From now on you can easily guide your users through your site showing them all the sections and features.",
     "repository": {
         "type": "git",
