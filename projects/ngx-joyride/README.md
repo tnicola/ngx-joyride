@@ -1,5 +1,5 @@
 [![npm version](https://badge.fury.io/js/ngx-joyride.svg)](https://badge.fury.io/js/ngx-joyride)
-[![Build Status](https://travis-ci.org/tnicola/ngx-joyride.svg?branch=master)](https://travis-ci.org/tnicola/ngx-joyride)
+[![CircleCI](https://circleci.com/gh/tnicola/ngx-joyride/tree/master.svg?style=svg)](https://circleci.com/gh/tnicola/ngx-joyride/tree/master)
 [![codecov](https://codecov.io/gh/tnicola/ngx-joyride/branch/master/graph/badge.svg)](https://codecov.io/gh/tnicola/ngx-joyride)
 [![Cypress.io tests](https://img.shields.io/badge/cypress.io-tests-green.svg?style=flat-square)](https://dashboard.cypress.io/#/projects/3yary2/runs)
 
@@ -8,7 +8,7 @@
 An Angular Tour (Joyride) library built entirely in Angular, without using any heavy external dependencies like Bootstrap or JQuery.
 From now on you can easily guide your users through your site showing them all the sections and features.
 
-For Angular 2+ (2 - 11)
+For Angular 2+ (2 - 13)
 
 <p align="center">
 	<img src ="https://github.com/tnicola/ngx-joyride/blob/master/docs/joyride-tour.gif" />
@@ -300,7 +300,7 @@ What you should do is adding your steps in this way:
 
 ```typescript
 ...
-    this.joyrideService.startTour({steps: ["navbar", "user-avatar@user/details", "info@about"]);
+    this.joyrideService.startTour({steps: ["navbar", "user-avatar@user/details", "info@about"]});
 ...
 ```
 
