@@ -41,7 +41,8 @@ export class DocumentService implements IDocumentService {
     }
 
     getElementFixedTop(elementRef: ElementRef) {
-        return elementRef.nativeElement.getBoundingClientRect().top;
+        return this.getElementAbsoluteTop(elementRef);
+        // return elementRef.nativeElement.getBoundingClientRect().top;
     }
 
     getElementFixedLeft(elementRef: ElementRef) {
