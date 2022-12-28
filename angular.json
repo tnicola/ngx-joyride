@@ -53,7 +53,6 @@
                         ],
                         "styles": ["projects/demo/src/styles.css"],
                         "scripts": [],
-                        "showCircularDependencies": false,
                         "vendorChunk": true,
                         "extractLicenses": false,
                         "buildOptimizer": false,
@@ -127,7 +126,6 @@
             }
         }
     },
-    "defaultProject": "ngx-joyride",
     "cli": {
         "analytics": false
     }
