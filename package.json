@@ -38,7 +38,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~17.0.7",
     "codelyzer": "^6.0.0",
-    "cypress": "9.2.0",
+    "cypress": "12.6.0",
     "jasmine-core": "~4.0.0",
     "jasmine-spec-reporter": "~6.0.0",
     "karma": "~6.3.2",
