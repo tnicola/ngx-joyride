@@ -30,7 +30,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.10",
     "@angular-devkit/core": "^14.2.10",
-    "@angular-devkit/schematics": "^14.2.10",
+    "@angular-devkit/schematics": "^15.2.0",
     "@angular/cli": "^14.2.10",
     "@angular/compiler-cli": "^14.2.12",
     "@angular/language-service": "^14.2.12",
